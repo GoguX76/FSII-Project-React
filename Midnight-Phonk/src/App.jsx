@@ -1,34 +1,52 @@
 import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
 import './App.css'
+import Home from './pages/Home'
+import About from './pages/About'
+import Contact from './pages/Contact'
 
 function App() {
-  const [count, setCount] = useState(0)
+  //Maneja las páginas que se mostraran
+  const [paginaActual, setPaginaActual] = useState('home')
+  console.log('Página Actual:', paginaActual)
 
   return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
+    <div className="app">
+      <header>
+        <h1>Midnight Phonk</h1>
+        <nav>
+          <ul>
+            <li>
+              {/*Cada boton provocará que la página actual sea la que corresponda
+              según lo que diga*/}
+              <button onClick={() => setPaginaActual('home')}>
+                Inicio
+              </button>
+            </li>
+            <li>
+              <button onClick={() => setPaginaActual('about')}>
+                Sobre Nosotros
+              </button>
+            </li>
+            <li>
+              <button onClick={() => setPaginaActual('contact')}>
+                Contacto
+              </button>
+            </li>
+          </ul>
+        </nav>
+      </header>
+
+      <main>
+        {/*Aquí hará la comprobación y cambio de página si se cumple*/}
+        {paginaActual === 'home' && <Home />}
+        {paginaActual === 'about' && <About />}
+        {paginaActual === 'contact' && <Contact />}
+      </main>
+
+      <footer>
+        <p>&copy; Midnight Phonk 2025</p>
+      </footer>
+    </div>
   )
 }
 

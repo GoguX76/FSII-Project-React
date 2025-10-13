@@ -1,20 +1,10 @@
-import { useState } from "react";
+import React from 'react';
+import PageWrapper from '../components/PageWrapper';
 
-function Home() {
-    return (
-        <div className="home-page">
-            <h2>Home - Midnight Phonk</h2>
-            <p>Está es la página principal</p>
-            <div>
-                <h3>Categorias de Música</h3>
-                <ul>
-                    <li><a href="#phonk-brazil">Phonk Brasileño</a></li>
-                    <li><a href="#phonk-japan">Phonk Japones</a></li>
-                    <li><a href="#phonk-russian">Phonk Ruso</a></li>
-                </ul>
-            </div>
-        </div>
-    )
-}
+const Home = () => (
+    <PageWrapper title="Inicio (Home)">
+        <p className="text-lg">¡Bienvenido a Midnight Phonk! Explora las categorías y encuentra el mejor Phonk para tus sesiones de manejo nocturno.</p>
+    </PageWrapper>
+);
 
-export default Home
+export default Home;

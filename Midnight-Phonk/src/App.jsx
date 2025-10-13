@@ -1,53 +1,58 @@
-import { useState } from 'react'
-import './App.css'
-import Home from './pages/Home'
-import About from './pages/About'
-import Contact from './pages/Contact'
+import React, { useState } from 'react';
+import { Mail, Home as HomeIcon, Info, DollarSign, Menu, X, Twitter, Facebook, Instagram } from 'lucide-react';
+
+import Home from './pages/Home';
+import About from './pages/About';
+import Donations from './pages/Donations';
+import Contact from './pages/Contact';
+import Header from './components/Header';
+import Footer from './components/Footer';
+
 
 function App() {
-  //Maneja las páginas que se mostraran
-  const [paginaActual, setPaginaActual] = useState('home')
-  console.log('Página Actual:', paginaActual)
+  // Configuración de Tailwind CSS (para el entorno Canvas)
+  // Nota: En un proyecto React normal, esto no sería necesario.
+  if (typeof window !== 'undefined') {
+    const script = document.createElement('script');
+    script.src = 'https://cdn.tailwindcss.com';
+    document.head.appendChild(script);
+  }
+
+  // Maneja las páginas que se mostraran ('home', 'about', 'contact', 'donations')
+  const [paginaActual, setPaginaActual] = useState('home');
+
+  // Función para renderizar el contenido de la página actual
+  const renderPage = () => {
+    switch (paginaActual) {
+      case 'home':
+        return <Home />;
+      case 'about':
+        return <About />;
+      case 'contact':
+        return <Contact />;
+      case 'donations':
+        return <Donations />;
+      default:
+        return <Home />; // Fallback
+    }
+  };
 
   return (
-    <div className="app">
-      <header>
-        <h1>Midnight Phonk</h1>
-        <nav>
-          <ul>
-            <li>
-              {/*Cada boton provocará que la página actual sea la que corresponda
-              según lo que diga*/}
-              <button onClick={() => setPaginaActual('home')}>
-                Inicio
-              </button>
-            </li>
-            <li>
-              <button onClick={() => setPaginaActual('about')}>
-                Sobre Nosotros
-              </button>
-            </li>
-            <li>
-              <button onClick={() => setPaginaActual('contact')}>
-                Contacto
-              </button>
-            </li>
-          </ul>
-        </nav>
-      </header>
+    // Estructura principal, con la clase base simulando el body/page-wrapper
+    <div className="min-h-screen bg-gray-100 dark:bg-gray-900 font-sans transition-colors duration-500">
+      
+      {/* HEADER: Le pasamos la función para cambiar el estado */}
+      <Header onNavigate={setPaginaActual} />
 
-      <main>
-        {/*Aquí hará la comprobación y cambio de página si se cumple*/}
-        {paginaActual === 'home' && <Home />}
-        {paginaActual === 'about' && <About />}
-        {paginaActual === 'contact' && <Contact />}
+      {/* MAIN CONTENT */}
+      <main className="pt-0 pb-12">
+        {renderPage()}
       </main>
 
-      <footer>
-        <p>&copy; Midnight Phonk 2025</p>
-      </footer>
+      {/* FOOTER */}
+      <Footer />
     </div>
-  )
+  );
 }
 
-export default App
+export default App;

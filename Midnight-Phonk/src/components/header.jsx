@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Menu, X } from 'lucide-react';
+import logo from '../assets/images/midnight-phonk.png';
 
 const Header = ({ onNavigate }) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -22,8 +23,14 @@ const Header = ({ onNavigate }) => {
       <div className="max-w-full mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-20">
           <div className="flex-shrink-0">
-            <a href="#" onClick={() => handleNavigation('home')} className="text-4xl font-extrabold tracking-wider text-indigo-400 hover:text-indigo-300 transition duration-300" style={{ fontFamily: 'Orbitron, sans-serif' }}>
-              Midnight Phonk
+            <a href="#" onClick={() => handleNavigation('home')} className="flex items-center space-x-3 text-4xl font-extrabold tracking-wider text-indigo-400 hover:text-indigo-300 transition duration-300" style={{ fontFamily: 'Orbitron, sans-serif' }}>
+              <span>Midnight Phonk</span>
+              {/* Carga la imagen del logo de Midnight Phonk */}
+              <img
+                src={logo}
+                alt="Midnight-Phonk-Logo"
+                className='h-16 w-16 object-contain ml-2' //Aquí se modifican las propiedades de la imagen.
+              />
             </a>
           </div>
           <nav className="hidden lg:block">

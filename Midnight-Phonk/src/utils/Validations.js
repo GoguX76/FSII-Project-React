@@ -22,7 +22,7 @@ export const validateEmail = (email) => {
 /*
  * Función que quita los espacios del texto, comprueba que no este vacío
  * y que cumpla con la mínima cantidad de caracteres.
-*/
+ */
 export const validateMinLength = (value, minLength) => {
     return value && value.trim().length > minLength;
 };

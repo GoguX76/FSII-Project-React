@@ -64,7 +64,7 @@ const Header = ({ onNavigate }) => {
                   Categorías
                 </a>
                 {isCategoryOpen && (
-                  <ul className="absolute left-0 mt-2 w-48 bg-gray-800 rounded-lg shadow-xl py-2 z-10">
+                  <ul className="absolute right-0 mt-2 w-44 bg-gray-800 rounded-lg shadow-xl py-2 z-10 max-w-xs whitespace-nowrap">
                     <li>
                       <a
                         href="#"
@@ -86,7 +86,7 @@ const Header = ({ onNavigate }) => {
                         href="#"
                         className="block px-4 py-2 text-gray-300 hover:bg-gray-700 hover:text-indigo-400"
                       >
-                        Phonk Fiestas Patrias
+                        Phonk Japones
                       </a>
                     </li>
                   </ul>

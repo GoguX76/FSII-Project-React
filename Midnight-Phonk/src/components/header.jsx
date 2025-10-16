@@ -20,6 +20,7 @@ const Header = ({ onNavigate }) => {
     onNavigate(pageName);
     setIsMenuOpen(false);
   };
+  const [isMobileCategoryOpen, setIsMobileCategoryOpen] = useState(false);
 
   const navLinks = [
     { name: "Home", state: "home" },
@@ -128,6 +129,7 @@ const Header = ({ onNavigate }) => {
                     <li>
                       <a
                         href="#"
+                        onClick={() => handleNavigation("brazilianphonk")}
                         className="block px-4 py-2 text-gray-300 hover:bg-gray-700 hover:text-indigo-400"
                       >
                         Phonk Brasileño
@@ -187,13 +189,13 @@ const Header = ({ onNavigate }) => {
             </a>
             <div className="pt-2">
               <button
-                onClick={() => setIsCategoryOpen(!isCategoryOpen)}
+                onClick={() => setIsMobileCategoryOpen(!isMobileCategoryOpen)}
                 className="flex justify-between items-center w-full px-3 py-2 rounded-md text-base font-medium hover:bg-gray-700"
               >
                 Categorías{" "}
-                <span className="ml-2">{isCategoryOpen ? "▲" : "▼"}</span>
+                <span className="ml-2">{isMobileCategoryOpen ? "▲" : "▼"}</span>
               </button>
-              {isCategoryOpen && (
+              {isMobileCategoryOpen && (
                 <div className="pl-6 pt-1 pb-1 space-y-1">
                   <a
                     href="#"
@@ -203,6 +205,7 @@ const Header = ({ onNavigate }) => {
                   </a>
                   <a
                     href="#"
+                    onClick={() => handleNavigation("brazilianphonk")}
                     className="block px-3 py-2 text-sm text-gray-300 hover:bg-gray-600 rounded-md"
                   >
                     Phonk Brasileño

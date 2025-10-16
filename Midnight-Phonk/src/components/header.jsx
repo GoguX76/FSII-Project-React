@@ -1,10 +1,20 @@
 import React, { useState } from "react";
 import { Menu, X } from "lucide-react";
 import logo from "../assets/images/midnight-phonk.png";
+import { useDelayedHover } from "../hooks/useDelayedHover";
 
 const Header = ({ onNavigate }) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [isCategoryOpen, setIsCategoryOpen] = useState(false);
+  const {
+    isOpen: isHomeOpen,
+    handleMouseEnter: handleHomeEnter,
+    handleMouseLeave: handleHomeLeave,
+  } = useDelayedHover(300);
+  const {
+    isOpen: isCategoryOpen,
+    handleMouseEnter: handleCategoryEnter,
+    handleMouseLeave: handleCategoryLeave,
+  } = useDelayedHover(300);
 
   const handleNavigation = (pageName) => {
     onNavigate(pageName);
@@ -17,7 +27,6 @@ const Header = ({ onNavigate }) => {
     { name: "Contacto", state: "contact" },
     { name: "Sobre nosotros", state: "about" },
   ];
-  const [isHomeOpen, setIsHomeOpen] = useState(false);
 
   return (
     <div id="header" className="bg-gray-900 shadow-lg sticky top-0 z-50">
@@ -44,10 +53,11 @@ const Header = ({ onNavigate }) => {
             <ul className="flex space-x-8 text-lg font-medium">
               {navLinks.map((link) => (
                 <li key={link.state} className="relative">
-                  {link.state === 'home' ? (
+                  {link.state === "home" ? (
                     <div
-                      onMouseEnter={() => setIsHomeOpen(true)}
-                      onMouseLeave={() => setIsHomeOpen(false)}
+                      /* Uso de useDelayedHover, llamando las funciones para abrir y cerrar */
+                      onMouseEnter={handleHomeEnter}
+                      onMouseLeave={handleHomeLeave}
                       className="inline-block"
                     >
                       <a
@@ -62,10 +72,22 @@ const Header = ({ onNavigate }) => {
                       {isHomeOpen && (
                         <ul className="absolute left-1/2 transform -translate-x-1/2 top-full mt-2 w-40 bg-gray-800 rounded-lg shadow-xl py-2 z-20 text-center">
                           <li>
-                            <a href="#" onClick={() => handleNavigation('login')} className="block px-4 py-2 text-gray-300 hover:bg-gray-700 hover:text-indigo-400">Iniciar sesión</a>
+                            <a
+                              href="#"
+                              onClick={() => handleNavigation("login")}
+                              className="block px-4 py-2 text-gray-300 hover:bg-gray-700 hover:text-indigo-400"
+                            >
+                              Iniciar sesión
+                            </a>
                           </li>
                           <li>
-                            <a href="#" onClick={() => handleNavigation('register')} className="block px-4 py-2 text-gray-300 hover:bg-gray-700 hover:text-indigo-400">Registrarse</a>
+                            <a
+                              href="#"
+                              onClick={() => handleNavigation("register")}
+                              className="block px-4 py-2 text-gray-300 hover:bg-gray-700 hover:text-indigo-400"
+                            >
+                              Registrarse
+                            </a>
                           </li>
                         </ul>
                       )}
@@ -83,8 +105,9 @@ const Header = ({ onNavigate }) => {
               ))}
               <li
                 className="relative"
-                onMouseEnter={() => setIsCategoryOpen(true)}
-                onMouseLeave={() => setIsCategoryOpen(false)}
+                /* Uso del useDelayedHover.js para la Categoria. */
+                onMouseEnter={handleCategoryEnter}
+                onMouseLeave={handleCategoryLeave}
               >
                 <a
                   href="#"
@@ -148,8 +171,20 @@ const Header = ({ onNavigate }) => {
                 {link.name}
               </a>
             ))}
-            <a href="#" onClick={() => handleNavigation('login')} className="block px-3 py-2 rounded-md text-base font-medium hover:bg-gray-700">Iniciar sesión</a>
-            <a href="#" onClick={() => handleNavigation('register')} className="block px-3 py-2 rounded-md text-base font-medium bg-indigo-600 text-white hover:bg-indigo-500 rounded">Registrarse</a>
+            <a
+              href="#"
+              onClick={() => handleNavigation("login")}
+              className="block px-3 py-2 rounded-md text-base font-medium hover:bg-gray-700"
+            >
+              Iniciar sesión
+            </a>
+            <a
+              href="#"
+              onClick={() => handleNavigation("register")}
+              className="block px-3 py-2 rounded-md text-base font-medium bg-indigo-600 text-white hover:bg-indigo-500 rounded"
+            >
+              Registrarse
+            </a>
             <div className="pt-2">
               <button
                 onClick={() => setIsCategoryOpen(!isCategoryOpen)}

@@ -1,46 +1,46 @@
 import React, { useState } from 'react';
-import { UserPlus } from 'lucide-react';
+// 1. Importa el hook y las reglas de validación
+import useForm from '../hooks/useForm';
+import { validateForm } from '../utils/Validations';
 import logo from '../assets/images/midnight-phonk.png';
 import '../css/forms.css';
 
-// ====================================================================
-// COMPONENTE: REGISTER
-// Recibe 'onNavigate' para redirigir al Login después del registro.
-// ====================================================================
+// 2. Define el estado inicial del formulario
+const INITIAL_STATE = {
+  nombre: '',
+  email: '',
+  confirmEmail: '',
+  password: '',
+  confirmPassword: '',
+};
 
 const Register = ({ onNavigate }) => {
-  const [formData, setFormData] = useState({
-    nombre: '',
-    email: '',
-    confirmEmail: '',
-    password: '',
-    confirmPassword: '',
-  });
+  // El estado para los mensajes de éxito/error se mantiene aquí
   const [message, setMessage] = useState('');
 
-  const handleChange = (e) => {
-    const { id, value } = e.target;
-    setFormData(prevData => ({ ...prevData, [id]: value }));
-  };
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-  // NOTE: Validaciones deshabilitadas aquí a petición del usuario.
-    // Aquí iría la lógica de registro real (API call a Firebase, etc.)
-    console.log('Intentando registrar:', formData);
-    setMessage('Registrando usuario...');
+  // 3. Define la lógica que se ejecutará si el formulario es válido
+  const handleSuccessfulRegistration = () => {
+    setMessage('Validación exitosa. Registrando usuario...');
+    console.log('Intentando registrar:', values);
 
     // SIMULACIÓN DE REGISTRO (3 segundos)
     setTimeout(() => {
-        setMessage(`¡Registro exitoso para ${formData.nombre}! Redirigiendo al inicio de sesión.`);
+        setMessage(`¡Registro exitoso para ${values.nombre}! Redirigiendo al inicio de sesión.`);
         
         // Redirige a la página de Login después de 2 segundos
         setTimeout(() => onNavigate('login'), 2000); 
     }, 3000);
   };
 
+  // 4. Usa el hook para obtener todo lo que necesitas
+  const {
+    values,
+    errors,
+    handleChange,
+    handleSubmit,
+  } = useForm(INITIAL_STATE, validateForm, handleSuccessfulRegistration);
+
   return (
-    // Estilo Phonk de gradiente (similar al Login)
     <section className="form-page register-page">
       <div className="container">
         <div className="form-card">
@@ -51,24 +51,37 @@ const Register = ({ onNavigate }) => {
             <div className="title">Registro MP</div>
             <p className="subtitle">Por favor, ingresa tus datos</p>
 
+            {/* Muestra el mensaje de éxito o de proceso */}
             {message && (
-              <div className={`message ${message.includes('exitoso') ? 'success' : 'error'}`}>
+              <div className={`message ${message.includes('exitoso') ? 'success' : 'info'}`}>
                 {message}
               </div>
             )}
 
-            <form onSubmit={handleSubmit}>
-              <input type="text" id="nombre" placeholder="Nombre completo" value={formData.nombre} onChange={handleChange} className="form-input" />
-              <input type="email" id="email" placeholder="Correo electrónico" value={formData.email} onChange={handleChange} className="form-input" />
-              <input type="email" id="confirmEmail" placeholder="Confirmar Correo electrónico" value={formData.confirmEmail} onChange={handleChange} className="form-input" />
-              <input type="password" id="password" placeholder="Contraseña" value={formData.password} onChange={handleChange} className="form-input" />
-              <input type="password" id="confirmPassword" placeholder="Confirmar contraseña" value={formData.confirmPassword} onChange={handleChange} className="form-input" />
+            {/* 5. El 'handleSubmit' del formulario ahora viene del hook */}
+            <form onSubmit={handleSubmit} noValidate>
+              
+              {/* CAMBIO: Se añade el atributo 'name' y se muestra el error */}
+              <input type="text" id="nombre" name="nombre" placeholder="Nombre completo" value={values.nombre} onChange={handleChange} className="form-input" />
+              {errors.nombre && <p className="error-message">{errors.nombre}</p>}
+
+              <input type="email" id="email" name="email" placeholder="Correo electrónico" value={values.email} onChange={handleChange} className="form-input" />
+              {errors.email && <p className="error-message">{errors.email}</p>}
+
+              <input type="email" id="confirmEmail" name="confirmEmail" placeholder="Confirmar Correo electrónico" value={values.confirmEmail} onChange={handleChange} className="form-input" />
+              {errors.confirmEmail && <p className="error-message">{errors.confirmEmail}</p>}
+
+              <input type="password" id="password" name="password" placeholder="Contraseña" value={values.password} onChange={handleChange} className="form-input" />
+              {errors.password && <p className="error-message">{errors.password}</p>}
+              
+              <input type="password" id="confirmPassword" name="confirmPassword" placeholder="Confirmar contraseña" value={values.confirmPassword} onChange={handleChange} className="form-input" />
+              {errors.confirmPassword && <p className="error-message">{errors.confirmPassword}</p>}
 
               <button type="submit" className="btn-primary">Completar Registro</button>
             </form>
 
             <div className="card-footer">
-              <p className="small">¿Ya tienes cuenta? <a href="#" onClick={() => onNavigate('login')} className="link-small">Inicia sesión</a></p>
+              <p className="small">¿Ya tienes cuenta? <a href="#" onClick={(e) => { e.preventDefault(); onNavigate('login'); }} className="link-small">Inicia sesión</a></p>
             </div>
           </div>
         </div>

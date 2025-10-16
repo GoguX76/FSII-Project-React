@@ -1,86 +1,92 @@
 import React, { useState } from "react";
-// Eliminadas las importaciones de archivos externos para resolver el error de compilación.
+// 1. Importa el hook y las reglas de validación
+import useForm from '../hooks/useForm';
+import { validateForm } from '../utils/Validations';
 
-// Componente simulado PageWrapper
-const PageWrapper = ({ title, children }) => (
-    <div style={{ padding: '0' }}>
-        {children}
-    </div>
+// Componente simulado PageWrapper 
+const PageWrapper = ({ children }) => (
+    <div style={{ padding: '0' }}>{children}</div>
 );
 
+// 2. Define el estado inicial para el formulario de contacto
+const INITIAL_STATE = {
+    nombre: "",
+    email: "",
+    asunto: "",
+    mensaje: "",
+};
+
 const Contact = () => {
-    const [formData, setFormData] = useState({
-        nombre: "",
-        email: "",
-        asunto: "",
-        mensaje: "",
-    });
+    // Estado solo para el mensaje de éxito
     const [message, setMessage] = useState("");
 
-    const handleChange = (e) => {
-        const { name, value } = e.target;
-        setFormData((prevData) => ({ ...prevData, [name]: value }));
-    };
-
-    const handleSubmit = (e) => {
-        e.preventDefault();
-        
-        // Lógica de validación eliminada (para moverla a otro archivo)
-
-        
-        // Simular el envío exitoso
+    // 3. Define la lógica que se ejecutará si la validación es exitosa
+    const handleSuccessfulSubmit = () => {
         setMessage("¡Mensaje enviado con éxito! Nos pondremos en contacto pronto.");
         
-        // Resetear el formulario
-        setFormData({ nombre: "", email: "", asunto: "", mensaje: "" });
+        // Usamos la función del hook para resetear el formulario
+        setValues(INITIAL_STATE); 
+
+        // Opcional: Ocultar el mensaje de éxito después de unos segundos
+        setTimeout(() => setMessage(""), 5000);
     };
+
+    // 4. Llama al hook para obtener toda la lógica
+    const {
+        values,
+        errors,
+        handleChange,
+        handleSubmit,
+        setValues, // <-- Obtenemos la nueva función para resetear
+    } = useForm(INITIAL_STATE, validateForm, handleSuccessfulSubmit);
 
     return (
         <PageWrapper title="Contacto">
-            {/* Usa form-page y container para el fondo degradado y centrado */}
             <div className="form-page contact-page">
                 <div className="container">
-                    {/* Usa form-card y contact-section para el estilo de tarjeta oscura y ancho doble */}
                     <section className="form-card contact-section">
                         <div className="card-content" style={{textAlign: 'left'}}>
-                            {/* Título de la tarjeta */}
                             <h2 className="title" style={{textAlign: 'center', marginBottom: '1rem'}}>Contáctanos</h2>
-                            {/* Subtítulo de la tarjeta */}
                             <p className="subtitle">
                                 Por favor, completa el siguiente formulario y nos pondremos en
                                 contacto contigo lo antes posible.
                             </p>
                             {message && (
-                                // Solo se mostrará el mensaje de éxito tras el envío.
-                                <div className={`message ${message.includes("éxito") ? 'success' : 'error'}`}>
+                                <div className={`message success`}>
                                     {message}
                                 </div>
                             )}
-                            <form onSubmit={handleSubmit}>
+                            {/* 5. El 'handleSubmit' del formulario ahora viene del hook */}
+                            <form onSubmit={handleSubmit} noValidate>
                                 <div className="form-grid">
-                                    <input
-                                        type="text"
-                                        name="nombre"
-                                        placeholder="Nombre completo"
-                                        // 'required' eliminado
-                                        value={formData.nombre}
-                                        onChange={handleChange}
-                                        className="form-input"
-                                    />
-                                    <input
-                                        type="email"
-                                        name="email"
-                                        placeholder="Correo electrónico"
-                                        // 'required' eliminado
-                                        value={formData.email}
-                                        onChange={handleChange}
-                                        className="form-input"
-                                    />
+                                    <div>
+                                        <input
+                                            type="text"
+                                            name="nombre"
+                                            placeholder="Nombre completo"
+                                            value={values.nombre}
+                                            onChange={handleChange}
+                                            className="form-input"
+                                        />
+                                        {/* Muestra el error de validación si existe */}
+                                        {errors.nombre && <p className="error-message">{errors.nombre}</p>}
+                                    </div>
+                                    <div>
+                                        <input
+                                            type="email"
+                                            name="email"
+                                            placeholder="Correo electrónico"
+                                            value={values.email}
+                                            onChange={handleChange}
+                                            className="form-input"
+                                        />
+                                        {errors.email && <p className="error-message">{errors.email}</p>}
+                                    </div>
                                 </div>
+                                
                                 <select
                                     name="asunto"
-                                    // 'required' eliminado
-                                    value={formData.asunto}
+                                    value={values.asunto}
                                     onChange={handleChange}
                                     className="form-select"
                                 >
@@ -89,16 +95,18 @@ const Contact = () => {
                                     <option value="herramientas">Problemas con herramientas</option>
                                     <option value="articulo">Artículo Inapropiado</option>
                                 </select>
+                                {errors.asunto && <p className="error-message">{errors.asunto}</p>}
+                                
                                 <textarea
                                     name="mensaje"
                                     placeholder="Describe tu problema o consulta"
                                     rows="5"
-                                    // 'required' eliminado
-                                    value={formData.mensaje}
+                                    value={values.mensaje}
                                     onChange={handleChange}
                                     className="form-textarea"
                                 ></textarea>
-                                {/* Usa card-footer y text-right para el estilo consistente del pie de tarjeta */}
+                                {errors.mensaje && <p className="error-message">{errors.mensaje}</p>}
+
                                 <div className="card-footer text-right">
                                     <button type="submit" className="btn-primary">Enviar Mensaje</button>
                                 </div>

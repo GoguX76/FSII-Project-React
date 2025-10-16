@@ -1,28 +1,53 @@
-//Función que quita los espacios y comprueba que el texto no este vacío
-export const validateRequired = (value) => {
-    return value && value.trim().length > 0;
-};
+// src/utils/validationRules.js
 
-//Función que valida que el mail cumpla un formato especifico.
-export const validateEmail = (email) => {
-    /* 
-     * La variable emailRegex se ve rara, pero le daré explicación para que
-     * se entienda que hace. Cada simbolo tiene un significado. / marca el
-     * inicio y final de la cadena. El ^ fuera de los corchetes inidica que
-     * el texto debe empezar ahí. Cada ^ dentro de los corchetes indica los
-     * simbolos que NO deben estar en esa posición del String. El \. es para
-     * que sea el . literal en el mail. Por ultimo, el $ marca donde termina el
-     * String.
-     */
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    //El test es para probar que cumple el formato dado.
-    return emailRegex.test(email);
-};
+export function validateForm(values) {
+    let errors = {};
+    const emailRegex = /^[^@\s]+@[^@\s]+\.[^@\s]+$/;
 
-/*
- * Función que quita los espacios del texto, comprueba que no este vacío
- * y que cumpla con la mínima cantidad de caracteres.
- */
-export const validateMinLength = (value, minLength) => {
-    return value && value.trim().length > minLength;
-};
+    // --- REGLAS COMPARTIDAS ---
+
+    if ('email' in values) {
+        if (!values.email) {
+            errors.email = 'El correo electrónico es requerido';
+        } else if (!emailRegex.test(values.email)) {
+            errors.email = 'El correo electrónico es inválido';
+        }
+    }
+
+    // ... (las otras reglas de nombre y password se quedan igual) ...
+    if ('nombre' in values) {
+        if (!values.nombre || values.nombre.trim().length < 3) {
+            errors.nombre = 'El nombre completo debe tener al menos 3 caracteres';
+        }
+    }
+
+    if ('password' in values) {
+        if (!values.password || values.password.length < 6) {
+            errors.password = 'La contraseña debe tener al menos 6 caracteres';
+        }
+    }
+
+
+    // Para el formulario de Registro
+    if ('confirmPassword' in values) {
+        if (values.password !== values.confirmPassword) {
+            errors.confirmPassword = 'Las contraseñas no coinciden';
+        }
+    }
+
+    if ('confirmEmail' in values) {
+        if (values.email !== values.confirmEmail) {
+            errors.confirmEmail = 'Los correos electrónicos no coinciden';
+        }
+    }
+
+    // ... (las reglas de Contacto se quedan igual) ...
+    if ('asunto' in values && !values.asunto) {
+        errors.asunto = 'Debes seleccionar un asunto';
+    }
+    if ('mensaje' in values && (!values.mensaje || values.mensaje.trim().length < 10)) {
+        errors.mensaje = 'El mensaje debe tener al menos 10 caracteres';
+    }
+
+    return errors;
+}

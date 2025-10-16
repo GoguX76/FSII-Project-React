@@ -17,6 +17,7 @@ const Header = ({ onNavigate }) => {
     { name: "Contacto", state: "contact" },
     { name: "Sobre nosotros", state: "about" },
   ];
+  const [isHomeOpen, setIsHomeOpen] = useState(false);
 
   return (
     <div id="header" className="bg-gray-900 shadow-lg sticky top-0 z-50">
@@ -42,14 +43,42 @@ const Header = ({ onNavigate }) => {
           <nav className="hidden lg:block">
             <ul className="flex space-x-8 text-lg font-medium">
               {navLinks.map((link) => (
-                <li key={link.state}>
-                  <a
-                    href="#"
-                    onClick={() => handleNavigation(link.state)}
-                    className="text-gray-300 hover:text-indigo-400 transition duration-200"
-                  >
-                    {link.name}
-                  </a>
+                <li key={link.state} className="relative">
+                  {link.state === 'home' ? (
+                    <div
+                      onMouseEnter={() => setIsHomeOpen(true)}
+                      onMouseLeave={() => setIsHomeOpen(false)}
+                      className="inline-block"
+                    >
+                      <a
+                        href="#"
+                        onClick={() => handleNavigation(link.state)}
+                        className="text-gray-300 hover:text-indigo-400 transition duration-200"
+                      >
+                        {link.name}
+                      </a>
+
+                      {/* Dropdown posicionado justo debajo del enlace Home */}
+                      {isHomeOpen && (
+                        <ul className="absolute left-1/2 transform -translate-x-1/2 top-full mt-2 w-40 bg-gray-800 rounded-lg shadow-xl py-2 z-20 text-center">
+                          <li>
+                            <a href="#" onClick={() => handleNavigation('login')} className="block px-4 py-2 text-gray-300 hover:bg-gray-700 hover:text-indigo-400">Iniciar sesión</a>
+                          </li>
+                          <li>
+                            <a href="#" onClick={() => handleNavigation('register')} className="block px-4 py-2 text-gray-300 hover:bg-gray-700 hover:text-indigo-400">Registrarse</a>
+                          </li>
+                        </ul>
+                      )}
+                    </div>
+                  ) : (
+                    <a
+                      href="#"
+                      onClick={() => handleNavigation(link.state)}
+                      className="text-gray-300 hover:text-indigo-400 transition duration-200"
+                    >
+                      {link.name}
+                    </a>
+                  )}
                 </li>
               ))}
               <li
@@ -119,6 +148,8 @@ const Header = ({ onNavigate }) => {
                 {link.name}
               </a>
             ))}
+            <a href="#" onClick={() => handleNavigation('login')} className="block px-3 py-2 rounded-md text-base font-medium hover:bg-gray-700">Iniciar sesión</a>
+            <a href="#" onClick={() => handleNavigation('register')} className="block px-3 py-2 rounded-md text-base font-medium bg-indigo-600 text-white hover:bg-indigo-500 rounded">Registrarse</a>
             <div className="pt-2">
               <button
                 onClick={() => setIsCategoryOpen(!isCategoryOpen)}

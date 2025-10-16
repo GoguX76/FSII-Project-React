@@ -7,6 +7,8 @@ import Donations from './pages/Donations';
 import Contact from './pages/Contact';
 import Header from './components/header';
 import Footer from './components/footer';
+import Login from './pages/Login';
+import Register from './pages/Register';
 
 
 function App() {
@@ -19,21 +21,25 @@ function App() {
   }
 
   // Maneja las páginas que se mostraran ('home', 'about', 'contact', 'donations')
-  const [paginaActual, setPaginaActual] = useState('home');
+    const [paginaActual, setPaginaActual] = useState('home'); // Maneja las páginas que se mostraran ('home', 'about', 'contact', 'donations', 'login', 'register')
 
   // Función para renderizar el contenido de la página actual
   const renderPage = () => {
     switch (paginaActual) {
-      case 'home':
-        return <Home />;
-      case 'about':
-        return <About />;
-      case 'contact':
-        return <Contact />;
-      case 'donations':
-        return <Donations />;
-      default:
-        return <Home />; // Fallback
+        case 'home':
+          return <Home />;
+        case 'about':
+          return <About />;
+        case 'contact':
+          return <Contact />;
+        case 'donations':
+          return <Donations />;
+        case 'login':
+          return <Login onNavigate={setPaginaActual} />;
+        case 'register':
+          return <Register onNavigate={setPaginaActual} />;
+        default:
+          return <Home />; // Fallback
     }
   };
 

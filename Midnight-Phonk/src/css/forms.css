@@ -1,0 +1,142 @@
+:root {
+    --bg-dark: #1f2937;
+    --card-bg: #1f2937;
+    --muted: #cbd5e1;
+    --indigo: #4f46e5;
+    --input-bg: #374151;
+    --input-border: #cbd5e1;
+}
+
+.form-page.login-page,
+.form-page.register-page,
+.form-page.contact-page {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-image: linear-gradient(to right, #1f2937, #4f46e5, #9333ea);
+}
+
+.login-page {
+    padding-top: 4.5rem;
+    padding-bottom: 4.5rem;
+}
+
+.register-page {
+    padding-top: 2rem;
+    padding-bottom: 2rem;
+}
+
+.contact-page {
+    padding: 4.5rem 0;
+}
+
+
+/* --- MODIFICACIÓN PRINCIPAL AQUÍ --- */
+
+
+/* Se asigna un ancho menor a los contenedores de login y registro */
+
+.login-page .container,
+.register-page .container {
+    width: 20%;
+}
+
+
+/* Se mantiene el ancho anterior para el contenedor de contacto */
+
+.contact-page .container {
+    width: 25%;
+}
+
+.container {
+    /* La propiedad 'width' fue movida a las reglas específicas de arriba */
+}
+
+.form-card {
+    background: var(--card-bg);
+    color: #fff;
+    border-radius: 0.75rem;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.55);
+    padding: 1rem;
+    min-height: 18.5rem;
+}
+
+.card-content {
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 0.6rem;
+}
+
+.logo img {
+    height: 3.5rem;
+    width: 3.5rem;
+    object-fit: contain;
+    margin: 0 auto 0.45rem;
+}
+
+.title {
+    font-family: 'Orbitron', sans-serif;
+    color: #c4b5fd;
+    font-size: 1.15rem;
+    font-weight: 700;
+    letter-spacing: 0.6px;
+}
+
+.subtitle {
+    color: var(--muted);
+    margin-bottom: 0.75rem;
+    font-size: 0.95rem;
+}
+
+.card-footer {
+    margin-top: 1rem;
+    border-top: 1px solid rgba(100, 116, 139, 0.4);
+    padding-top: 0.75rem;
+}
+
+.form-input,
+.form-select,
+.form-textarea {
+    width: 100%;
+    padding: 0.6rem;
+    border-radius: 0.5rem;
+    background: var(--input-bg);
+    color: #fff;
+    border: none;
+    margin-bottom: 0.5rem;
+    font-size: 0.95rem;
+    transition: box-shadow 150ms ease, transform 120ms ease;
+}
+
+.form-select {
+    background: #F8FAFC;
+    color: #111827;
+    border: 1px solid var(--input-border);
+}
+
+.btn-primary {
+    display: block;
+    width: 100%;
+    background: var(--indigo);
+    color: #fff;
+    font-weight: 700;
+    padding: 0.6rem 0.85rem;
+    border-radius: 9999px;
+    border: none;
+    cursor: pointer;
+    box-shadow: 0 6px 18px rgba(79, 70, 229, 0.18);
+}
+
+.link-small {
+    color: #93c5fd;
+    font-size: 0.875rem;
+}
+
+.message {
+    padding: 0.6rem;
+    margin-bottom: 0.6rem;
+    border-radius: 0
+}

@@ -1,6 +1,6 @@
 /* --- Fuentes --- */
 
-@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@700&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Orbitron:wght@700&display=swap");
 
 /* --- Contenedor Principal con Degradado --- */
 
@@ -13,12 +13,11 @@
     /* Ocupa toda la altura de la pantalla */
     width: 100%;
     /* El degradado clave: de un morado oscuro a un fucsia vibrante */
-    background: linear-gradient(135deg, #4b0082, #ff00ff);
+    background: linear-gradient(135deg, #1f2937, #4f46e5, #9333ea);
     overflow: hidden;
     text-align: center;
     color: white;
 }
-
 
 /* --- Logo y Eslogan --- */
 
@@ -39,7 +38,7 @@
 }
 
 .tagline {
-    font-family: 'Orbitron', sans-serif;
+    font-family: "Orbitron", sans-serif;
     letter-spacing: 2px;
     font-weight: 700;
     font-size: 1.2rem;

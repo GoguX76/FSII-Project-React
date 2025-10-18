@@ -2,6 +2,7 @@ import React from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation, Pagination, Autoplay } from "swiper/modules";
 import brazilVocalsImg from "../assets/images/brazil-vocals.png";
+import phonkProducts from "../utils/Phonk-Catalog";
 
 // Solo necesitas estos 3 estilos básicos
 import "swiper/css";
@@ -103,6 +104,37 @@ const SwiperCarousel = () => {
               Eventos Nocturnos
             </h3>
             <p>Únete a las sesiones más intensas de Phonk underground</p>
+          </div>
+        </SwiperSlide>
+
+        {/* NUEVO SLIDE: Producto ID 1 */}
+        <SwiperSlide>
+          <div
+            style={{
+              padding: "3rem 2rem",
+              textAlign: "center",
+              color: "white",
+            }}
+          >
+            <h3
+              style={{
+                color: "#ff00ff",
+                fontSize: "2rem",
+                marginBottom: "1rem",
+              }}
+            >
+              {phonkProducts[0].title}
+            </h3>
+            <p style={{ marginBottom: "1rem" }}>{phonkProducts[0].desc}</p>
+            <p
+              style={{
+                color: "#00ff00",
+                fontSize: "1.5rem",
+                fontWeight: "bold",
+              }}
+            >
+              ${phonkProducts[0].price}
+            </p>
           </div>
         </SwiperSlide>
       </Swiper>

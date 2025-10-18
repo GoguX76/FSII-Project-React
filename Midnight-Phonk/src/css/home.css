@@ -9,7 +9,7 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    height: 100vh;
+    height: 100v;
     /* Ocupa toda la altura de la pantalla */
     width: 100%;
     /* El degradado clave: de un morado oscuro a un fucsia vibrante */

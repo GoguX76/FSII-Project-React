@@ -1,0 +1,20 @@
+.swipper-button-next,
+.swipper-button-previus {
+    /* Tamaño de los botones de navegación del Carousel. */
+    width: 50px !important;
+    height: 50px !important;
+    margin-top: -25px !important;
+
+    /* Diseño visual de los botones. */
+    background: rgba(255, 0, 255, 0.8) !important;
+    border: 2px solid #ff00ff !important;
+    border-radius: 50% !important;
+
+    /* Efectos de los botones. */
+    backdrop-filter: blur(10px) !important;
+    box-shadow: 0 4px 15px rgba(255, 0, 255, 0.3) !important;
+    transition: all 0.3s ease !important;
+
+    /* Ocultar los botones por defecto. */
+    color: transparent !important;
+}

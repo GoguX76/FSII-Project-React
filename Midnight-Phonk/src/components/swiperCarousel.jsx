@@ -1,11 +1,13 @@
 import React from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation, Pagination, Autoplay } from "swiper/modules";
+import brazilVocalsImg from "../assets/images/brazil-vocals.png";
 
 // Solo necesitas estos 3 estilos básicos
 import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
+import "../css/carousel.css";
 
 const SwiperCarousel = () => {
   return (
@@ -33,6 +35,19 @@ const SwiperCarousel = () => {
               color: "white",
             }}
           >
+            {/* Uso de la imagen brazil-vocals en el Carousel. */}
+            <img
+              src={brazilVocalsImg}
+              alt="Brazil Vocals Volumen 1"
+              style={{
+                width: "100%",
+                maxWith: "400px",
+                height: "200px",
+                objectFit: "cover",
+                borderRadius: "10px",
+                marginBottom: "1rem",
+              }}
+            />
             <h3
               style={{
                 color: "#ff00ff",
@@ -40,9 +55,12 @@ const SwiperCarousel = () => {
                 marginBottom: "1rem",
               }}
             >
-              Artistas Destacados
+              LO MÁS VENDIDO
             </h3>
-            <p>Descubre los mejores productores de Phonk del momento</p>
+            <p>
+              Descubre lo que ofrece nuestro producto estrella en Midnight
+              Phonk.
+            </p>
           </div>
         </SwiperSlide>
 

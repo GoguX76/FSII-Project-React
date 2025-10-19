@@ -11,6 +11,10 @@ import "swiper/css/pagination";
 import "../css/carousel.css";
 
 const SwiperCarousel = () => {
+  const event = new CustomEvent("navigateToPage", {
+    detail: { page: "brazilianphonk" },
+  });
+  window.dispatchEvent(event);
   return (
     <div style={{ marginTop: "2rem", width: "90%", maxWidth: "800px" }}>
       <Swiper
@@ -123,18 +127,24 @@ const SwiperCarousel = () => {
                 marginBottom: "1rem",
               }}
             >
-              {phonkProducts[0].title}
+              LO MÁS VENDIDO
             </h3>
-            <p style={{ marginBottom: "1rem" }}>{phonkProducts[0].desc}</p>
+            {/* Se llama a la imagen del Phonk-Catalog. */}
+            <img
+              src={phonkProducts[0].image}
+              alt="Brazil Vocals Volumen 1"
+              className="slides-images"
+            />
+            <p style={{ marginBottom: "1rem" }}>
+              Descubre lo que ofrece nuestro producto estrella en Midnight Phonk
+            </p>
             <p
               style={{
                 color: "#00ff00",
                 fontSize: "1.5rem",
                 fontWeight: "bold",
               }}
-            >
-              ${phonkProducts[0].price}
-            </p>
+            ></p>
           </div>
         </SwiperSlide>
       </Swiper>

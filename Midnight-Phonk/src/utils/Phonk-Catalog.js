@@ -1,8 +1,10 @@
+import brazilVocalsImg from "../assets/images/brazil-vocals.png";
+
 const phonkProducts = [
   {
     id: 1,
-    title: "Titulo Producto",
-    image: "../images/brazil-phonk.png",
+    title: "Brazilian Vocals Volume 1",
+    image: brazilVocalsImg,
     desc: "Descripción del producto",
     price: 0, //Precio del producto
   },

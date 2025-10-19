@@ -18,3 +18,19 @@
     /* Ocultar los botones por defecto. */
     color: transparent !important;
 }
+
+/* Clase para las imagenes de los slides en el Carousel. */
+.slides-images {
+    width: 60%;
+    max-width: 300px;
+    height: auto;
+    object-fit: contain;
+    border-radius: 10px;
+    display: block;
+    margin: 0 auto 1rem auto;
+    transition: transform 0.3s ease;
+}
+
+.slides-images:hover {
+    transform: scale(1.05);
+}

@@ -20,6 +20,7 @@ import Footer from "./components/footer";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
 import BrazilianPhonk from "./pages/BrazilianPhonk";
+import "./css/cards.css";
 
 function App() {
   // Configuración de Tailwind CSS (para el entorno Canvas)
@@ -39,7 +40,7 @@ function App() {
     donations: <Donations />,
     login: <Login onNavigate={setPaginaActual} />,
     register: <Register onNavigate={setPaginaActual} />,
-    brazilianphonk: <BrazilianPhonk onNavigate={setPaginaActual} />,
+    brazilianphonk: <BrazilianPhonk />,
   };
   // Función para renderizar el contenido de la página actual
   const renderPage = () => {

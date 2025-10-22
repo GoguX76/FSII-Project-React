@@ -20,7 +20,10 @@ import Footer from "./components/footer";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
 import BrazilianPhonk from "./pages/BrazilianPhonk";
+import AdminLayout from "./components/AdminLayout";
+import Dashboard from "./pages/Dashboard";
 import "./css/cards.css";
+import "./css/forms.css"; // importar variables de color globales
 
 function App() {
   // Configuración de Tailwind CSS (para el entorno Canvas)
@@ -33,13 +36,27 @@ function App() {
 
   // Maneja las páginas que se mostraran ('home', 'about', 'contact', 'donations')
   const [paginaActual, setPaginaActual] = useState("home"); // Maneja las páginas que se mostraran ('home', 'about', 'contact', 'donations', 'login', 'register')
+  const [user, setUser] = useState(null);
+  const [isAdmin, setIsAdmin] = useState(false);
+  // Handler que actualiza user, isAdmin y paginaActual en una sola llamada
+  const onAuthSuccess = ({ user: newUser, admin }) => {
+    setUser(newUser || null);
+    setIsAdmin(Boolean(admin));
+    setPaginaActual(admin ? 'admin' : 'home');
+  };
+  // Logout simple: limpia user y isAdmin y vuelve a home
+  const onLogout = () => {
+    setUser(null);
+    setIsAdmin(false);
+    setPaginaActual('home');
+  };
   const pages = {
     home: <Home />,
     about: <About />,
     contact: <Contact />,
     donations: <Donations />,
-    login: <Login onNavigate={setPaginaActual} />,
-    register: <Register onNavigate={setPaginaActual} />,
+    login: <Login onNavigate={setPaginaActual} onAuthSuccess={onAuthSuccess} />,
+    register: <Register onNavigate={setPaginaActual} onAuthSuccess={onAuthSuccess} />,
     brazilianphonk: <BrazilianPhonk />,
   };
   // Función para renderizar el contenido de la página actual
@@ -54,7 +71,15 @@ function App() {
       <Header onNavigate={setPaginaActual} />
 
       {/* MAIN CONTENT */}
-      <main className="pt-0 pb-12">{renderPage()}</main>
+      <main className="pt-0 pb-12">
+        {isAdmin && paginaActual === 'admin' ? (
+          <AdminLayout onNavigate={setPaginaActual} isAdmin={isAdmin} user={user} onLogout={onLogout}>
+            <Dashboard />
+          </AdminLayout>
+        ) : (
+          renderPage()
+        )}
+      </main>
 
       {/* FOOTER */}
       <Footer />

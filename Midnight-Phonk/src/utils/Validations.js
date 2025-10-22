@@ -51,3 +51,9 @@ export function validateForm(values) {
 
     return errors;
 }
+
+// Helper: detecta si un correo pertenece al dominio admin
+export function isAdminEmail(email) {
+    if (!email || typeof email !== 'string') return false;
+    return email.toLowerCase().trim().endsWith('@adminduoc.cl');
+}

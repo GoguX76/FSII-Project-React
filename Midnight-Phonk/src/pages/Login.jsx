@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 // 1. Importa el hook y las reglas de validación
 import useForm from '../hooks/useForm';
-import { validateForm } from '../utils/Validations';
+import { validateForm, isAdminEmail } from '../utils/Validations';
 import logo from '../assets/images/midnight-phonk.png';
 import '../css/forms.css';
 
@@ -11,7 +11,7 @@ const INITIAL_STATE = {
   password: '',
 };
 
-const Login = ({ onNavigate }) => {
+const Login = ({ onNavigate, onAuthSuccess }) => {
   // Mantenemos este estado para los mensajes de éxito o error de la API
   const [message, setMessage] = useState('');
 
@@ -22,11 +22,16 @@ const Login = ({ onNavigate }) => {
 
     // Simulamos una llamada a API (2 segundos)
     setTimeout(() => {
-      if (values.email === "test@mp.com" && values.password === "12345") {
-        setMessage('Inicio de sesión exitoso. Redirigiendo...');
-        setTimeout(() => onNavigate('home'), 1000);
+      // En este demo aceptamos cualquier credencial válida; si el email es admin, marcamos como admin
+      setMessage('Inicio de sesión exitoso. Redirigiendo...');
+      const userObj = { email: values.email, name: 'Usuario' };
+      const admin = isAdminEmail(values.email);
+      if (onAuthSuccess) {
+        // Mandamos el user y el flag admin al handler centralizado
+        onAuthSuccess({ user: userObj, admin });
       } else {
-        setMessage('Error: Credenciales incorrectas.');
+        // Fallback: navegar localmente
+        setTimeout(() => onNavigate(admin ? 'admin' : 'home'), 1000);
       }
     }, 2000);
   };
@@ -84,6 +89,17 @@ const Login = ({ onNavigate }) => {
               {errors.password && <p className="error-message">{errors.password}</p>}
 
               <button type="submit" className="btn-primary">Entrar</button>
+              {/* Botón rápido para pruebas: entrar como admin */}
+              <button
+                type="button"
+                className="btn-primary mt-2"
+                onClick={() => {
+                  const userObj = { email: 'admin@adminduoc.cl', name: 'Admin' };
+                  if (onAuthSuccess) onAuthSuccess({ user: userObj, admin: true });
+                }}
+              >
+                Entrar como admin
+              </button>
             </form>
 
             <p className="link-small">

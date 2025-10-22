@@ -8,15 +8,15 @@ function useForm(initialState, validate, callback) {
     const [errors, setErrors] = useState({});
     const [isSubmitting, setIsSubmitting] = useState(false);
 
-    // Este efecto se dispara solo cuando 'errors' cambia o cuando se intenta enviar.
+    // Este efecto se dispara cuando 'errors' o 'isSubmitting' cambian.
     useEffect(() => {
         // Si no hay errores y se está enviando, llamamos a la función de éxito (callback).
-        if (Object.keys(errors).length === 0 && isSubmitting) {
+        if (isSubmitting && Object.keys(errors).length === 0) {
             callback();
             setIsSubmitting(false);
         }
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [errors]);
+        // Dependemos de errors e isSubmitting para cubrir el caso donde errors ya es {}
+    }, [errors, isSubmitting, callback]);
 
     // Maneja el envío del formulario.
     const handleSubmit = (event) => {

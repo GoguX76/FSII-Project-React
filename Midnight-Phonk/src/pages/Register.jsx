@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 // 1. Importa el hook y las reglas de validación
 import useForm from '../hooks/useForm';
-import { validateForm } from '../utils/Validations';
+import { validateForm, isAdminEmail } from '../utils/Validations';
 import logo from '../assets/images/midnight-phonk.png';
 import '../css/forms.css';
 
@@ -14,7 +14,7 @@ const INITIAL_STATE = {
   confirmPassword: '',
 };
 
-const Register = ({ onNavigate }) => {
+const Register = ({ onNavigate, onAuthSuccess }) => {
   // El estado para los mensajes de éxito/error se mantiene aquí
   const [message, setMessage] = useState('');
 
@@ -24,12 +24,16 @@ const Register = ({ onNavigate }) => {
     console.log('Intentando registrar:', values);
 
     // SIMULACIÓN DE REGISTRO (3 segundos)
-    setTimeout(() => {
-        setMessage(`¡Registro exitoso para ${values.nombre}! Redirigiendo al inicio de sesión.`);
-        
-        // Redirige a la página de Login después de 2 segundos
-        setTimeout(() => onNavigate('login'), 2000); 
-    }, 3000);
+  setTimeout(() => {
+    setMessage(`¡Registro exitoso para ${values.nombre}! Redirigiendo...`);
+        const userObj = { email: values.email, name: values.nombre };
+        const admin = isAdminEmail(values.email);
+        if (onAuthSuccess) {
+          onAuthSuccess({ user: userObj, admin });
+        } else {
+          setTimeout(() => onNavigate(admin ? 'admin' : 'login'), 2000);
+        }
+  }, 3000);
   };
 
   // 4. Usa el hook para obtener todo lo que necesitas

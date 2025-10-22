@@ -1,0 +1,132 @@
+/* src/css/dashboard.css
+   Paleta reutilizando variables definidas en forms.css (:root)
+   Usa --card-bg, --indigo, --muted, --input-bg, etc.
+*/
+
+.dashboard-page {
+    min-height: 100%;
+    padding: 1rem;
+    background: linear-gradient(180deg, rgba(0, 0, 0, 0.04), transparent);
+}
+
+
+/* Contenedor principal del dashboard (usa el estilo de tarjeta del formulario) */
+
+.dashboard-page .dashboard-card {
+    background: var(--card-bg, #1f2937);
+    color: #fff;
+    border-radius: 0.75rem;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.55);
+    padding: 1rem;
+}
+
+.dashboard-page .dashboard-title {
+    color: var(--title-color, #c4b5fd);
+    /* similar a .title */
+}
+
+.dashboard-page .dashboard-subtitle {
+    color: var(--muted, #cbd5e1);
+}
+
+
+/* Estadísticas grandes */
+
+.dashboard-page .stat-grid {
+    display: grid;
+    gap: 1.5rem;
+    grid-template-columns: repeat(1, minmax(0, 1fr));
+}
+
+@media (min-width: 768px) {
+    .dashboard-page .stat-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+}
+
+@media (min-width: 1024px) {
+    .dashboard-page .stat-grid {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+}
+
+
+/* Tarjetas de acción (blancas sobre el fondo oscuro) */
+
+.dashboard-page .action-grid {
+    display: grid;
+    gap: 1.5rem;
+    grid-template-columns: repeat(1, minmax(0, 1fr));
+    margin-top: 1.5rem;
+}
+
+@media (min-width: 768px) {
+    .dashboard-page .action-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+}
+
+@media (min-width: 1024px) {
+    .dashboard-page .action-grid {
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+    }
+}
+
+
+/* Action card look */
+
+.dashboard-page .action-card {
+    background: #fff;
+    color: #111827;
+    border-radius: 0.5rem;
+    padding: 1.25rem;
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.08);
+    text-align: center;
+}
+
+.dashboard-page .action-card .icon-wrap {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(79, 70, 229, 0.08);
+    color: var(--indigo, #4f46e5);
+    width: 48px;
+    height: 48px;
+    border-radius: 9999px;
+    margin-bottom: 0.75rem;
+}
+
+
+/* Stat card colors override to be readable on var(--card-bg) */
+
+.dashboard-page .stat-card {
+    padding: 1rem;
+    border-radius: 0.75rem;
+}
+
+.dashboard-page .stat-card.blue {
+    background: linear-gradient(90deg, #2563eb, #1e3a8a);
+}
+
+.dashboard-page .stat-card.green {
+    background: linear-gradient(90deg, #059669, #065f46);
+}
+
+.dashboard-page .stat-card.yellow {
+    background: linear-gradient(90deg, #d97706, #b45309);
+}
+
+
+/* Ajustes generales */
+
+.dashboard-page h1,
+.dashboard-page h3 {
+    margin: 0;
+}
+
+
+/* Ensure main content sits at top (in case other styles add padding) */
+
+.dashboard-page .inner-container {
+    margin-top: 0;
+}

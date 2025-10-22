@@ -20,7 +20,7 @@ import Footer from "./components/footer";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
 import BrazilianPhonk from "./pages/BrazilianPhonk";
-import AdminLayout from "./components/AdminLayout";
+import Sidebar from "./components/Sidebar";
 import Dashboard from "./pages/Dashboard";
 import "./css/cards.css";
 import "./css/forms.css"; // importar variables de color globales
@@ -36,19 +36,17 @@ function App() {
 
   // Maneja las páginas que se mostraran ('home', 'about', 'contact', 'donations')
   const [paginaActual, setPaginaActual] = useState("home"); // Maneja las páginas que se mostraran ('home', 'about', 'contact', 'donations', 'login', 'register')
-  const [user, setUser] = useState(null);
+
   const [isAdmin, setIsAdmin] = useState(false);
-  // Handler que actualiza user, isAdmin y paginaActual en una sola llamada
-  const onAuthSuccess = ({ user: newUser, admin }) => {
-    setUser(newUser || null);
+  // Handler que actualiza isAdmin y paginaActual en una sola llamada
+  const onAuthSuccess = ({ admin }) => {
     setIsAdmin(Boolean(admin));
-    setPaginaActual(admin ? 'admin' : 'home');
+    setPaginaActual(admin ? "admin" : "home");
   };
-  // Logout simple: limpia user y isAdmin y vuelve a home
+  // Logout simple: limpia isAdmin y vuelve a home
   const onLogout = () => {
-    setUser(null);
     setIsAdmin(false);
-    setPaginaActual('home');
+    setPaginaActual("home");
   };
   const pages = {
     home: <Home />,
@@ -56,7 +54,9 @@ function App() {
     contact: <Contact />,
     donations: <Donations />,
     login: <Login onNavigate={setPaginaActual} onAuthSuccess={onAuthSuccess} />,
-    register: <Register onNavigate={setPaginaActual} onAuthSuccess={onAuthSuccess} />,
+    register: (
+      <Register onNavigate={setPaginaActual} onAuthSuccess={onAuthSuccess} />
+    ),
     brazilianphonk: <BrazilianPhonk />,
   };
   // Función para renderizar el contenido de la página actual
@@ -72,10 +72,17 @@ function App() {
 
       {/* MAIN CONTENT */}
       <main className="pt-0 pb-12">
-        {isAdmin && paginaActual === 'admin' ? (
-          <AdminLayout onNavigate={setPaginaActual} isAdmin={isAdmin} user={user} onLogout={onLogout}>
-            <Dashboard />
-          </AdminLayout>
+        {isAdmin && paginaActual === "admin" ? (
+          <div className="flex h-screen bg-gray-100">
+            <Sidebar
+              onNavigate={setPaginaActual}
+              isAdmin={isAdmin}
+              onLogout={onLogout}
+            />
+            <div className="flex-1 overflow-hidden">
+              <Dashboard />
+            </div>
+          </div>
         ) : (
           renderPage()
         )}

@@ -1,7 +1,6 @@
 import React from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation, Pagination, Autoplay } from "swiper/modules";
-import brazilVocalsImg from "../assets/images/brazil-vocals.png";
 import phonkProducts from "../utils/Phonk-Catalog";
 
 // Solo necesitas estos 3 estilos básicos
@@ -31,7 +30,7 @@ const SwiperCarousel = () => {
           backdropFilter: "blur(10px)",
         }}
       >
-        {/* Los slides - súper fácil */}
+        {/* NUEVO SLIDE: Producto ID 1 */}
         <SwiperSlide>
           <div
             style={{
@@ -40,19 +39,6 @@ const SwiperCarousel = () => {
               color: "white",
             }}
           >
-            {/* Uso de la imagen brazil-vocals en el Carousel. */}
-            <img
-              src={brazilVocalsImg}
-              alt="Brazil Vocals Volumen 1"
-              style={{
-                width: "100%",
-                maxWith: "400px",
-                height: "200px",
-                objectFit: "cover",
-                borderRadius: "10px",
-                marginBottom: "1rem",
-              }}
-            />
             <h3
               style={{
                 color: "#ff00ff",
@@ -62,10 +48,22 @@ const SwiperCarousel = () => {
             >
               LO MÁS VENDIDO
             </h3>
-            <p>
-              Descubre lo que ofrece nuestro producto estrella en Midnight
-              Phonk.
+            {/* Se llama a la imagen del Phonk-Catalog. */}
+            <img
+              src={phonkProducts[0].image}
+              alt="Brazil Vocals Volumen 1"
+              className="slides-images"
+            />
+            <p style={{ marginBottom: "1rem" }}>
+              Descubre lo que ofrece nuestro producto estrella en Midnight Phonk
             </p>
+            <p
+              style={{
+                color: "#00ff00",
+                fontSize: "1.5rem",
+                fontWeight: "bold",
+              }}
+            ></p>
           </div>
         </SwiperSlide>
 
@@ -108,43 +106,6 @@ const SwiperCarousel = () => {
               Eventos Nocturnos
             </h3>
             <p>Únete a las sesiones más intensas de Phonk underground</p>
-          </div>
-        </SwiperSlide>
-
-        {/* NUEVO SLIDE: Producto ID 1 */}
-        <SwiperSlide>
-          <div
-            style={{
-              padding: "3rem 2rem",
-              textAlign: "center",
-              color: "white",
-            }}
-          >
-            <h3
-              style={{
-                color: "#ff00ff",
-                fontSize: "2rem",
-                marginBottom: "1rem",
-              }}
-            >
-              LO MÁS VENDIDO
-            </h3>
-            {/* Se llama a la imagen del Phonk-Catalog. */}
-            <img
-              src={phonkProducts[0].image}
-              alt="Brazil Vocals Volumen 1"
-              className="slides-images"
-            />
-            <p style={{ marginBottom: "1rem" }}>
-              Descubre lo que ofrece nuestro producto estrella en Midnight Phonk
-            </p>
-            <p
-              style={{
-                color: "#00ff00",
-                fontSize: "1.5rem",
-                fontWeight: "bold",
-              }}
-            ></p>
           </div>
         </SwiperSlide>
       </Swiper>

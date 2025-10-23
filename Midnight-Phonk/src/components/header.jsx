@@ -24,7 +24,8 @@ const Header = ({ onNavigate }) => {
 
   const navLinks = [
     { name: "Home", state: "home" },
-    { name: "Donaciones", state: "donations" },
+    { name: "Categorías", state: "categories" },
+    { name: "Blog", state: "blog" },
     { name: "Contacto", state: "contact" },
     { name: "Sobre nosotros", state: "about" },
   ];
@@ -93,6 +94,48 @@ const Header = ({ onNavigate }) => {
                         </ul>
                       )}
                     </div>
+                  ) : link.state === "categories" ? (
+                    <div
+                      onMouseEnter={handleCategoryEnter}
+                      onMouseLeave={handleCategoryLeave}
+                      className="inline-block"
+                    >
+                      <a
+                        href="#"
+                        className="text-gray-300 hover:text-indigo-400 transition duration-200"
+                      >
+                        {link.name}
+                      </a>
+                      {isCategoryOpen && (
+                        <ul className="absolute right-0 mt-2 w-44 bg-gray-800 rounded-lg shadow-xl py-2 z-10 max-w-xs whitespace-nowrap">
+                          <li>
+                            <a
+                              href="#"
+                              className="block px-4 py-2 text-gray-300 hover:bg-gray-700 hover:text-indigo-400"
+                            >
+                              Phonk Ruso
+                            </a>
+                          </li>
+                          <li>
+                            <a
+                              href="#"
+                              onClick={() => handleNavigation("brazilianphonk")}
+                              className="block px-4 py-2 text-gray-300 hover:bg-gray-700 hover:text-indigo-400"
+                            >
+                              Phonk Brasileño
+                            </a>
+                          </li>
+                          <li>
+                            <a
+                              href="#"
+                              className="block px-4 py-2 text-gray-300 hover:bg-gray-700 hover:text-indigo-400"
+                            >
+                              Phonk Japones
+                            </a>
+                          </li>
+                        </ul>
+                      )}
+                    </div>
                   ) : (
                     <a
                       href="#"
@@ -104,48 +147,6 @@ const Header = ({ onNavigate }) => {
                   )}
                 </li>
               ))}
-              <li
-                className="relative"
-                /* Uso del useDelayedHover.js para la Categoria. */
-                onMouseEnter={handleCategoryEnter}
-                onMouseLeave={handleCategoryLeave}
-              >
-                <a
-                  href="#"
-                  className="text-gray-300 hover:text-indigo-400 transition duration-200"
-                >
-                  Categorías
-                </a>
-                {isCategoryOpen && (
-                  <ul className="absolute right-0 mt-2 w-44 bg-gray-800 rounded-lg shadow-xl py-2 z-10 max-w-xs whitespace-nowrap">
-                    <li>
-                      <a
-                        href="#"
-                        className="block px-4 py-2 text-gray-300 hover:bg-gray-700 hover:text-indigo-400"
-                      >
-                        Phonk Ruso
-                      </a>
-                    </li>
-                    <li>
-                      <a
-                        href="#"
-                        onClick={() => handleNavigation("brazilianphonk")}
-                        className="block px-4 py-2 text-gray-300 hover:bg-gray-700 hover:text-indigo-400"
-                      >
-                        Phonk Brasileño
-                      </a>
-                    </li>
-                    <li>
-                      <a
-                        href="#"
-                        className="block px-4 py-2 text-gray-300 hover:bg-gray-700 hover:text-indigo-400"
-                      >
-                        Phonk Japones
-                      </a>
-                    </li>
-                  </ul>
-                )}
-              </li>
             </ul>
           </nav>
           <div className="lg:hidden flex items-center">
@@ -163,16 +164,18 @@ const Header = ({ onNavigate }) => {
       {isMenuOpen && (
         <div className="lg:hidden" id="mobile-menu">
           <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3 text-white bg-gray-800">
-            {navLinks.map((link) => (
-              <a
-                key={link.state}
-                href="#"
-                onClick={() => handleNavigation(link.state)}
-                className="block px-3 py-2 rounded-md text-base font-medium hover:bg-gray-700"
-              >
-                {link.name}
-              </a>
-            ))}
+            {navLinks
+              .filter((l) => l.state !== "categories")
+              .map((link) => (
+                <a
+                  key={link.state}
+                  href="#"
+                  onClick={() => handleNavigation(link.state)}
+                  className="block px-3 py-2 rounded-md text-base font-medium hover:bg-gray-700"
+                >
+                  {link.name}
+                </a>
+              ))}
             <a
               href="#"
               onClick={() => handleNavigation("login")}

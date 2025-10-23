@@ -14,26 +14,25 @@ const INITIAL_STATE = {
 const Login = ({ onNavigate, onAuthSuccess }) => {
   // Mantenemos este estado para los mensajes de éxito o error de la API
   const [message, setMessage] = useState('');
+  
 
   // 3. Define la lógica que se ejecutará si la validación es exitosa
   const handleSuccessfulLogin = () => {
+    // Validación y autenticación local sin llamadas externas
+    // Validación exitosa: aceptamos credenciales localmente (sin backend todavía)
     setMessage('Validación correcta. Verificando credenciales...');
-    console.log('Intentando iniciar sesión:', values);
+    console.log('Intentando iniciar sesión (local):', values);
 
-    // Simulamos una llamada a API (2 segundos)
-    setTimeout(() => {
-      // En este demo aceptamos cualquier credencial válida; si el email es admin, marcamos como admin
-      setMessage('Inicio de sesión exitoso. Redirigiendo...');
-      const userObj = { email: values.email, name: 'Usuario' };
-      const admin = isAdminEmail(values.email);
-      if (onAuthSuccess) {
-        // Mandamos el user y el flag admin al handler centralizado
-        onAuthSuccess({ user: userObj, admin });
-      } else {
-        // Fallback: navegar localmente
-        setTimeout(() => onNavigate(admin ? 'admin' : 'home'), 1000);
-      }
-    }, 2000);
+    // En esta etapa aceptamos cualquier credencial que pase las validaciones
+    setMessage('Inicio de sesión exitoso. Redirigiendo...');
+    const userObj = { email: values.email, name: 'Usuario' };
+    const admin = isAdminEmail(values.email);
+    if (onAuthSuccess) {
+      onAuthSuccess({ user: userObj, admin });
+    } else {
+      // pequeña espera para mostrar mensaje al usuario
+      setTimeout(() => onNavigate(admin ? 'admin' : 'home'), 700);
+    }
   };
 
   // 4. Llama al hook 'useForm' para obtener toda la lógica del formulario
@@ -89,17 +88,6 @@ const Login = ({ onNavigate, onAuthSuccess }) => {
               {errors.password && <p className="error-message">{errors.password}</p>}
 
               <button type="submit" className="btn-primary">Entrar</button>
-              {/* Botón rápido para pruebas: entrar como admin */}
-              <button
-                type="button"
-                className="btn-primary mt-2"
-                onClick={() => {
-                  const userObj = { email: 'admin@adminduoc.cl', name: 'Admin' };
-                  if (onAuthSuccess) onAuthSuccess({ user: userObj, admin: true });
-                }}
-              >
-                Entrar como admin
-              </button>
             </form>
 
             <p className="link-small">

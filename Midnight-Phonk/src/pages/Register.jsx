@@ -23,17 +23,15 @@ const Register = ({ onNavigate, onAuthSuccess }) => {
     setMessage('Validación exitosa. Registrando usuario...');
     console.log('Intentando registrar:', values);
 
-    // SIMULACIÓN DE REGISTRO (3 segundos)
-  setTimeout(() => {
+    // En esta etapa aceptamos el registro localmente (sin persistencia)
     setMessage(`¡Registro exitoso para ${values.nombre}! Redirigiendo...`);
-        const userObj = { email: values.email, name: values.nombre };
-        const admin = isAdminEmail(values.email);
-        if (onAuthSuccess) {
-          onAuthSuccess({ user: userObj, admin });
-        } else {
-          setTimeout(() => onNavigate(admin ? 'admin' : 'login'), 2000);
-        }
-  }, 3000);
+    const userObj = { email: values.email, name: values.nombre };
+    const admin = isAdminEmail(values.email);
+    if (onAuthSuccess) {
+      onAuthSuccess({ user: userObj, admin });
+    } else {
+      setTimeout(() => onNavigate(admin ? 'admin' : 'login'), 800);
+    }
   };
 
   // 4. Usa el hook para obtener todo lo que necesitas

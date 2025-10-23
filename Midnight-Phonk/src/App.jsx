@@ -13,7 +13,7 @@ import {
 
 import Home from "./pages/Home";
 import About from "./pages/About";
-import Donations from "./pages/Donations";
+import Blog from "./pages/Blog";
 import Contact from "./pages/Contact";
 import Header from "./components/header";
 import Footer from "./components/footer";
@@ -52,7 +52,7 @@ function App() {
     home: <Home />,
     about: <About />,
     contact: <Contact />,
-    donations: <Donations />,
+  blog: <Blog />,
     login: <Login onNavigate={setPaginaActual} onAuthSuccess={onAuthSuccess} />,
     register: (
       <Register onNavigate={setPaginaActual} onAuthSuccess={onAuthSuccess} />

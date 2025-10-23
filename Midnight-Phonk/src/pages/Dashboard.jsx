@@ -7,24 +7,16 @@ import {
 
 // Stat card
 const StatCard = ({ title, value, subtext, icon, variant = 'blue' }) => {
-  const variantColor = {
-    blue: '#4f46e5',
-    green: '#10b981',
-    yellow: '#f59e0b',
-  }[variant];
-
   return (
-    <div className="stat-card" style={{ background: 'transparent', border: '1px solid rgba(255,255,255,0.04)', padding: 16, borderRadius: 8 }}>
-      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-        <div>
-          <p style={{ fontSize: 12, fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.08em', color: '#cbd5e1' }}>{title}</p>
-          <p style={{ fontSize: 28, fontWeight: 700, color: '#fff', marginTop: 6 }}>{value}</p>
+    <div className={`stat-card ${variant}`}>
+      <div className="stat-row">
+        <div className="stat-text">
+          <p className="stat-title">{title}</p>
+          <p className="stat-value">{value}</p>
         </div>
-        <div style={{ background: variantColor, color: '#fff', borderRadius: 9999, padding: 10, display: 'inline-flex', alignItems: 'center', justifyContent: 'center' }}>
-          {React.cloneElement(icon, { className: 'w-6 h-6', size: 20, color: '#fff' })}
-        </div>
+        <div className="stat-icon">{React.cloneElement(icon, { className: 'w-6 h-6' })}</div>
       </div>
-      <div style={{ marginTop: 12, fontSize: 13, color: '#94a3b8' }}>{subtext}</div>
+      <div className="stat-subtext">{subtext}</div>
     </div>
   );
 };
@@ -42,11 +34,11 @@ const Dashboard = () => {
   ];
 
   return (
-    <div className="dashboard-page" style={{ background: 'linear-gradient(180deg, rgba(0,0,0,0.04), transparent)' }}>
+    <div className="dashboard-page">
       <div className="inner-container">
-        <div className="dashboard-card" style={{ background: '#1f2937', color: '#fff' }}>
-          <h1 className="dashboard-title" style={{ color: '#c4b5fd' }}>Dashboard</h1>
-          <p className="dashboard-subtitle" style={{ color: '#cbd5e1' }}>Resumen de las actividades diarias</p>
+        <div className="dashboard-card">
+          <h1 className="dashboard-title">Dashboard</h1>
+          <p className="dashboard-subtitle">Resumen de las actividades diarias</p>
 
           <div className="stat-grid mt-6">
             <StatCard title="Ventas" value="1" subtext="Prob. aumento 200%" icon={<ShoppingCart />} variant="blue" />
@@ -59,8 +51,8 @@ const Dashboard = () => {
           {actionItems.map(item => (
             <div key={item.title} className="action-card">
               <div className="icon-wrap">{React.cloneElement(item.icon, { className: 'w-6 h-6' })}</div>
-              <h3 className="mt-2 text-lg font-semibold">{item.title}</h3>
-              <p className="mt-1 text-sm text-gray-400">{item.desc}</p>
+              <h3 className="action-title">{item.title}</h3>
+              <p className="action-desc">{item.desc}</p>
             </div>
           ))}
         </div>

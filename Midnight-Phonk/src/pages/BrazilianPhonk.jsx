@@ -1,12 +1,21 @@
-import React from "react";
+import React, { useState } from "react";
 import PageWrapper from "../components/PageWrapper";
 import ProductCard from "../components/productCard";
+import ProductModal from "../components/ProductModal";
 import phonkProducts from "../utils/Phonk-Catalog";
 
 const BrazilianPhonk = () => {
+  const [selectedProduct, setSelectedProduct] = useState(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
   const handleProductSelect = (product) => {
-    console.log("Producto seleccionado:", product);
-    alert(`Seleccionaste: ${product.title}`);
+    setSelectedProduct(product);
+    setIsModalOpen(true);
+  };
+
+  const closeModal = () => {
+    setIsModalOpen(false);
+    setSelectedProduct(null);
   };
 
   return (
@@ -28,6 +37,11 @@ const BrazilianPhonk = () => {
             ))}
           </div>
         </div>
+        <ProductModal
+          product={selectedProduct}
+          isOpen={isModalOpen}
+          onClose={closeModal}
+        />
       </div>
     </PageWrapper>
   );

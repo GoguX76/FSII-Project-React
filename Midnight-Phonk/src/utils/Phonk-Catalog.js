@@ -1,6 +1,8 @@
 import brazilVocalsImg from "../assets/images/brazil-vocals.png";
 import brazilSamplesImg from "../assets/images/brazilian-samples.png";
-import brazilDrumKit from "../assets/images/brazilian-phonk-drum-kit.jpg";
+import brazilDrumKit from "../assets/images/brazilian-drum-kit.png";
+import brazilSampleFusion from "../assets/images/brazilian-sample-fusion.png";
+import brazilSampleGems from "../assets/images/brazilian-sample-gems.png";
 
 const phonkProducts = [
   {
@@ -27,14 +29,14 @@ const phonkProducts = [
   {
     id: 4,
     title: "Titulo Producto",
-    image: "Ruta de la imagen",
+    image: brazilSampleFusion,
     desc: "Descripción del producto",
     price: 0, //Precio del producto
   },
   {
     id: 5,
     title: "Titulo Producto",
-    image: "Ruta de la imagen",
+    image: brazilSampleGems,
     desc: "Descripción del producto",
     price: 0, //Precio del producto
   },

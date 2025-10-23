@@ -3,6 +3,7 @@ import brazilSamplesImg from "../assets/images/brazilian-samples.png";
 import brazilDrumKit from "../assets/images/brazilian-drum-kit.png";
 import brazilSampleFusion from "../assets/images/brazilian-sample-fusion.png";
 import brazilSampleGems from "../assets/images/brazilian-sample-gems.png";
+import brazilSampleTrend from "../assets/images/brazilian-sample-trend.png";
 
 const phonkProducts = [
   {
@@ -43,7 +44,7 @@ const phonkProducts = [
   {
     id: 6,
     title: "Titulo Producto",
-    image: "Ruta de la imagen",
+    image: brazilSampleTrend,
     desc: "Descripción del producto",
     price: 0, //Precio del producto
   },

@@ -55,12 +55,12 @@ function App() {
     home: <Home />,
     about: <About />,
     contact: <Contact />,
-  blog: <Blog />,
+    blog: <Blog />,
     login: <Login onNavigate={setPaginaActual} onAuthSuccess={onAuthSuccess} />,
     register: (
       <Register onNavigate={setPaginaActual} onAuthSuccess={onAuthSuccess} />
     ),
-    brazilianphonk: <BrazilianPhonk />,
+    brazilianphonk: <BrazilianPhonk onNavigate={setPaginaActual} />,
     cart: <Cart />,
   };
   // Función para renderizar el contenido de la página actual

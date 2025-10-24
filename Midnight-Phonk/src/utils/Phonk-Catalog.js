@@ -11,42 +11,54 @@ const phonkProducts = [
     title: "Brazilian Vocals Volume 1",
     image: brazilVocalsImg,
     desc: "+20 vocales en diferentes formatos",
+    fullDesc:
+      "+20 vocales innovadoras para crear Phonk Brasileño en diferentes formatos para usarla en diversos programas de creación de música.",
     price: 2500, //Precio del producto
   },
   {
     id: 2,
-    title: "Titulo Producto",
+    title: "Brazilian Vocals Samples",
     image: brazilSamplesImg,
     desc: "+100 samples en diferentes formatos",
+    fullDesc:
+      "+100 samples para crear instrumentales únicos para el Phonk Brasileño.",
     price: 2900, //Precio del producto
   },
   {
     id: 3,
-    title: "Titulo Producto",
+    title: "Brazilian Drum Kit",
     image: brazilDrumKit,
     desc: "+30 drum kits en diferentes formatos",
+    fullDesc:
+      "+30 drum kits para crear los mejores sonidos drum para Phonk Brasileño.",
     price: 3000, //Precio del producto
   },
   {
     id: 4,
-    title: "Titulo Producto",
+    title: "Brazilian Sample Fusion",
     image: brazilSampleFusion,
-    desc: "Descripción del producto",
-    price: 0, //Precio del producto
+    desc: "+50 samples en diferentes formatos",
+    fullDesc:
+      "+50 samples para crear Phonk Brasileño Fusion, un genero único aquí, en Midnight Phonk.",
+    price: 3200, //Precio del producto
   },
   {
     id: 5,
-    title: "Titulo Producto",
+    title: "Brazilian Sample Gems",
     image: brazilSampleGems,
-    desc: "Descripción del producto",
-    price: 0, //Precio del producto
+    desc: "+50 samples en diferentes formatos.",
+    fullDesc:
+      "+50 samples para crear Phonk Brasileño Gems, genero deslumbrante para los amantes del Phonk..",
+    price: 2700, //Precio del producto
   },
   {
     id: 6,
-    title: "Titulo Producto",
+    title: "Brazilian Sample Trends",
     image: brazilSampleTrend,
-    desc: "Descripción del producto",
-    price: 0, //Precio del producto
+    desc: "+30 samples en diferentes formatos.",
+    fullDesc:
+      "+30 samples para crear Phonk Brasileño Trends, para destacar en la comunidad Phonk y ser el más grande.",
+    price: 3500, //Precio del producto
   },
 ];
 

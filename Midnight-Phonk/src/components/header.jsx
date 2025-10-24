@@ -113,26 +113,10 @@ const Header = ({ onNavigate }) => {
                           <li>
                             <a
                               href="#"
-                              className="block px-4 py-2 text-gray-300 hover:bg-gray-700 hover:text-indigo-400"
-                            >
-                              Phonk Ruso
-                            </a>
-                          </li>
-                          <li>
-                            <a
-                              href="#"
                               onClick={() => handleNavigation("brazilianphonk")}
                               className="block px-4 py-2 text-gray-300 hover:bg-gray-700 hover:text-indigo-400"
                             >
                               Phonk Brasileño
-                            </a>
-                          </li>
-                          <li>
-                            <a
-                              href="#"
-                              className="block px-4 py-2 text-gray-300 hover:bg-gray-700 hover:text-indigo-400"
-                            >
-                              Phonk Japones
                             </a>
                           </li>
                         </ul>
@@ -230,22 +214,10 @@ const Header = ({ onNavigate }) => {
                 <div className="pl-6 pt-1 pb-1 space-y-1">
                   <a
                     href="#"
-                    className="block px-3 py-2 text-sm text-gray-300 hover:bg-gray-600 rounded-md"
-                  >
-                    Phonk Ruso
-                  </a>
-                  <a
-                    href="#"
                     onClick={() => handleNavigation("brazilianphonk")}
                     className="block px-3 py-2 text-sm text-gray-300 hover:bg-gray-600 rounded-md"
                   >
                     Phonk Brasileño
-                  </a>
-                  <a
-                    href="#"
-                    className="block px-3 py-2 text-sm text-gray-300 hover:bg-gray-600 rounded-md"
-                  >
-                    Phonk Fiestas Patrias
                   </a>
                 </div>
               )}

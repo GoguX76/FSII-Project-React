@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import "../css/productModal.css";
 import { useCart } from "../context/CartContext";
 
-const ProductModal = ({ product, isOpen, onClose }) => {
+const ProductModal = ({ product, isOpen, onClose, onNavigate }) => {
   const { addToCart } = useCart();
 
   //Esto evita que se pueda hacer scroll en la pantalla del fondo cuando se abre.
@@ -51,6 +51,14 @@ const ProductModal = ({ product, isOpen, onClose }) => {
     onClose(); // Cierra el modal después de agregar
   };
 
+  const handleAddToCartAndNavigate = () => {
+    addToCart(product);
+    onClose();
+    if (onNavigate) {
+      onNavigate("cart");
+    }
+  };
+
   return (
     <div className="modal-overlay" onClick={handleOverlayClick}>
       <div className="modal-content">
@@ -76,12 +84,14 @@ const ProductModal = ({ product, isOpen, onClose }) => {
           <h2 className="modal-product-title">{product.title}</h2>
 
           <div className="modal-product-price">
-            {product.price > 0 ? `${product.price}` : "Gratis"}
+            {product.price > 0 ? `$${product.price}` : "Gratis"}
           </div>
 
           <div className="modal-product-description">
             <h3>Descripción</h3>
-            <p>{product.desc || "Sin descripción disponible"}</p>
+            <p>
+              {product.fullDesc || product.desc || "Sin descripción disponible"}
+            </p>
           </div>
 
           <div className="modal-product-details">
@@ -101,10 +111,15 @@ const ProductModal = ({ product, isOpen, onClose }) => {
           </div>
 
           <div className="modal-actions">
-            <button className="btn-primary">
+            <button
+              className="btn-primary"
+              onClick={handleAddToCartAndNavigate}
+            >
               {product.price > 0 ? "Comprar ahora" : "Descargar gratis"}
             </button>
-            <button className="btn-secondary" onClick={handleAddToCart}>Agregar al carrito</button>
+            <button className="btn-secondary" onClick={handleAddToCart}>
+              Agregar al carrito
+            </button>
             <button className="btn-preview">Escuchar preview</button>
           </div>
         </div>

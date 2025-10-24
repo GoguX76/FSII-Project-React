@@ -4,7 +4,7 @@ import ProductCard from "../components/productCard";
 import ProductModal from "../components/ProductModal";
 import phonkProducts from "../utils/Phonk-Catalog";
 
-const BrazilianPhonk = () => {
+const BrazilianPhonk = ({ onNavigate }) => {
   const [selectedProduct, setSelectedProduct] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
@@ -41,6 +41,7 @@ const BrazilianPhonk = () => {
           product={selectedProduct}
           isOpen={isModalOpen}
           onClose={closeModal}
+          onNavigate={onNavigate}
         />
       </div>
     </PageWrapper>

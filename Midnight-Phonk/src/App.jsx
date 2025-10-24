@@ -22,6 +22,9 @@ import Register from "./pages/Register";
 import BrazilianPhonk from "./pages/BrazilianPhonk";
 import Sidebar from "./components/Sidebar";
 import Dashboard from "./pages/Dashboard";
+import Users from "./pages/Users";
+import Products from "./pages/Products";
+import Orders from "./pages/Orders";
 import "./css/cards.css";
 import "./css/forms.css"; // importar variables de color globales
 
@@ -29,6 +32,7 @@ import Cart from "./pages/Cart";
 import "./css/cart.css";
 
 import Checkout from "./pages/Checkout";
+import { useCart } from "./context/CartContext";
 
 function App() {
   // Configuración de Tailwind CSS (para el entorno Canvas)
@@ -42,29 +46,22 @@ function App() {
   // Maneja las páginas que se mostraran ('home', 'about', 'contact', 'donations')
   const [paginaActual, setPaginaActual] = useState("home"); // Maneja las páginas que se mostraran ('home', 'about', 'contact', 'donations', 'login', 'register')
 
-  const [isAdmin, setIsAdmin] = useState(false);
-  // Handler que actualiza isAdmin y paginaActual en una sola llamada
-  const onAuthSuccess = ({ admin }) => {
-    setIsAdmin(Boolean(admin));
-    setPaginaActual(admin ? "admin" : "home");
-  };
-  // Logout simple: limpia isAdmin y vuelve a home
-  const onLogout = () => {
-    setIsAdmin(false);
-    setPaginaActual("home");
-  };
+  const { user } = useCart();
+
   const pages = {
     home: <Home />,
     about: <About />,
     contact: <Contact />,
     blog: <Blog />,
-    login: <Login onNavigate={setPaginaActual} onAuthSuccess={onAuthSuccess} />,
-    register: (
-      <Register onNavigate={setPaginaActual} onAuthSuccess={onAuthSuccess} />
-    ),
+    login: <Login onNavigate={setPaginaActual} />,
+    register: <Register onNavigate={setPaginaActual} />,
     brazilianphonk: <BrazilianPhonk onNavigate={setPaginaActual} />,
     cart: <Cart onNavigate={setPaginaActual} />,
     checkout: <Checkout />,
+    admin: <Dashboard />,
+    'admin/users': <Users />,
+    'admin/products': <Products />,
+    'admin/orders': <Orders />,
   };
   // Función para renderizar el contenido de la página actual
   const renderPage = () => {
@@ -79,15 +76,11 @@ function App() {
 
       {/* MAIN CONTENT */}
       <main className="pt-0 pb-12">
-        {isAdmin && paginaActual === "admin" ? (
+        {user?.admin && paginaActual.startsWith("admin") ? (
           <div className="flex h-screen bg-gray-100">
-            <Sidebar
-              onNavigate={setPaginaActual}
-              isAdmin={isAdmin}
-              onLogout={onLogout}
-            />
+            <Sidebar onNavigate={setPaginaActual} />
             <div className="flex-1 overflow-hidden">
-              <Dashboard />
+              {renderPage()}
             </div>
           </div>
         ) : (

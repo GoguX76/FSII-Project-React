@@ -1,22 +1,19 @@
 import React, { useState } from 'react';
-// 1. Importa el hook y las reglas de validación
 import useForm from '../hooks/useForm';
 import { validateForm, isAdminEmail } from '../utils/Validations';
 import logo from '../assets/images/midnight-phonk.png';
 import '../css/forms.css';
+import { useCart } from '../context/CartContext';
 
-// 2. Define el estado inicial para este formulario
 const INITIAL_STATE = {
   email: '',
   password: '',
 };
 
-const Login = ({ onNavigate, onAuthSuccess }) => {
-  // Mantenemos este estado para los mensajes de éxito o error de la API
+const Login = ({ onNavigate }) => {
   const [message, setMessage] = useState('');
-  
+  const { login } = useCart();
 
-  // 3. Define la lógica que se ejecutará si la validación es exitosa
   const handleSuccessfulLogin = async () => {
     setMessage('Validación correcta. Verificando credenciales...');
     console.log('Intentando iniciar sesión:', values);
@@ -26,21 +23,15 @@ const Login = ({ onNavigate, onAuthSuccess }) => {
       const foundUsers = await response.json();
 
       if (foundUsers.length > 0) {
-        const user = foundUsers[0]; // Tomamos el primer usuario encontrado
+        const user = foundUsers[0];
         setMessage('Inicio de sesión exitoso. Redirigiendo...');
 
         const userObj = { email: user.email, name: user.nombre };
         const admin = isAdminEmail(user.email);
 
-        // Guardar en localStorage para simular la sesión
-        localStorage.setItem('loggedInUser', JSON.stringify({ user: userObj, admin }));
+        login({ user: userObj, admin });
 
-        if (onAuthSuccess) {
-          // Espera un poco para que el usuario vea el mensaje de éxito
-          setTimeout(() => onAuthSuccess({ user: userObj, admin }), 700);
-        } else {
-          setTimeout(() => onNavigate(admin ? 'admin' : 'home'), 700);
-        }
+        setTimeout(() => onNavigate(admin ? 'admin' : 'home'), 700);
       } else {
         setMessage('Credenciales inválidas. Por favor, verifica tu correo y contraseña.');
       }
@@ -50,7 +41,6 @@ const Login = ({ onNavigate, onAuthSuccess }) => {
     }
   };
 
-  // 4. Llama al hook 'useForm' para obtener toda la lógica del formulario
   const {
     values,
     errors,
@@ -69,21 +59,17 @@ const Login = ({ onNavigate, onAuthSuccess }) => {
             <div className="title">Midnight Phonk</div>
             <p className="subtitle">Por favor, ingresa tu correo y contraseña</p>
 
-            {/* Muestra mensajes de estado (éxito/error de la API) */}
             {message && (
               <div className={`message ${message.includes('éxito') || message.includes('Redirigiendo') ? 'success' : 'error'}`}>
                 {message}
               </div>
             )}
 
-            {/* 5. El 'handleSubmit' del formulario ahora viene del hook */}
             <form onSubmit={handleSubmit} noValidate>
-              
-              {/* CAMBIO: Se añade 'name' y se muestra el error de validación */}
               <input
                 type="email"
                 id="email"
-                name="email" // <-- Atributo 'name' es crucial
+                name="email"
                 placeholder="Correo electrónico"
                 value={values.email}
                 onChange={handleChange}
@@ -94,7 +80,7 @@ const Login = ({ onNavigate, onAuthSuccess }) => {
               <input
                 type="password"
                 id="password"
-                name="password" // <-- Atributo 'name' es crucial
+                name="password"
                 placeholder="Contraseña"
                 value={values.password}
                 onChange={handleChange}

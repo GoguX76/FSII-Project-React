@@ -33,7 +33,7 @@ const Cart = ({ onNavigate }) => {
           <div className="cart-summary">
             <h3>Total: ${total.toFixed(2)}</h3>
             <button className="clear-btn" onClick={clearCart}>Limpiar carrito</button>
-            <button className="checkout-btn" onClick={() => onNavigate('checkout')}>Pagar</button>
+            <button className="checkout-btn" onClick={() => onNavigate('checkout')}>Seleccionar dirección de envío</button>
           </div>
         </>
       )}

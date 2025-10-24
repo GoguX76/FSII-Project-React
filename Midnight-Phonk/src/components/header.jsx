@@ -6,7 +6,7 @@ import { useCart } from "../context/CartContext";
 
 const Header = ({ onNavigate }) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const { cartItems } = useCart();
+  const { cartItems, user, logout } = useCart();
   const {
     isOpen: isCategoryOpen,
     handleMouseEnter: handleCategoryEnter,
@@ -32,6 +32,11 @@ const Header = ({ onNavigate }) => {
     { name: "Contacto", state: "contact" },
     { name: "Sobre nosotros", state: "about" },
   ];
+
+  const handleLogout = () => {
+    logout();
+    onNavigate("home");
+  };
 
   return (
     <div id="header" className="bg-gray-900 shadow-lg sticky top-0 z-50">
@@ -109,30 +114,44 @@ const Header = ({ onNavigate }) => {
                   className="flex items-center text-gray-300 hover:text-indigo-400 transition duration-200"
                 >
                   <User size={20} className="mr-1" />
-                  <span>Cuenta</span>
+                  <span>{user ? user.user.name : "Cuenta"}</span>
                 </a>
 
                 {/* Dropdown de Cuenta */}
                 {isAccountOpen && (
                   <ul className="absolute right-0 mt-2 w-40 bg-gray-800 rounded-lg shadow-xl py-2 z-20">
-                    <li>
-                      <a
-                        href="#"
-                        onClick={() => handleNavigation("login")}
-                        className="block px-4 py-2 text-gray-300 hover:bg-gray-700 hover:text-indigo-400"
-                      >
-                        Iniciar sesión
-                      </a>
-                    </li>
-                    <li>
-                      <a
-                        href="#"
-                        onClick={() => handleNavigation("register")}
-                        className="block px-4 py-2 text-gray-300 hover:bg-gray-700 hover:text-indigo-400"
-                      >
-                        Registrarse
-                      </a>
-                    </li>
+                    {user ? (
+                      <li>
+                        <a
+                          href="#"
+                          onClick={handleLogout}
+                          className="block px-4 py-2 text-gray-300 hover:bg-gray-700 hover:text-indigo-400"
+                        >
+                          Cerrar sesión
+                        </a>
+                      </li>
+                    ) : (
+                      <>
+                        <li>
+                          <a
+                            href="#"
+                            onClick={() => handleNavigation("login")}
+                            className="block px-4 py-2 text-gray-300 hover:bg-gray-700 hover:text-indigo-400"
+                          >
+                            Iniciar sesión
+                          </a>
+                        </li>
+                        <li>
+                          <a
+                            href="#"
+                            onClick={() => handleNavigation("register")}
+                            className="block px-4 py-2 text-gray-300 hover:bg-gray-700 hover:text-indigo-400"
+                          >
+                            Registrarse
+                          </a>
+                        </li>
+                      </>
+                    )}
                   </ul>
                 )}
               </div>
@@ -210,26 +229,38 @@ const Header = ({ onNavigate }) => {
               >
                 <div className="flex items-center">
                   <User size={20} className="mr-2" />
-                  Cuenta
+                  {user ? user.user.name : "Cuenta"}
                 </div>
                 <span className="ml-2">{isMobileAccountOpen ? "▲" : "▼"}</span>
               </button>
               {isMobileAccountOpen && (
                 <div className="pl-6 pt-1 pb-1 space-y-1">
-                  <a
-                    href="#"
-                    onClick={() => handleNavigation("login")}
-                    className="block px-3 py-2 text-sm text-gray-300 hover:bg-gray-600 rounded-md"
-                  >
-                    Iniciar sesión
-                  </a>
-                  <a
-                    href="#"
-                    onClick={() => handleNavigation("register")}
-                    className="block px-3 py-2 text-sm text-gray-300 hover:bg-gray-600 rounded-md bg-indigo-600 text-white hover:bg-indigo-500"
-                  >
-                    Registrarse
-                  </a>
+                  {user ? (
+                    <a
+                      href="#"
+                      onClick={handleLogout}
+                      className="block px-3 py-2 text-sm text-gray-300 hover:bg-gray-600 rounded-md"
+                    >
+                      Cerrar sesión
+                    </a>
+                  ) : (
+                    <>
+                      <a
+                        href="#"
+                        onClick={() => handleNavigation("login")}
+                        className="block px-3 py-2 text-sm text-gray-300 hover:bg-gray-600 rounded-md"
+                      >
+                        Iniciar sesión
+                      </a>
+                      <a
+                        href="#"
+                        onClick={() => handleNavigation("register")}
+                        className="block px-3 py-2 text-sm text-gray-300 hover:bg-gray-600 rounded-md bg-indigo-600 text-white hover:bg-indigo-500"
+                      >
+                        Registrarse
+                      </a>
+                    </>
+                  )}
                 </div>
               )}
             </div>

@@ -1,4 +1,4 @@
-import React, { createContext, useState, useContext, useMemo } from 'react';
+import React, { createContext, useState, useContext, useMemo, useEffect } from 'react';
 
 const CartContext = createContext();
 
@@ -8,6 +8,24 @@ export const useCart = () => {
 
 export const CartProvider = ({ children }) => {
   const [cartItems, setCartItems] = useState([]);
+  const [user, setUser] = useState(null);
+
+  useEffect(() => {
+    const storedUser = localStorage.getItem('loggedInUser');
+    if (storedUser) {
+      setUser(JSON.parse(storedUser));
+    }
+  }, []);
+
+  const login = (userData) => {
+    localStorage.setItem('loggedInUser', JSON.stringify(userData));
+    setUser(userData);
+  };
+
+  const logout = () => {
+    localStorage.removeItem('loggedInUser');
+    setUser(null);
+  };
 
   const addToCart = (product) => {
     setCartItems((prevItems) => {
@@ -57,6 +75,9 @@ export const CartProvider = ({ children }) => {
     updateQuantity,
     clearCart,
     total,
+    user,
+    login,
+    logout,
   };
 
   return <CartContext.Provider value={value}>{children}</CartContext.Provider>;

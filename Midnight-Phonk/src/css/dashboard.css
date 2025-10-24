@@ -187,3 +187,8 @@
 .dashboard-page .inner-container {
     margin-top: 0;
 }
+
+.data-table td, .data-table th {
+  padding: 0.75rem 1rem;
+  white-space: nowrap;
+}

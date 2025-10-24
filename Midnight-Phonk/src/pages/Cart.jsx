@@ -2,13 +2,8 @@ import React from 'react';
 import { useCart } from '../context/CartContext';
 import '../css/cart.css';
 
-const Cart = () => {
-  const { cartItems, removeFromCart, updateQuantity, clearCart } = useCart();
-
-  const total = cartItems.reduce(
-    (acc, item) => acc + item.price * item.quantity,
-    0
-  );
+const Cart = ({ onNavigate }) => {
+  const { cartItems, removeFromCart, updateQuantity, clearCart, total } = useCart();
 
   return (
     <div className="cart-container">
@@ -38,7 +33,7 @@ const Cart = () => {
           <div className="cart-summary">
             <h3>Total: ${total.toFixed(2)}</h3>
             <button className="clear-btn" onClick={clearCart}>Limpiar carrito</button>
-            <button className="checkout-btn">Pagar</button>
+            <button className="checkout-btn" onClick={() => onNavigate('checkout')}>Pagar</button>
           </div>
         </>
       )}

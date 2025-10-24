@@ -28,6 +28,8 @@ import "./css/forms.css"; // importar variables de color globales
 import Cart from "./pages/Cart";
 import "./css/cart.css";
 
+import Checkout from "./pages/Checkout";
+
 function App() {
   // Configuración de Tailwind CSS (para el entorno Canvas)
   // Nota: En un proyecto React normal, esto no sería necesario.
@@ -61,7 +63,8 @@ function App() {
       <Register onNavigate={setPaginaActual} onAuthSuccess={onAuthSuccess} />
     ),
     brazilianphonk: <BrazilianPhonk onNavigate={setPaginaActual} />,
-    cart: <Cart />,
+    cart: <Cart onNavigate={setPaginaActual} />,
+    checkout: <Checkout />,
   };
   // Función para renderizar el contenido de la página actual
   const renderPage = () => {

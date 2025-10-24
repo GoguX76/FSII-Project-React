@@ -1,10 +1,12 @@
 import React, { useState } from "react";
-import { Menu, X } from "lucide-react";
+import { Menu, X, ShoppingCart } from "lucide-react";
 import logo from "../assets/images/midnight-phonk.png";
 import { useDelayedHover } from "../hooks/useDelayedHover";
+import { useCart } from "../context/CartContext";
 
 const Header = ({ onNavigate }) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const { cartItems } = useCart();
   const {
     isOpen: isHomeOpen,
     handleMouseEnter: handleHomeEnter,
@@ -51,7 +53,7 @@ const Header = ({ onNavigate }) => {
               />
             </a>
           </div>
-          <nav className="hidden lg:block">
+          <nav className="hidden lg:flex items-center">
             <ul className="flex space-x-8 text-lg font-medium">
               {navLinks.map((link) => (
                 <li key={link.state} className="relative">
@@ -148,8 +150,34 @@ const Header = ({ onNavigate }) => {
                 </li>
               ))}
             </ul>
+            <div className="ml-8">
+              <a
+                href="#"
+                onClick={() => handleNavigation("cart")}
+                className="flex items-center text-gray-300 hover:text-indigo-400 transition duration-200"
+              >
+                <ShoppingCart size={24} />
+                {cartItems.length > 0 && (
+                  <span className="ml-2 bg-indigo-500 text-white text-xs font-bold rounded-full h-5 w-5 flex items-center justify-center">
+                    {cartItems.reduce((acc, item) => acc + item.quantity, 0)}
+                  </span>
+                )}
+              </a>
+            </div>
           </nav>
           <div className="lg:hidden flex items-center">
+            <a
+              href="#"
+              onClick={() => handleNavigation("cart")}
+              className="flex items-center text-gray-300 hover:text-indigo-400 transition duration-200 mr-4"
+            >
+              <ShoppingCart size={24} />
+              {cartItems.length > 0 && (
+                <span className="ml-2 bg-indigo-500 text-white text-xs font-bold rounded-full h-5 w-5 flex items-center justify-center">
+                  {cartItems.reduce((acc, item) => acc + item.quantity, 0)}
+                </span>
+              )}
+            </a>
             <button
               onClick={() => setIsMenuOpen(!isMenuOpen)}
               className="p-2 text-gray-400 hover:text-white focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-white rounded-md"

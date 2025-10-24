@@ -1,0 +1,166 @@
+:root {
+    --bg-dark: #1f2937;
+    --card-bg: #1f2937;
+    --muted: #cbd5e1;
+    --indigo: #4f46e5;
+    --input-bg: #374151;
+    --input-border: #cbd5e1;
+}
+
+.cart-page {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-image: linear-gradient(to right, #1f2937, #4f46e5, #9333ea);
+    padding: 4.5rem 0;
+}
+
+/* General Cart Styles */
+.cart-container {
+    width: 80%;
+    max-width: 1200px;
+    margin: 2rem auto;
+    background: var(--card-bg);
+    color: #fff;
+    border-radius: 0.75rem;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.55);
+    padding: 2rem;
+}
+
+.cart-container h2 {
+    text-align: center;
+    margin-bottom: 2rem;
+    font-size: 2.5rem;
+    font-family: 'Orbitron', sans-serif;
+    color: #c4b5fd;
+}
+
+/* Cart Items List */
+.cart-items {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+/* Individual Cart Item */
+.cart-item {
+    display: flex;
+    gap: 1.5rem;
+    padding: 1.5rem;
+    background-color: var(--input-bg);
+    border-radius: 0.75rem;
+    align-items: center;
+}
+
+.cart-item img {
+    width: 120px;
+    height: 120px;
+    object-fit: cover;
+    border-radius: 4px;
+}
+
+.item-details {
+    flex-grow: 1;
+}
+
+.item-details h3 {
+    margin: 0 0 0.5rem 0;
+    font-size: 1.5rem;
+    color: #fff;
+}
+
+.item-details p {
+    margin: 0.25rem 0;
+    color: var(--muted);
+}
+
+/* Quantity Controls */
+.quantity-controls {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin: 0.5rem 0;
+}
+
+.quantity-controls button {
+    background-color: var(--indigo);
+    color: white;
+    border: none;
+    border-radius: 4px;
+    width: 30px;
+    height: 30px;
+    font-size: 1.2rem;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.quantity-controls button:hover {
+    filter: brightness(1.2);
+}
+
+.quantity-controls span {
+    font-size: 1.2rem;
+    min-width: 30px;
+    text-align: center;
+}
+
+/* Remove Button */
+.remove-btn {
+    background-color: #dc3545;
+    color: white;
+    border: none;
+    padding: 0.5rem 1rem;
+    border-radius: 9999px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    margin-top: 1rem;
+    font-weight: 700;
+}
+
+.remove-btn:hover {
+    background-color: #c82333;
+}
+
+/* Cart Summary */
+.cart-summary {
+    margin-top: 2rem;
+    padding: 2rem;
+    background-color: var(--input-bg);
+    border-radius: 0.75rem;
+    text-align: right;
+}
+
+.cart-summary h3 {
+    font-size: 2rem;
+    margin-bottom: 1.5rem;
+}
+
+.checkout-btn, .clear-btn {
+    border: none;
+    padding: 0.8rem 1.5rem;
+    border-radius: 9999px;
+    cursor: pointer;
+    font-size: 1rem;
+    margin-left: 1rem;
+    transition: background-color 0.3s ease;
+    font-weight: 700;
+}
+
+.checkout-btn {
+    background-color: var(--indigo);
+    color: white;
+}
+
+.checkout-btn:hover {
+    filter: brightness(1.2);
+}
+
+.clear-btn {
+    background-color: #6c757d;
+    color: white;
+}
+
+.clear-btn:hover {
+    background-color: #5a6268;
+}

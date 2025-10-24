@@ -25,6 +25,9 @@ import Dashboard from "./pages/Dashboard";
 import "./css/cards.css";
 import "./css/forms.css"; // importar variables de color globales
 
+import Cart from "./pages/Cart";
+import "./css/cart.css";
+
 function App() {
   // Configuración de Tailwind CSS (para el entorno Canvas)
   // Nota: En un proyecto React normal, esto no sería necesario.
@@ -58,6 +61,7 @@ function App() {
       <Register onNavigate={setPaginaActual} onAuthSuccess={onAuthSuccess} />
     ),
     brazilianphonk: <BrazilianPhonk />,
+    cart: <Cart />,
   };
   // Función para renderizar el contenido de la página actual
   const renderPage = () => {

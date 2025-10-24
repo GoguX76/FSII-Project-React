@@ -1,7 +1,10 @@
 import React, { useEffect } from "react";
 import "../css/productModal.css";
+import { useCart } from "../context/CartContext";
 
 const ProductModal = ({ product, isOpen, onClose }) => {
+  const { addToCart } = useCart();
+
   //Esto evita que se pueda hacer scroll en la pantalla del fondo cuando se abre.
   useEffect(() => {
     if (isOpen) {
@@ -43,6 +46,11 @@ const ProductModal = ({ product, isOpen, onClose }) => {
     }
   };
 
+  const handleAddToCart = () => {
+    addToCart(product);
+    onClose(); // Cierra el modal después de agregar
+  };
+
   return (
     <div className="modal-overlay" onClick={handleOverlayClick}>
       <div className="modal-content">
@@ -68,7 +76,7 @@ const ProductModal = ({ product, isOpen, onClose }) => {
           <h2 className="modal-product-title">{product.title}</h2>
 
           <div className="modal-product-price">
-            {product.price > 0 ? `$${product.price}` : "Gratis"}
+            {product.price > 0 ? `${product.price}` : "Gratis"}
           </div>
 
           <div className="modal-product-description">
@@ -96,7 +104,7 @@ const ProductModal = ({ product, isOpen, onClose }) => {
             <button className="btn-primary">
               {product.price > 0 ? "Comprar ahora" : "Descargar gratis"}
             </button>
-            <button className="btn-secondary">Agregar al carrito</button>
+            <button className="btn-secondary" onClick={handleAddToCart}>Agregar al carrito</button>
             <button className="btn-preview">Escuchar preview</button>
           </div>
         </div>

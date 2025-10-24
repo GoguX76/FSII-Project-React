@@ -42,13 +42,6 @@ export function validateForm(values) {
     }
 
     // ... (las reglas de Contacto se quedan igual) ...
-    if ('asunto' in values && !values.asunto) {
-        errors.asunto = 'Debes seleccionar un asunto';
-    }
-    if ('mensaje' in values && (!values.mensaje || values.mensaje.trim().length < 10)) {
-        errors.mensaje = 'El mensaje debe tener al menos 10 caracteres';
-    }
-
     return errors;
 }
 

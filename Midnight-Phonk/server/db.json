@@ -1,0 +1,43 @@
+{
+  "users": [
+    {
+      "id": "f2b2",
+      "nombre": "Sebastian Alvarez",
+      "email": "seba@duoc.cl",
+      "password": "sebastian123"
+    },
+    {
+      "id": "31ed",
+      "nombre": "admin",
+      "email": "admin@adminduoc.cl",
+      "password": "admin123"
+    }
+  ],
+  "purchases": [
+    {
+      "id": "377f",
+      "userId": "seba@duoc.cl",
+      "userName": "Sebastian Alvarez",
+      "shippingDetails": {
+        "name": "Sebastian Alvarez",
+        "email": "seba@duoc.cl",
+        "address": "Froilán Roa 7107",
+        "city": "Santiago",
+        "postal-code": "8240000"
+      },
+      "items": [
+        {
+          "id": 2,
+          "title": "Brazilian Vocals Samples",
+          "image": "/src/assets/images/brazilian-samples.png",
+          "desc": "+100 samples en diferentes formatos",
+          "fullDesc": "+100 samples para crear instrumentales únicos para el Phonk Brasileño.",
+          "price": 2900,
+          "quantity": 1
+        }
+      ],
+      "totalAmount": 2900,
+      "purchaseDate": "2025-10-24T18:08:50.163Z"
+    }
+  ]
+}

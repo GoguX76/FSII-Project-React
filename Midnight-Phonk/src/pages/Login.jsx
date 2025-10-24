@@ -17,21 +17,36 @@ const Login = ({ onNavigate, onAuthSuccess }) => {
   
 
   // 3. Define la lógica que se ejecutará si la validación es exitosa
-  const handleSuccessfulLogin = () => {
-    // Validación y autenticación local sin llamadas externas
-    // Validación exitosa: aceptamos credenciales localmente (sin backend todavía)
+  const handleSuccessfulLogin = async () => {
     setMessage('Validación correcta. Verificando credenciales...');
-    console.log('Intentando iniciar sesión (local):', values);
+    console.log('Intentando iniciar sesión:', values);
 
-    // En esta etapa aceptamos cualquier credencial que pase las validaciones
-    setMessage('Inicio de sesión exitoso. Redirigiendo...');
-    const userObj = { email: values.email, name: 'Usuario' };
-    const admin = isAdminEmail(values.email);
-    if (onAuthSuccess) {
-      onAuthSuccess({ user: userObj, admin });
-    } else {
-      // pequeña espera para mostrar mensaje al usuario
-      setTimeout(() => onNavigate(admin ? 'admin' : 'home'), 700);
+    try {
+      const response = await fetch(`http://localhost:3001/users?email=${values.email}&password=${values.password}`);
+      const foundUsers = await response.json();
+
+      if (foundUsers.length > 0) {
+        const user = foundUsers[0]; // Tomamos el primer usuario encontrado
+        setMessage('Inicio de sesión exitoso. Redirigiendo...');
+
+        const userObj = { email: user.email, name: user.nombre };
+        const admin = isAdminEmail(user.email);
+
+        // Guardar en localStorage para simular la sesión
+        localStorage.setItem('loggedInUser', JSON.stringify({ user: userObj, admin }));
+
+        if (onAuthSuccess) {
+          // Espera un poco para que el usuario vea el mensaje de éxito
+          setTimeout(() => onAuthSuccess({ user: userObj, admin }), 700);
+        } else {
+          setTimeout(() => onNavigate(admin ? 'admin' : 'home'), 700);
+        }
+      } else {
+        setMessage('Credenciales inválidas. Por favor, verifica tu correo y contraseña.');
+      }
+    } catch (error) {
+      console.error('Error en el inicio de sesión:', error);
+      setMessage('No se pudo conectar con el servidor. Inténtalo de nuevo más tarde.');
     }
   };
 

@@ -19,18 +19,55 @@ const Register = ({ onNavigate, onAuthSuccess }) => {
   const [message, setMessage] = useState('');
 
   // 3. Define la lógica que se ejecutará si el formulario es válido
-  const handleSuccessfulRegistration = () => {
+  const handleSuccessfulRegistration = async () => {
     setMessage('Validación exitosa. Registrando usuario...');
     console.log('Intentando registrar:', values);
 
-    // En esta etapa aceptamos el registro localmente (sin persistencia)
-    setMessage(`¡Registro exitoso para ${values.nombre}! Redirigiendo...`);
-    const userObj = { email: values.email, name: values.nombre };
-    const admin = isAdminEmail(values.email);
-    if (onAuthSuccess) {
-      onAuthSuccess({ user: userObj, admin });
-    } else {
-      setTimeout(() => onNavigate(admin ? 'admin' : 'login'), 800);
+    try {
+      // Verificar si el usuario ya existe
+      const response = await fetch(`http://localhost:3001/users?email=${values.email}`);
+      const existingUsers = await response.json();
+
+      if (existingUsers.length > 0) {
+        setMessage('El correo electrónico ya está registrado. Por favor, intenta con otro.');
+        return;
+      }
+
+      // Si no existe, proceder con el registro
+      const newUser = {
+        nombre: values.nombre,
+        email: values.email,
+        password: values.password, // En una app real, esto debería estar hasheado
+      };
+
+      const postResponse = await fetch('http://localhost:3001/users', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(newUser),
+      });
+
+      if (!postResponse.ok) {
+        throw new Error('Hubo un problema al registrar el usuario.');
+      }
+
+      setMessage(`¡Registro exitoso para ${values.nombre}! Redirigiendo...`);
+      const userObj = { email: values.email, name: values.nombre };
+      const admin = isAdminEmail(values.email);
+
+      // Simular una pequeña espera y luego navegar
+      setTimeout(() => {
+        if (onAuthSuccess) {
+          onAuthSuccess({ user: userObj, admin });
+        } else {
+          onNavigate(admin ? 'admin' : 'login');
+        }
+      }, 1500);
+
+    } catch (error) {
+      console.error('Error en el registro:', error);
+      setMessage(error.message || 'No se pudo completar el registro. Inténtalo de nuevo.');
     }
   };
 

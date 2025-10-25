@@ -41,4 +41,4 @@ const Cart = ({ onNavigate }) => {
   );
 };
 
-export default Cart;
+export default Cart;cs

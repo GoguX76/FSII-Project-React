@@ -17,7 +17,9 @@
     color: #fff;
     border-radius: 0.75rem;
     box-shadow: 0 8px 24px rgba(0, 0, 0, 0.55);
-    padding: 1rem;
+    padding: 2rem;
+    width: 100%;
+    box-sizing: border-box;
 }
 
 .dashboard-page .dashboard-title {

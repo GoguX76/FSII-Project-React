@@ -55,6 +55,8 @@ const Orders = () => {
                 <tr>
                   <th>ID de Orden</th>
                   <th>Email del Cliente</th>
+                  <th>Productos</th>
+                  <th>Dirección de Envío</th>
                   <th>Monto Total</th>
                   <th>Fecha</th>
                 </tr>
@@ -64,6 +66,16 @@ const Orders = () => {
                   <tr key={order.id}>
                     <td>{order.id}</td>
                     <td>{order.userId}</td>
+                    <td>
+                      <ul>
+                        {order.items.map(item => (
+                          <li key={item.id}>{item.title} (x{item.quantity})</li>
+                        ))}
+                      </ul>
+                    </td>
+                    <td>
+                      {order.shippingDetails.address}, {order.shippingDetails.city}, {order.shippingDetails['postal-code']}
+                    </td>
                     <td>${order.totalAmount.toFixed(2)}</td>
                     <td>{new Date(order.purchaseDate).toLocaleDateString()}</td>
                   </tr>

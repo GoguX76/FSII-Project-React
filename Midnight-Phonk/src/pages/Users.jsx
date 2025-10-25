@@ -65,7 +65,7 @@ const Users = () => {
                     <td>{user.id}</td>
                     <td>{user.nombre}</td>
                     <td>{user.email}</td>
-                    <td>{user.email.endsWith('@admin.com') ? 'Admin' : 'User'}</td>
+                    <td>{user.email.endsWith('@adminduoc.cl') ? 'Admin' : 'User'}</td>
                   </tr>
                 ))}
               </tbody>

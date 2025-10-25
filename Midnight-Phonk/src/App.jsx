@@ -58,7 +58,7 @@ function App() {
     brazilianphonk: <BrazilianPhonk onNavigate={setPaginaActual} />,
     cart: <Cart onNavigate={setPaginaActual} />,
     checkout: <Checkout />,
-    admin: <Dashboard />,
+    admin: <Dashboard onNavigate={setPaginaActual} />,
     'admin/users': <Users />,
     'admin/products': <Products />,
     'admin/orders': <Orders />,

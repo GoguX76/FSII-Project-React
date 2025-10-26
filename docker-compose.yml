@@ -1,0 +1,26 @@
+# Versión de la sintaxis de compose
+version: '3.8'
+
+# Aquí definimos nuestros servicios (contenedores)
+services:
+  
+  # Servicio 1: El Frontend (React + Nginx)
+  frontend:
+    # Le decimos dónde está su Dockerfile
+    build: 
+      context: ./Midnight-Phonk # <-- Cambia esto por el nombre de tu carpeta frontend
+    container_name: react-app
+    ports:
+      # Mapea el puerto 80 de la EC2 al puerto 80 del contenedor
+      - "80:80"
+    restart: always
+
+  # Servicio 2: El Backend (json-server)
+  backend:
+    # Le decimos dónde está su Dockerfile
+    build:
+      context: . # <-- Cambia esto por el nombre de tu carpeta backend
+    container_name: api-server
+    restart: always
+    # NO necesitamos 'ports' aquí, porque Nginx se comunica
+    # con él internamente. Es más seguro.

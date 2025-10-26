@@ -19,7 +19,7 @@ const Login = ({ onNavigate }) => {
     console.log('Intentando iniciar sesión:', values);
 
     try {
-      const response = await fetch(`http://localhost:3001/users?email=${values.email}&password=${values.password}`);
+      const response = await fetch(`/api/users?email=${values.email}&password=${values.password}`);
       const foundUsers = await response.json();
 
       if (foundUsers.length > 0) {

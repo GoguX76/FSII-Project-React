@@ -10,7 +10,7 @@ const Users = () => {
   useEffect(() => {
     const fetchUsers = async () => {
       try {
-        const response = await fetch('http://localhost:3001/users');
+        const response = await fetch('/api/users');
         if (!response.ok) {
           throw new Error('Error al conectar con la base de datos simulada.');
         }

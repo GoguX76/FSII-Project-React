@@ -25,7 +25,7 @@ const Register = ({ onNavigate, onAuthSuccess }) => {
 
     try {
       // Verificar si el usuario ya existe
-      const response = await fetch(`http://localhost:3001/users?email=${values.email}`);
+      const response = await fetch(`/api/users?email=${values.email}`);
       const existingUsers = await response.json();
 
       if (existingUsers.length > 0) {
@@ -40,7 +40,7 @@ const Register = ({ onNavigate, onAuthSuccess }) => {
         password: values.password, // En una app real, esto debería estar hasheado
       };
 
-      const postResponse = await fetch('http://localhost:3001/users', {
+      const postResponse = await fetch('/api/users', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

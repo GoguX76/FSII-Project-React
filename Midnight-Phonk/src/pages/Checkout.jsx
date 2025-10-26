@@ -46,7 +46,7 @@ const Checkout = () => {
     setSubmissionStatus('loading');
 
     try {
-      const response = await fetch('http://localhost:3001/purchases', {
+      const response = await fetch('/api/purchases', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(purchase),

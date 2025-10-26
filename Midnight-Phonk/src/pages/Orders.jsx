@@ -10,7 +10,7 @@ const Orders = () => {
   useEffect(() => {
     const fetchOrders = async () => {
       try {
-        const response = await fetch('http://localhost:3001/purchases');
+        const response = await fetch('/api/purchases');
         if (!response.ok) {
           throw new Error('Error al conectar con la base de datos simulada.');
         }

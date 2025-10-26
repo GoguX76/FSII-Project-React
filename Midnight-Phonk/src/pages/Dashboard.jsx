@@ -38,8 +38,8 @@ const Dashboard = ({ onNavigate = () => {} }) => {
     const fetchData = async () => {
       try {
         const [usersResponse, purchasesResponse] = await Promise.all([
-          fetch('http://localhost:3001/users'),
-          fetch('http://localhost:3001/purchases'),
+          fetch('/api/users'),
+          fetch('/api//purchases'),
         ]);
 
         if (!usersResponse.ok || !purchasesResponse.ok) {

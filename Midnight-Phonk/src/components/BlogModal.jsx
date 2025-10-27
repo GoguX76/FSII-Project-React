@@ -1,7 +1,9 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import "../css/blogModal.css";
 
-const BlogModal = ({ post, isOpen, onClose }) => {
+const BlogModal = ({ post, isOpen, onClose, onLike }) => {
+  const [hasLiked, setHasLiked] = useState(false);
+
   // Evita que se pueda hacer scroll en la pantalla del fondo cuando se abre
   useEffect(() => {
     if (isOpen) {
@@ -15,6 +17,14 @@ const BlogModal = ({ post, isOpen, onClose }) => {
       document.body.style.overflow = "unset";
     };
   }, [isOpen]);
+
+  // Verificar si el usuario ya dio like a este post
+  useEffect(() => {
+    if (post) {
+      const likedPosts = JSON.parse(localStorage.getItem("likedPosts") || "[]");
+      setHasLiked(likedPosts.includes(post.idNew));
+    }
+  }, [post]);
 
   // Manejar el cierre con la tecla Escape
   useEffect(() => {
@@ -43,6 +53,43 @@ const BlogModal = ({ post, isOpen, onClose }) => {
     }
   };
 
+  // Manejar el like
+  const handleLikeClick = () => {
+    if (hasLiked) {
+      alert("Ya has dado like a esta publicación");
+      return;
+    }
+
+    onLike(post.idNew);
+    setHasLiked(true);
+
+    // Guardar que el usuario dio like a este post
+    const likedPosts = JSON.parse(localStorage.getItem("likedPosts") || "[]");
+    likedPosts.push(post.idNew);
+    localStorage.setItem("likedPosts", JSON.stringify(likedPosts));
+  };
+
+  // Manejar compartir
+  const handleShare = () => {
+    const shareUrl = window.location.href;
+    const shareText = `¡Mira este artículo! ${post.titleNew}`;
+
+    if (navigator.share) {
+      navigator
+        .share({
+          title: post.titleNew,
+          text: shareText,
+          url: shareUrl,
+        })
+        .then(() => console.log("Compartido exitosamente"))
+        .catch((error) => console.log("Error al compartir:", error));
+    } else {
+      // Fallback: copiar al portapapeles
+      navigator.clipboard.writeText(`${shareText} - ${shareUrl}`);
+      alert("¡Enlace copiado al portapapeles!");
+    }
+  };
+
   return (
     <div className="blog-modal-overlay" onClick={handleOverlayClick}>
       <div className="blog-modal-content">
@@ -66,7 +113,7 @@ const BlogModal = ({ post, isOpen, onClose }) => {
 
         <div className="blog-modal-body">
           <div className="blog-modal-category-container">
-            <span className="blog-modal-category">{post.category}</span>
+            <span className="blog-modal-category">{post.categoryNew}</span>
           </div>
 
           <h2 className="blog-modal-title">{post.titleNew}</h2>
@@ -77,9 +124,7 @@ const BlogModal = ({ post, isOpen, onClose }) => {
           </div>
 
           <div className="blog-modal-stats">
-            <span className="blog-modal-stat">
-              ❤️ {post.likes || "0"} likes
-            </span>
+            <span className="blog-modal-stat">❤️ {post.likes || 0} likes</span>
           </div>
 
           <div className="blog-modal-description">
@@ -92,8 +137,16 @@ const BlogModal = ({ post, isOpen, onClose }) => {
           </div>
 
           <div className="blog-modal-actions">
-            <button className="blog-btn-share">Compartir 🔗</button>
-            <button className="blog-btn-like">Me gusta ❤️</button>
+            <button className="blog-btn-share" onClick={handleShare}>
+              Compartir 🔗
+            </button>
+            <button
+              className={`blog-btn-like ${hasLiked ? "liked" : ""}`}
+              onClick={handleLikeClick}
+              disabled={hasLiked}
+            >
+              {hasLiked ? "Ya diste like ❤️" : "Me gusta ❤️"}
+            </button>
           </div>
         </div>
       </div>

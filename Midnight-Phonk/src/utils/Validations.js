@@ -6,6 +6,15 @@ export function validateForm(values) {
 
     // --- REGLAS COMPARTIDAS ---
 
+    if ('card' in values) {
+        const cardNumber = values.card ? values.card.replace(/\D/g, '') : '';
+        if (!cardNumber) {
+            errors.card = 'El número de tarjeta es requerido';
+        } else if (cardNumber.length !== 16) {
+            errors.card = 'El número de tarjeta debe tener 16 dígitos';
+        }
+    }
+
     if ('email' in values) {
         if (!values.email) {
             errors.email = 'El correo electrónico es requerido';

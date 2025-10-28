@@ -1,3 +1,19 @@
+/* Estilo para textarea de descripción completa en el formulario de producto */
+
+.form-group textarea[name="fullDesc"] {
+    width: 100%;
+    min-height: 80px;
+    max-width: 600px;
+    font-size: 1rem;
+    padding: 0.6rem;
+    border-radius: 0.5rem;
+    background: var(--input-bg, #222);
+    color: #fff;
+    border: 1px solid var(--input-border, #444);
+    resize: vertical;
+    box-sizing: border-box;
+}
+
 :root {
     --bg-dark: #1f2937;
     --card-bg: #1f2937;

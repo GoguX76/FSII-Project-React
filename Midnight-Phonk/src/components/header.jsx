@@ -119,17 +119,30 @@ const Header = ({ onNavigate }) => {
 
                 {/* Dropdown de Cuenta */}
                 {isAccountOpen && (
-                  <ul className="absolute right-0 mt-2 w-40 bg-gray-800 rounded-lg shadow-xl py-2 z-20">
+                  <ul className="absolute right-0 mt-2 w-44 bg-gray-800 rounded-lg shadow-xl py-2 z-20">
                     {user ? (
-                      <li>
-                        <a
-                          href="#"
-                          onClick={handleLogout}
-                          className="block px-4 py-2 text-gray-300 hover:bg-gray-700 hover:text-indigo-400"
-                        >
-                          Cerrar sesión
-                        </a>
-                      </li>
+                      <>
+                        {user.admin && (
+                          <li>
+                            <a
+                              href="#"
+                              onClick={() => handleNavigation("admin")}
+                              className="block px-4 py-2 text-gray-300 hover:bg-gray-700 hover:text-indigo-400"
+                            >
+                              Dashboard
+                            </a>
+                          </li>
+                        )}
+                        <li>
+                          <a
+                            href="#"
+                            onClick={handleLogout}
+                            className="block px-4 py-2 text-gray-300 hover:bg-gray-700 hover:text-indigo-400"
+                          >
+                            Cerrar sesión
+                          </a>
+                        </li>
+                      </>
                     ) : (
                       <>
                         <li>
@@ -236,13 +249,25 @@ const Header = ({ onNavigate }) => {
               {isMobileAccountOpen && (
                 <div className="pl-6 pt-1 pb-1 space-y-1">
                   {user ? (
-                    <a
-                      href="#"
-                      onClick={handleLogout}
-                      className="block px-3 py-2 text-sm text-gray-300 hover:bg-gray-600 rounded-md"
-                    >
-                      Cerrar sesión
-                    </a>
+                    <>
+                      {user.admin && (
+                        <a
+                          href="#"
+                          onClick={() => { handleNavigation('admin'); setIsMobileAccountOpen(false); }}
+                          className="block px-3 py-2 text-sm text-gray-300 hover:bg-gray-600 rounded-md"
+                        >
+                          Dashboard
+                        </a>
+                      )}
+
+                      <a
+                        href="#"
+                        onClick={handleLogout}
+                        className="block px-3 py-2 text-sm text-gray-300 hover:bg-gray-600 rounded-md"
+                      >
+                        Cerrar sesión
+                      </a>
+                    </>
                   ) : (
                     <>
                       <a

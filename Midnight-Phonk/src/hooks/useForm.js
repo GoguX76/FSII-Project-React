@@ -29,10 +29,24 @@ function useForm(initialState, validate, callback) {
     const handleChange = (event) => {
         event.persist();
         const { name, value } = event.target;
-        setValues(values => ({
+        const newValues = {
             ...values,
             [name]: value,
-        }));
+        };
+        setValues(newValues);
+
+        // Validación inmediata para el campo de tarjeta
+        if (name === 'card') {
+            const fieldErrors = validate({ card: value });
+            if (fieldErrors.card) {
+                setErrors(prev => ({...prev, card: fieldErrors.card }));
+            } else {
+                setErrors(prev => {
+                    const { card, ...rest } = prev;
+                    return rest;
+                });
+            }
+        }
     };
 
     return {

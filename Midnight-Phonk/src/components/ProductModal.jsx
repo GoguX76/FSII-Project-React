@@ -69,11 +69,11 @@ const ProductModal = ({ product, isOpen, onClose, onNavigate }) => {
         <div className="modal-header">
           <div className="modal-image-container">
             <img
-              src={product.image}
+              src={product.image.startsWith('/') ? product.image : `/src/assets/images/${product.image}`}
               alt={product.title}
               className="modal-product-image"
               onError={(e) => {
-                e.target.src = "placeholder-image.jpg";
+                e.target.src = "/src/assets/images/placeholder-image.jpg";
                 e.target.alt = "Imagen no disponible";
               }}
             />

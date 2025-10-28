@@ -25,8 +25,8 @@ const Register = ({ onNavigate, onAuthSuccess }) => {
 
     try {
       // Verificar si el usuario ya existe
-      const response = await fetch(`/api/users?email=${values.email}`);
-      const existingUsers = await response.json();
+  const response = await fetch(`/api/users?email=${values.email}`);
+  const existingUsers = await response.json();
 
       if (existingUsers.length > 0) {
         setMessage('El correo electrónico ya está registrado. Por favor, intenta con otro.');

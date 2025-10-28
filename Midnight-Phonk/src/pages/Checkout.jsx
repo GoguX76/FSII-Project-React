@@ -5,6 +5,7 @@ import { validateForm } from "../utils/Validations";
 import "../css/checkout.css";
 
 const INITIAL_STATE = {
+  card: "",
   name: "",
   email: "",
   address: "",
@@ -18,6 +19,33 @@ const Checkout = () => {
   const [message, setMessage] = useState("");
 
   const submit = async () => {
+
+    // Verificar stock disponible
+    try {
+      const stockResponse = await fetch('/api/products');
+      if (!stockResponse.ok) throw new Error('Error al verificar el stock disponible.');
+      const products = await stockResponse.json();
+
+      // Verificar cada item del carrito
+      for (const cartItem of cartItems) {
+        const product = products.find(p => p.id === cartItem.id);
+        if (!product) {
+          setMessage(`El producto "${cartItem.title}" ya no está disponible.`);
+          setSubmissionStatus("error");
+          return;
+        }
+        if (cartItem.quantity > product.stock) {
+          setMessage(`Lo sentimos, solo hay ${product.stock} unidades disponibles de "${cartItem.title}".`);
+          setSubmissionStatus("error");
+          return;
+        }
+      }
+    } catch (err) {
+      setMessage("Error al verificar el stock disponible.");
+      setSubmissionStatus("error");
+      return;
+    }
+
     const loggedInUserData = localStorage.getItem("loggedInUser");
     if (!loggedInUserData) {
       setMessage("Debes iniciar sesión para realizar un pedido.");
@@ -46,20 +74,69 @@ const Checkout = () => {
     setSubmissionStatus("loading");
 
     try {
-      const response = await fetch("/api/purchases", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
+      // Primero decrementar stock en el servidor para cada producto
+      const productsResponse = await fetch('/api/products');
+      if (!productsResponse.ok) throw new Error('Error al obtener productos para actualizar stock.');
+      const products = await productsResponse.json();
+
+      const updated = [];
+      for (const cartItem of cartItems) {
+        const prod = products.find(p => String(p.id) === String(cartItem.id));
+        if (!prod) throw new Error(`Producto ${cartItem.title} no encontrado al actualizar stock.`);
+        const newStock = (Number(prod.stock) || 0) - Number(cartItem.quantity);
+        // Asegurar no bajar a negativo (aunque ya verificamos)
+        const finalStock = newStock >= 0 ? newStock : 0;
+
+        const patchRes = await fetch(`/api/products/${prod.id}`, {
+          method: 'PATCH',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ stock: finalStock }),
+        });
+
+        if (!patchRes.ok) {
+          // rollback previo
+          for (const upd of updated) {
+            try {
+              await fetch(`/api/products/${upd.id}`, {
+                method: 'PATCH',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ stock: upd.prevStock }),
+              });
+            } catch (ignored) {}
+          }
+          throw new Error(`No se pudo actualizar el stock de ${cartItem.title}.`);
+        }
+
+        updated.push({ id: prod.id, prevStock: prod.stock, newStock: finalStock });
+      }
+
+      // Si todos los PATCH fueron ok, registrar la purchase
+      const response = await fetch('/api/purchases', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(purchase),
       });
 
-      if (!response.ok) throw new Error("No se pudo registrar el pedido.");
+      if (!response.ok) {
+        // intentar rollback si falla el POST
+        for (const upd of updated) {
+          try {
+            await fetch(`/api/products/${upd.id}`, {
+              method: 'PATCH',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({ stock: upd.prevStock }),
+            });
+          } catch (ignored) {}
+        }
+        throw new Error('No se pudo registrar el pedido. Se revirtieron los cambios de stock.');
+      }
 
-      setMessage("¡Pedido realizado con éxito! Gracias por tu compra.");
-      setSubmissionStatus("success");
+      setMessage('¡Pedido realizado con éxito! Gracias por tu compra.');
+      setSubmissionStatus('success');
       clearCart();
     } catch (error) {
-      setMessage(error.message || "Ocurrió un error al procesar tu pedido.");
-      setSubmissionStatus("error");
+      setMessage(error.message || 'Ocurrió un error al procesar tu pedido.');
+      setSubmissionStatus('error');
     }
   };
 
@@ -77,11 +154,13 @@ const Checkout = () => {
     }
   }, [setValues]);
 
-  if (submissionStatus === "success") {
+  if (submissionStatus === "success" || submissionStatus === "error") {
     return (
       <div className="checkout-container submission-feedback">
         <h2>{message}</h2>
-        <p>Recibirás una confirmación por correo electrónico en breve.</p>
+        {submissionStatus === "success" && (
+          <p>Recibirás una confirmación por correo electrónico en breve.</p>
+        )}
       </div>
     );
   }
@@ -108,8 +187,11 @@ const Checkout = () => {
               name="card"
               value={values.card}
               onChange={handleChange}
+              maxLength="16"
+              placeholder="Ingrese los 16 dígitos"
+              required
             />
-            {errors.name && <p className="error-text">{errors.card}</p>}
+            {errors.card && <p className="error-text">{errors.card}</p>}
           </div>
           <div className="form-group">
             <label htmlFor="name">Nombre Completo</label>

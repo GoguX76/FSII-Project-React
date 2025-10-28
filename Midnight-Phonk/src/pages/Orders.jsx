@@ -1,47 +1,40 @@
 import React, { useState, useEffect } from 'react';
 import '../css/dashboard.css';
 import { ServerCrash } from 'lucide-react';
+import ConfirmModal from '../components/ConfirmModal';
 
 const Orders = () => {
   const [orders, setOrders] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [actionMessage, setActionMessage] = useState(null);
+
+
+  const fetchOrders = async () => {
+    try {
+      const response = await fetch('/api/purchases');
+      if (!response.ok) {
+        throw new Error('Error al conectar con la base de datos simulada.');
+      }
+      const data = await response.json();
+      setOrders(data);
+    } catch (err) {
+      setError(err.message);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   useEffect(() => {
-    const fetchOrders = async () => {
-      try {
-        const response = await fetch('/api/purchases');
-        if (!response.ok) {
-          throw new Error('Error al conectar con la base de datos simulada.');
-        }
-        const data = await response.json();
-        setOrders(data);
-      } catch (err) {
-        setError(err.message);
-      } finally {
-        setLoading(false);
-      }
-    };
-
     fetchOrders();
   }, []);
+
 
   if (loading) {
     return <div className="dashboard-page"><div className="inner-container"><p>Cargando órdenes...</p></div></div>;
   }
 
-  if (error) {
-    return (
-      <div className="dashboard-page">
-        <div className="inner-container error-container">
-          <ServerCrash size={48} />
-          <h2>Error de Conexión</h2>
-          <p>{error}</p>
-          <p>Asegúrate de haber iniciado el servidor con: <strong>npm run server</strong></p>
-        </div>
-      </div>
-    );
-  }
+
 
   return (
     <div className="dashboard-page">
@@ -49,6 +42,18 @@ const Orders = () => {
         <div className="dashboard-card">
           <h1 className="dashboard-title">Gestión de Órdenes</h1>
           <p className="dashboard-subtitle">Lista de compras realizadas</p>
+          {actionMessage && (
+            <div className="alert alert-success" style={{
+              padding: '10px',
+              marginBottom: '20px',
+              backgroundColor: '#d4edda',
+              color: '#155724',
+              borderRadius: '4px',
+              border: '1px solid #c3e6cb'
+            }}>
+              {actionMessage}
+            </div>
+          )}
           <div className="table-container mt-6">
             <table className="data-table">
               <thead>
@@ -78,6 +83,7 @@ const Orders = () => {
                     </td>
                     <td>${order.totalAmount.toFixed(2)}</td>
                     <td>{new Date(order.purchaseDate).toLocaleDateString()}</td>
+                
                   </tr>
                 ))}
               </tbody>

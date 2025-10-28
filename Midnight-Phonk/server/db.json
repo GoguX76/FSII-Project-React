@@ -1,141 +1,117 @@
-
 {
-  "users": [
-    {
-      "id": "f2b2",
-      "nombre": "Sebastian Alvarez",
-      "email": "seba@duoc.cl",
-      "password": "sebastian123"
-    },
-    {
-      "id": "31ed",
-      "nombre": "admin",
-      "email": "admin@adminduoc.cl",
-      "password": "admin123"
-    }
-  ],
-  "purchases": [
-    {
-      "id": "377f",
-      "userId": "seba@duoc.cl",
-      "userName": "Sebastian Alvarez",
-      "shippingDetails": {
-        "name": "Sebastian Alvarez",
-        "email": "seba@duoc.cl",
-        "address": "Froilán Roa 7107",
-        "city": "Santiago",
-        "postal-code": "8240000"
-      },
-      "items": [
-        {
-          "id": 2,
-          "title": "Brazilian Vocals Samples",
-          "image": "/src/assets/images/brazilian-samples.png",
-          "desc": "+100 samples en diferentes formatos",
-          "fullDesc": "+100 samples para crear instrumentales únicos para el Phonk Brasileño.",
-          "price": 2900,
-          "quantity": 1
-        }
-      ],
-      "totalAmount": 2900,
-      "purchaseDate": "2025-10-24T18:08:50.163Z"
-    },
-    {
-      "id": "d6f7",
-      "userId": "seba@duoc.cl",
-      "userName": "Sebastian Alvarez",
-      "shippingDetails": {
-        "name": "Sebastian Alvarez",
-        "email": "seba@duoc.cl",
-        "address": "VivaChile",
-        "city": "Santiago",
-        "postal-code": "8150000"
-      },
-      "items": [
-        {
-          "id": 2,
-          "title": "Brazilian Vocals Samples",
-          "image": "/src/assets/images/brazilian-samples.png",
-          "desc": "+100 samples en diferentes formatos",
-          "fullDesc": "+100 samples para crear instrumentales únicos para el Phonk Brasileño.",
-          "price": 2900,
-          "quantity": 1
+    "users": [{
+            "id": "f2b2",
+            "nombre": "Sebastian Alvarez",
+            "email": "seba@duoc.cl",
+            "password": "sebastian123"
         },
         {
-          "id": 1,
-          "title": "Brazilian Vocals Volume 1",
-          "image": "/src/assets/images/brazil-vocals.png",
-          "desc": "+20 vocales en diferentes formatos",
-          "fullDesc": "+20 vocales innovadoras para crear Phonk Brasileño en diferentes formatos para usarla en diversos programas de creación de música.",
-          "price": 2500,
-          "quantity": 1
+            "id": "31ed",
+            "nombre": "admin",
+            "email": "admin@adminduoc.cl",
+            "password": "admin123"
         }
-      ],
-      "totalAmount": 5400,
-      "purchaseDate": "2025-10-25T00:38:12.307Z"
-    },
-    {
-      "id": "beb0",
-      "userId": "seba@duoc.cl",
-      "userName": "Sebastian Alvarez",
-      "shippingDetails": {
-        "name": "Sebastian Alvarez",
-        "email": "seba@duoc.cl",
-        "address": "VivaChile",
-        "city": "Santiago",
-        "postal-code": "8150000"
-      },
-      "items": [
+    ],
+    "purchases": [{
+            "id": "377f",
+            "userId": "seba@duoc.cl",
+            "userName": "Sebastian Alvarez",
+            "shippingDetails": {
+                "name": "Sebastian Alvarez",
+                "email": "seba@duoc.cl",
+                "address": "Froilán Roa 7107",
+                "city": "Santiago",
+                "postal-code": "8240000"
+            },
+            "items": [{
+                "id": 2,
+                "title": "Brazilian Vocals Samples",
+                "image": "/src/assets/images/brazilian-samples.png",
+                "desc": "+100 samples en diferentes formatos",
+                "fullDesc": "+100 samples para crear instrumentales únicos para el Phonk Brasileño.",
+                "price": 2900,
+                "quantity": 1
+            }],
+            "totalAmount": 2900,
+            "purchaseDate": "2025-10-24T18:08:50.163Z"
+        },
         {
-          "id": 4,
-          "title": "Brazilian Sample Fusion",
-          "image": "/src/assets/images/brazilian-sample-fusion.png",
-          "desc": "+50 samples en diferentes formatos",
-          "fullDesc": "+50 samples para crear Phonk Brasileño Fusion, un genero único aquí, en Midnight Phonk.",
-          "price": 3200,
-          "quantity": 1
+            "id": "beb0",
+            "userId": "seba@duoc.cl",
+            "userName": "Sebastian Alvarez",
+            "shippingDetails": {
+                "name": "Sebastian Alvarez",
+                "email": "seba@duoc.cl",
+                "address": "VivaChile",
+                "city": "Santiago",
+                "postal-code": "8150000"
+            },
+            "items": [{
+                "id": 4,
+                "title": "Brazilian Sample Fusion",
+                "image": "/src/assets/images/brazilian-sample-fusion.png",
+                "desc": "+50 samples en diferentes formatos",
+                "fullDesc": "+50 samples para crear Phonk Brasileño Fusion, un genero único aquí, en Midnight Phonk.",
+                "price": 3200,
+                "quantity": 1
+            }],
+            "totalAmount": 3200,
+            "purchaseDate": "2025-10-25T16:51:59.975Z"
         }
-      ],
-      "totalAmount": 3200,
-      "purchaseDate": "2025-10-25T16:51:59.975Z"
-    }
-  ],
-  "products": [
-    {
-      "id": 1,
-      "name": "Brazilian Vocals Volume 1",
-      "price": 2500,
-      "category": "Vocals"
-    },
-    {
-      "id": 2,
-      "name": "Brazilian Vocals Samples",
-      "price": 2900,
-      "category": "Samples"
-    },
-    {
-      "id": 3,
-      "name": "Brazilian Drum Kit",
-      "price": 3000,
-      "category": "Drum Kits"
-    },
-    {
-      "id": 4,
-      "name": "Brazilian Sample Fusion",
-      "price": 3200,
-      "category": "Samples"
-    },
-    {
-      "id": 5,
-      "name": "Brazilian Sample Gems",
-      "price": 2700,
-      "category": "Samples"
-    },
-    {
-      "id": 6,
-      "name": "Brazilian Sample Trends",
-      "price": 3500,
-      "category": "Samples"
-    }
-  ]
+    ],
+    "products": [{
+            "id": "1",
+            "title": "Brazilian Vocals Volume 1",
+            "image": "brazil-vocals.png",
+            "desc": "+20 vocales en diferentes formatos",
+            "fullDesc": "+20 vocales innovadoras para crear Phonk Brasileño en diferentes formatos para usarla en diversos programas de creación de música.",
+            "price": 2500,
+            "stock": 10
+        },
+        {
+            "id": "2",
+            "title": "Brazilian Vocals Samples",
+            "image": "brazilian-samples.png",
+            "desc": "+100 samples en diferentes formatos",
+            "fullDesc": "+100 samples para crear instrumentales únicos para el Phonk Brasileño.",
+            "price": 2900,
+            "stock": 15
+        },
+        {
+            "id": "3",
+            "title": "Brazilian Drum Kit",
+            "image": "brazilian-drum-kit.png",
+            "desc": "+30 drum kits en diferentes formatos",
+            "fullDesc": "+30 drum kits para crear los mejores sonidos drum para Phonk Brasileño.",
+            "price": 3000,
+            "stock": 20
+        },
+        {
+            "id": "4",
+            "title": "Brazilian Sample Fusion",
+            "image": "brazilian-sample-fusion.png",
+            "desc": "+50 samples en diferentes formatos",
+            "fullDesc": "+50 samples para crear Phonk Brasileño Fusion, un genero único aquí, en Midnight Phonk.",
+            "price": 3200,
+            "stock": 8
+        },
+        {
+            "id": "5",
+            "title": "Brazilian Sample Gems",
+            "image": "brazilian-sample-gems.png",
+            "desc": "+50 samples en diferentes formatos.",
+            "fullDesc": "+50 samples para crear Phonk Brasileño Gems, genero deslumbrante para los amantes del Phonk..",
+            "price": 2700,
+            "stock": 12
+        },
+        {
+            "id": "6",
+            "title": "Brazilian Sample Trends",
+            "image": "brazilian-sample-trend.png",
+            "desc": "+30 samples en diferentes formatos.",
+            "fullDesc": "+30 samples para crear Phonk Brasileño Trends, para destacar en la comunidad Phonk y ser el más grande.",
+            "price": 3500,
+            "stock": 0
+        }
+    ]
 }

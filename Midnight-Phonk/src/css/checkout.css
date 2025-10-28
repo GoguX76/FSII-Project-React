@@ -6,6 +6,7 @@
     --accent-color: #6a0dad;
     --input-bg: #333;
     --border-color: #444;
+    --error-color: #dc3545;
 }
 
 .checkout-container {
@@ -19,13 +20,15 @@
     font-family: 'Inter', sans-serif;
 }
 
-.checkout-form, .checkout-summary {
+.checkout-form,
+.checkout-summary {
     background: var(--card-bg);
     padding: 2.5rem;
     border-radius: 12px;
 }
 
-.checkout-form h2, .checkout-summary h2 {
+.checkout-form h2,
+.checkout-summary h2 {
     font-family: 'Orbitron', sans-serif;
     font-size: 1.75rem;
     margin-bottom: 2rem;
@@ -52,6 +55,22 @@
     border-radius: 8px;
     color: var(--text-light);
     font-size: 1rem;
+}
+
+.form-group input:focus {
+    outline: none;
+    border-color: var(--accent-color);
+}
+
+.form-group input.error {
+    border-color: var(--error-color);
+}
+
+.error-text {
+    color: var(--error-color);
+    font-size: 0.875rem;
+    margin-top: 0.5rem;
+    margin-bottom: 0;
 }
 
 .submit-btn {

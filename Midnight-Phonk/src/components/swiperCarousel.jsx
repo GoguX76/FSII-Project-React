@@ -1,7 +1,7 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation, Pagination, Autoplay } from "swiper/modules";
-import phonkProducts from "../utils/Phonk-Catalog";
+// carousel no necesita cargar imágenes de productos; se mantiene estático
 
 // Solo necesitas estos 3 estilos básicos
 import "swiper/css";
@@ -10,10 +10,20 @@ import "swiper/css/pagination";
 import "../css/carousel.css";
 
 const SwiperCarousel = () => {
-  const event = new CustomEvent("navigateToPage", {
-    detail: { page: "brazilianphonk" },
-  });
-  window.dispatchEvent(event);
+  const [products, setProducts] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    const event = new CustomEvent("navigateToPage", {
+      detail: { page: "brazilianphonk" },
+    });
+    window.dispatchEvent(event);
+
+    // solo enviamos el evento de navegación; no necesitamos cargar productos aquí
+    return () => {};
+  }, []);
+
   return (
     <div style={{ marginTop: "2rem", width: "90%", maxWidth: "800px" }}>
       <Swiper
@@ -48,12 +58,9 @@ const SwiperCarousel = () => {
             >
               LO MÁS VENDIDO
             </h3>
-            {/* Se llama a la imagen del Phonk-Catalog. */}
-            <img
-              src={phonkProducts[0].image}
-              alt="Brazil Vocals Volumen 1"
-              className="slides-images"
-            />
+            {loading && <p style={{ color: 'white' }}>Cargando...</p>}
+            {error && <p style={{ color: 'red' }}>Error: {error}</p>}
+            {/* Imagen removida del carrusel conforme a solicitud */}
             <p style={{ marginBottom: "1rem" }}>
               Descubre lo que ofrece nuestro producto estrella en Midnight Phonk
             </p>

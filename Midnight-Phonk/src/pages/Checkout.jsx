@@ -1,33 +1,33 @@
-import React, { useState, useEffect } from 'react';
-import { useCart } from '../context/CartContext';
-import useForm from '../hooks/useForm';
-import { validateForm } from '../utils/Validations';
-import '../css/checkout.css';
+import React, { useState, useEffect } from "react";
+import { useCart } from "../context/CartContext";
+import useForm from "../hooks/useForm";
+import { validateForm } from "../utils/Validations";
+import "../css/checkout.css";
 
 const INITIAL_STATE = {
-  name: '',
-  email: '',
-  address: '',
-  city: '',
-  'postal-code': '',
+  name: "",
+  email: "",
+  address: "",
+  city: "",
+  "postal-code": "",
 };
 
 const Checkout = () => {
   const { cartItems, total, clearCart } = useCart();
   const [submissionStatus, setSubmissionStatus] = useState(null); // null, 'loading', 'success', or 'error'
-  const [message, setMessage] = useState('');
+  const [message, setMessage] = useState("");
 
   const submit = async () => {
-    const loggedInUserData = localStorage.getItem('loggedInUser');
+    const loggedInUserData = localStorage.getItem("loggedInUser");
     if (!loggedInUserData) {
-      setMessage('Debes iniciar sesión para realizar un pedido.');
-      setSubmissionStatus('error');
+      setMessage("Debes iniciar sesión para realizar un pedido.");
+      setSubmissionStatus("error");
       return;
     }
 
     if (cartItems.length === 0) {
-      setMessage('Tu carrito está vacío.');
-      setSubmissionStatus('error');
+      setMessage("Tu carrito está vacío.");
+      setSubmissionStatus("error");
       return;
     }
 
@@ -42,42 +42,42 @@ const Checkout = () => {
       purchaseDate: new Date().toISOString(),
     };
 
-    setMessage('Procesando pedido...');
-    setSubmissionStatus('loading');
+    setMessage("Procesando pedido...");
+    setSubmissionStatus("loading");
 
     try {
-      const response = await fetch('/api/purchases', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+      const response = await fetch("/api/purchases", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify(purchase),
       });
 
-      if (!response.ok) throw new Error('No se pudo registrar el pedido.');
+      if (!response.ok) throw new Error("No se pudo registrar el pedido.");
 
-      setMessage('¡Pedido realizado con éxito! Gracias por tu compra.');
-      setSubmissionStatus('success');
+      setMessage("¡Pedido realizado con éxito! Gracias por tu compra.");
+      setSubmissionStatus("success");
       clearCart();
     } catch (error) {
-      setMessage(error.message || 'Ocurrió un error al procesar tu pedido.');
-      setSubmissionStatus('error');
+      setMessage(error.message || "Ocurrió un error al procesar tu pedido.");
+      setSubmissionStatus("error");
     }
   };
 
   const { values, errors, handleChange, handleSubmit, setValues } = useForm(
     INITIAL_STATE,
     validateForm,
-    submit
+    submit,
   );
 
   useEffect(() => {
-    const loggedInUserData = localStorage.getItem('loggedInUser');
+    const loggedInUserData = localStorage.getItem("loggedInUser");
     if (loggedInUserData) {
       const { user } = JSON.parse(loggedInUserData);
-      setValues(prev => ({ ...prev, name: user.name, email: user.email }));
+      setValues((prev) => ({ ...prev, name: user.name, email: user.email }));
     }
   }, [setValues]);
 
-  if (submissionStatus === 'success') {
+  if (submissionStatus === "success") {
     return (
       <div className="checkout-container submission-feedback">
         <h2>{message}</h2>
@@ -85,13 +85,13 @@ const Checkout = () => {
       </div>
     );
   }
-  
-  if (cartItems.length === 0 && submissionStatus !== 'success') {
+
+  if (cartItems.length === 0 && submissionStatus !== "success") {
     return (
-        <div className="checkout-container submission-feedback">
-            <h2>Tu carrito está vacío</h2>
-            <p>Añade algunos productos antes de proceder al pago.</p>
-        </div>
+      <div className="checkout-container submission-feedback">
+        <h2>Tu carrito está vacío</h2>
+        <p>Añade algunos productos antes de proceder al pago.</p>
+      </div>
     );
   }
 
@@ -101,49 +101,89 @@ const Checkout = () => {
         <h2>Datos de Envío</h2>
         <form onSubmit={handleSubmit} noValidate>
           <div className="form-group">
+            <label htmlFor="card">Número de tarjeta</label>
+            <input
+              type="text"
+              id="card"
+              name="card"
+              value={values.card}
+              onChange={handleChange}
+            />
+            {errors.name && <p className="error-text">{errors.card}</p>}
+          </div>
+          <div className="form-group">
             <label htmlFor="name">Nombre Completo</label>
-            <input type="text" id="name" name="name" value={values.name} onChange={handleChange} />
+            <input
+              type="text"
+              id="name"
+              name="name"
+              value={values.name}
+              onChange={handleChange}
+            />
             {errors.name && <p className="error-text">{errors.name}</p>}
           </div>
           <div className="form-group">
             <label htmlFor="email">Correo Electrónico</label>
-            <input type="email" id="email" name="email" value={values.email} onChange={handleChange} />
+            <input
+              type="email"
+              id="email"
+              name="email"
+              value={values.email}
+              onChange={handleChange}
+            />
             {errors.email && <p className="error-text">{errors.email}</p>}
           </div>
           <div className="form-group">
-            <label htmlFor="address">Dirección</label>
-            <input type="text" id="address" name="address" value={values.address} onChange={handleChange} />
-            {errors.address && <p className="error-text">{errors.address}</p>}
-          </div>
-          <div className="form-group">
             <label htmlFor="city">Ciudad</label>
-            <input type="text" id="city" name="city" value={values.city} onChange={handleChange} />
+            <input
+              type="text"
+              id="city"
+              name="city"
+              value={values.city}
+              onChange={handleChange}
+            />
             {errors.city && <p className="error-text">{errors.city}</p>}
           </div>
           <div className="form-group">
             <label htmlFor="postal-code">Código Postal</label>
-            <input type="text" id="postal-code" name="postal-code" value={values['postal-code']} onChange={handleChange} />
-            {errors['postal-code'] && <p className="error-text">{errors['postal-code']}</p>}
+            <input
+              type="text"
+              id="postal-code"
+              name="postal-code"
+              value={values["postal-code"]}
+              onChange={handleChange}
+            />
+            {errors["postal-code"] && (
+              <p className="error-text">{errors["postal-code"]}</p>
+            )}
           </div>
-          <button type="submit" className="submit-btn" disabled={submissionStatus === 'loading'}>
-            {submissionStatus === 'loading' ? 'Procesando...' : 'Realizar Pedido'}
+          <button
+            type="submit"
+            className="submit-btn"
+            disabled={submissionStatus === "loading"}
+          >
+            {submissionStatus === "loading"
+              ? "Procesando..."
+              : "Realizar Pedido"}
           </button>
         </form>
-        {message && submissionStatus !== 'success' && (
-            <div className={`message ${submissionStatus}`}>{message}</div>
+        {message && submissionStatus !== "success" && (
+          <div className={`message ${submissionStatus}`}>{message}</div>
         )}
       </div>
       <div className="checkout-summary">
         <h2>Resumen de Compra</h2>
         <div className="summary-items">
-          {cartItems.map(item => (
+          {cartItems.map((item) => (
             <div key={item.id} className="summary-item">
               <img src={item.image} alt={item.title} />
               <div className="summary-item-details">
                 <h4>{item.title}</h4>
                 <p>Cantidad: {item.quantity}</p>
               </div>
-              <p className="summary-item-price">${(item.price * item.quantity).toFixed(2)}</p>
+              <p className="summary-item-price">
+                ${(item.price * item.quantity).toFixed(2)}
+              </p>
             </div>
           ))}
         </div>

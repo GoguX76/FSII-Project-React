@@ -9,7 +9,6 @@
     background: linear-gradient(180deg, rgba(0, 0, 0, 0.04), transparent);
 }
 
-
 /* Contenedor principal del dashboard (usa el estilo de tarjeta del formulario) */
 
 .dashboard-page .dashboard-card {
@@ -31,7 +30,6 @@
     color: var(--muted, #cbd5e1);
 }
 
-
 /* Estadísticas grandes */
 
 .dashboard-page .stat-grid {
@@ -51,7 +49,6 @@
         grid-template-columns: repeat(3, minmax(0, 1fr));
     }
 }
-
 
 /* Tarjetas de acción (blancas sobre el fondo oscuro) */
 
@@ -73,7 +70,6 @@
         grid-template-columns: repeat(4, minmax(0, 1fr));
     }
 }
-
 
 /* Action card look */
 
@@ -98,7 +94,6 @@
     margin-bottom: 0.75rem;
 }
 
-
 /* Stat card colors override to be readable on var(--card-bg) */
 
 .dashboard-page .stat-card {
@@ -117,7 +112,6 @@
 .dashboard-page .stat-card.yellow {
     background: linear-gradient(90deg, #d97706, #b45309);
 }
-
 
 /* New stat layout classes (extracted from inline styles) */
 
@@ -175,7 +169,6 @@
     /* gray-400 */
 }
 
-
 /* Ajustes generales */
 
 .dashboard-page h1,
@@ -183,14 +176,135 @@
     margin: 0;
 }
 
-
 /* Ensure main content sits at top (in case other styles add padding) */
 
 .dashboard-page .inner-container {
     margin-top: 0;
 }
 
-.data-table td, .data-table th {
-  padding: 0.75rem 1rem;
-  white-space: nowrap;
+.data-table td,
+.data-table th {
+    padding: 0.75rem 1rem;
+    white-space: nowrap;
+}
+
+/* Contenedor de tabla con scroll */
+.table-container {
+    max-height: calc(100vh - 250px);
+    overflow-y: auto;
+    overflow-x: auto;
+    border-radius: 0.5rem;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+}
+
+/* Estilos para la tabla */
+.data-table {
+    width: 100%;
+    border-collapse: collapse;
+    background: var(--card-bg, #1f2937);
+    color: #fff;
+}
+
+.data-table thead {
+    position: sticky;
+    top: 0;
+    background: #374151;
+    z-index: 10;
+}
+
+.data-table thead th {
+    border-bottom: 2px solid #4b5563;
+    font-weight: 600;
+    text-align: left;
+}
+
+.data-table tbody tr {
+    border-bottom: 1px solid #374151;
+    transition: background-color 0.2s;
+}
+
+.data-table tbody tr:hover {
+    background: rgba(79, 70, 229, 0.1);
+}
+
+/* Personalizar scrollbar */
+.table-container::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+
+.table-container::-webkit-scrollbar-track {
+    background: #1f2937;
+    border-radius: 4px;
+}
+
+.table-container::-webkit-scrollbar-thumb {
+    background: #4b5563;
+    border-radius: 4px;
+}
+
+.table-container::-webkit-scrollbar-thumb:hover {
+    background: #6b7280;
+}
+
+/* Utilidad de margen */
+.mt-6 {
+    margin-top: 1.5rem;
+}
+
+/* Estilos de botones para la tabla */
+.btn-primary {
+    background: linear-gradient(135deg, #6366f1, #4f46e5);
+    color: #ffffff;
+    border: none;
+    padding: 0.5rem 1rem;
+    border-radius: 0.5rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.btn-primary:hover {
+    background: linear-gradient(135deg, #4f46e5, #4338ca);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(99, 102, 241, 0.4);
+}
+
+.btn-primary:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    transform: none;
+}
+
+.btn-secondary {
+    background: rgba(255, 255, 255, 0.1);
+    color: #ffffff;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    padding: 0.5rem 1rem;
+    border-radius: 0.5rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.btn-secondary:hover {
+    background: rgba(255, 255, 255, 0.2);
+    transform: translateY(-1px);
+}
+
+.btn-danger {
+    background: #dc2626;
+    color: #ffffff;
+    border: none;
+    padding: 0.5rem 1rem;
+    border-radius: 0.5rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.btn-danger:hover {
+    background: #b91c1c;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(220, 38, 38, 0.4);
 }

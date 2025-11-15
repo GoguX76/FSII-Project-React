@@ -3,6 +3,7 @@ import { useCart } from "../context/CartContext";
 import useForm from "../hooks/useForm";
 import { validateForm } from "../utils/Validations";
 import "../css/checkout.css";
+import API_BASE_URL from "../config/api";
 
 const INITIAL_STATE = {
   card: "",
@@ -22,7 +23,7 @@ const Checkout = () => {
 
     // Verificar stock disponible
     try {
-      const stockResponse = await fetch('/api/products');
+      const stockResponse = await fetch(`${API_BASE_URL}/products`);
       if (!stockResponse.ok) throw new Error('Error al verificar el stock disponible.');
       const products = await stockResponse.json();
 
@@ -64,8 +65,8 @@ const Checkout = () => {
     const purchase = {
       userId: user.email,
       userName: user.name,
-      shippingDetails: values,
-      items: cartItems,
+      shippingDetails: JSON.stringify(values),
+      items: JSON.stringify(cartItems),
       totalAmount: total,
       purchaseDate: new Date().toISOString(),
     };
@@ -75,7 +76,7 @@ const Checkout = () => {
 
     try {
       // Primero decrementar stock en el servidor para cada producto
-      const productsResponse = await fetch('/api/products');
+      const productsResponse = await fetch(`${API_BASE_URL}/products`);
       if (!productsResponse.ok) throw new Error('Error al obtener productos para actualizar stock.');
       const products = await productsResponse.json();
 
@@ -87,7 +88,7 @@ const Checkout = () => {
         // Asegurar no bajar a negativo (aunque ya verificamos)
         const finalStock = newStock >= 0 ? newStock : 0;
 
-        const patchRes = await fetch(`/api/products/${prod.id}`, {
+        const patchRes = await fetch(`${API_BASE_URL}/products/${prod.id}`, {
           method: 'PATCH',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ stock: finalStock }),
@@ -97,7 +98,7 @@ const Checkout = () => {
           // rollback previo
           for (const upd of updated) {
             try {
-              await fetch(`/api/products/${upd.id}`, {
+              await fetch(`${API_BASE_URL}/products/${upd.id}`, {
                 method: 'PATCH',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ stock: upd.prevStock }),
@@ -111,7 +112,7 @@ const Checkout = () => {
       }
 
       // Si todos los PATCH fueron ok, registrar la purchase
-      const response = await fetch('/api/purchases', {
+      const response = await fetch(`${API_BASE_URL}/purchases`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(purchase),
@@ -121,7 +122,7 @@ const Checkout = () => {
         // intentar rollback si falla el POST
         for (const upd of updated) {
           try {
-            await fetch(`/api/products/${upd.id}`, {
+            await fetch(`${API_BASE_URL}/products/${upd.id}`, {
               method: 'PATCH',
               headers: { 'Content-Type': 'application/json' },
               body: JSON.stringify({ stock: upd.prevStock }),

@@ -1,26 +1,40 @@
 import React, { useState, useEffect } from "react";
-import { blogNews } from "../utils/Blog";
 import BlogModal from "../components/BlogModal";
 import "../css/blog.css";
+import API_BASE_URL from "../config/api";
 
 const Blog = () => {
   const [selectedPost, setSelectedPost] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [posts, setPosts] = useState([]);
+  const [loading, setLoading] = useState(true);
 
-  // Cargar los likes desde localStorage al iniciar
+  // Cargar blogs desde la API
   useEffect(() => {
-    const storedLikes = localStorage.getItem("blogLikes");
-    if (storedLikes) {
-      const likesData = JSON.parse(storedLikes);
-      const updatedPosts = blogNews.map((post) => ({
-        ...post,
-        likes: likesData[post.idNew] || post.likes || 0,
-      }));
-      setPosts(updatedPosts);
-    } else {
-      setPosts(blogNews);
-    }
+    const fetchBlogs = async () => {
+      try {
+        const response = await fetch(`${API_BASE_URL}/blogs`);
+        if (!response.ok) throw new Error('Error al cargar blogs');
+        const data = await response.json();
+
+        // Cargar los likes desde localStorage
+        const storedLikes = localStorage.getItem("blogLikes");
+        const likesData = storedLikes ? JSON.parse(storedLikes) : {};
+
+        const updatedPosts = data.map((post) => ({
+          ...post,
+          likes: likesData[post.idNew] || post.likes || 0,
+        }));
+
+        setPosts(updatedPosts);
+      } catch (error) {
+        console.error('Error fetching blogs:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchBlogs();
   }, []);
 
   // Función para manejar los likes
@@ -56,6 +70,10 @@ const Blog = () => {
     setIsModalOpen(false);
     setTimeout(() => setSelectedPost(null), 300);
   };
+
+  if (loading) {
+    return <div className="blog-container"><p>Cargando blogs...</p></div>;
+  }
 
   return (
     <>

@@ -8,6 +8,7 @@ import brazilDrumKit from "../assets/images/brazilian-drum-kit.png";
 import brazilSampleFusion from "../assets/images/brazilian-sample-fusion.png";
 import brazilSampleGems from "../assets/images/brazilian-sample-gems.png";
 import brazilSampleTrend from "../assets/images/brazilian-sample-trend.png";
+import API_BASE_URL from "../config/api";
 
 const IMAGES_MAP = {
   "brazil-vocals.png": brazilVocalsImg,
@@ -42,7 +43,7 @@ const BrazilianPhonk = ({ onNavigate }) => {
       setLoading(true);
       setError(null);
       try {
-  const res = await fetch("/api/products");
+  const res = await fetch(`${API_BASE_URL}/products`);
         if (!res.ok) throw new Error(`HTTP ${res.status}`);
         const data = await res.json();
         if (cancelled) return;

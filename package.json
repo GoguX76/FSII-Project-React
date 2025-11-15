@@ -1,8 +1,1 @@
-{
-  "scripts": {
-    "server": "json-server --watch Midnight-Phonk/server/db.json --host 0.0.0.0 --port 3001"
-  },
-  "devDependencies": {
-    "json-server": "^1.0.0-beta.3"
-  }
-}
+{}

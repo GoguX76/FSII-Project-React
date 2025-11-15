@@ -4,6 +4,7 @@ import { validateForm, isAdminEmail } from '../utils/Validations';
 import logo from '../assets/images/midnight-phonk.png';
 import '../css/forms.css';
 import { useCart } from '../context/CartContext';
+import API_BASE_URL from '../config/api';
 
 const INITIAL_STATE = {
   email: '',
@@ -19,7 +20,7 @@ const Login = ({ onNavigate }) => {
     console.log('Intentando iniciar sesión:', values);
 
     try {
-  const response = await fetch(`/api/users?email=${values.email}&password=${values.password}`);
+  const response = await fetch(`${API_BASE_URL}/users?email=${values.email}&password=${values.password}`);
       const foundUsers = await response.json();
 
       if (foundUsers.length > 0) {

@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import '../css/dashboard.css';
 import { ServerCrash } from 'lucide-react';
 import ConfirmModal from '../components/ConfirmModal';
+import API_BASE_URL from '../config/api';
 
 const Orders = () => {
   const [orders, setOrders] = useState([]);
@@ -12,12 +13,18 @@ const Orders = () => {
 
   const fetchOrders = async () => {
     try {
-      const response = await fetch('/api/purchases');
+      const response = await fetch(`${API_BASE_URL}/purchases`);
       if (!response.ok) {
         throw new Error('Error al conectar con la base de datos simulada.');
       }
       const data = await response.json();
-      setOrders(data);
+      // Parsear los strings JSON a objetos
+      const parsedOrders = data.map(order => ({
+        ...order,
+        items: typeof order.items === 'string' ? JSON.parse(order.items) : order.items,
+        shippingDetails: typeof order.shippingDetails === 'string' ? JSON.parse(order.shippingDetails) : order.shippingDetails
+      }));
+      setOrders(parsedOrders);
     } catch (err) {
       setError(err.message);
     } finally {

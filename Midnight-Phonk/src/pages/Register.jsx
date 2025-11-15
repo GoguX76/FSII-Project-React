@@ -4,6 +4,7 @@ import useForm from '../hooks/useForm';
 import { validateForm, isAdminEmail } from '../utils/Validations';
 import logo from '../assets/images/midnight-phonk.png';
 import '../css/forms.css';
+import API_BASE_URL from '../config/api';
 
 // 2. Define el estado inicial del formulario
 const INITIAL_STATE = {
@@ -25,7 +26,7 @@ const Register = ({ onNavigate, onAuthSuccess }) => {
 
     try {
       // Verificar si el usuario ya existe
-  const response = await fetch(`/api/users?email=${values.email}`);
+  const response = await fetch(`${API_BASE_URL}/users?email=${values.email}`);
   const existingUsers = await response.json();
 
       if (existingUsers.length > 0) {
@@ -40,7 +41,7 @@ const Register = ({ onNavigate, onAuthSuccess }) => {
         password: values.password, // En una app real, esto debería estar hasheado
       };
 
-      const postResponse = await fetch('/api/users', {
+      const postResponse = await fetch(`${API_BASE_URL}/users`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

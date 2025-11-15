@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import '../css/dashboard.css';
 import { ServerCrash } from 'lucide-react';
 import ConfirmModal from '../components/ConfirmModal';
+import API_BASE_URL from '../config/api';
 
 const Users = () => {
   const [users, setUsers] = useState([]);
@@ -12,9 +13,9 @@ const Users = () => {
 
   const fetchUsers = async () => {
     try {
-      const response = await fetch('/api/users');
+      const response = await fetch(`${API_BASE_URL}/users`);
       if (!response.ok) {
-        throw new Error('Error al conectar con la base de datos simulada.');
+        throw new Error('Error connecting to the API.');
       }
       const data = await response.json();
       setUsers(data);
@@ -42,7 +43,6 @@ const Users = () => {
           <ServerCrash size={48} />
           <h2>Error de Conexión</h2>
           <p>{error}</p>
-          <p>Asegúrate de haber iniciado el servidor con: <strong>npm run server</strong></p>
         </div>
       </div>
     );

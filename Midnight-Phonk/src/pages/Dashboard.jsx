@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import '../css/dashboard.css';
-import { 
-  ShoppingCart, Users, Package, ServerCrash, LayoutDashboard, 
-  LayoutGrid, BarChart2, User, Store 
+import {
+  ShoppingCart, Users, Package, ServerCrash, LayoutDashboard,
+  LayoutGrid, BarChart2, User, Store
 } from 'lucide-react';
+import API_BASE_URL from '../config/api';
 
 // Stat card (sin cambios)
 const StatCard = ({ title, value, subtext, icon, variant = 'blue' }) => {
@@ -38,8 +39,8 @@ const Dashboard = ({ onNavigate = () => {} }) => {
     const fetchData = async () => {
       try {
         const [usersResponse, purchasesResponse] = await Promise.all([
-          fetch('/api/users'),
-          fetch('/api/purchases'),
+          fetch(`${API_BASE_URL}/users`),
+          fetch(`${API_BASE_URL}/purchases`),
         ]);
 
         if (!usersResponse.ok || !purchasesResponse.ok) {

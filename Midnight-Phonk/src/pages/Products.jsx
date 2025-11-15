@@ -3,6 +3,7 @@ import '../css/dashboard.css';
 import { ServerCrash } from 'lucide-react';
 import ProductModal from '../components/ProductModal';
 import ConfirmModal from '../components/ConfirmModal';
+import API_BASE_URL from '../config/api';
 
 const emptyProduct = {
   title: '',
@@ -29,8 +30,8 @@ const Products = () => {
     setLoading(true);
     setError(null);
     try {
-      const response = await fetch('/api/products');
-      if (!response.ok) throw new Error('Error al conectar con la base de datos simulada.');
+      const response = await fetch(`${API_BASE_URL}/products`);
+      if (!response.ok) throw new Error('Error connecting to the API.');
       const data = await response.json();
       setProducts(data);
     } catch (err) {
@@ -111,14 +112,14 @@ const Products = () => {
       let res;
       if (editingProduct) {
         // update
-        res = await fetch(`/api/products/${editingProduct.id}`, {
+        res = await fetch(`${API_BASE_URL}/products/${editingProduct.id}`, {
           method: 'PUT',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ ...editingProduct, ...payload }),
         });
       } else {
         // create
-        res = await fetch('/api/products', {
+        res = await fetch(`${API_BASE_URL}/products`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify(payload),
@@ -144,7 +145,7 @@ const Products = () => {
   const confirmDelete = async () => {
     if (!pendingDelete) return;
     try {
-      const res = await fetch(`/api/products/${pendingDelete.id}`, { method: 'DELETE' });
+      const res = await fetch(`${API_BASE_URL}/products/${pendingDelete.id}`, { method: 'DELETE' });
       if (!res.ok) throw new Error('No se pudo eliminar el producto.');
       await fetchProducts();
       setPendingDelete(null);
@@ -167,7 +168,6 @@ const Products = () => {
           <ServerCrash size={48} />
           <h2>Error de Conexión</h2>
           <p>{error}</p>
-          <p>Asegúrate de haber iniciado el servidor con: <strong>npm run server</strong></p>
         </div>
       </div>
     );

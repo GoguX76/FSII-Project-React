@@ -32,7 +32,7 @@ const Register = () => {
       }
 
       const newUser = {
-        nombre: values.nombre,
+        name: values.nombre, // Changed from 'nombre' to 'name' to match backend
         email: values.email,
         password: values.password,
       };

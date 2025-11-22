@@ -1,5 +1,3 @@
-// src/components/Sidebar.jsx
-
 import React from "react";
 import { Link, useNavigate } from "react-router-dom";
 import {
@@ -12,6 +10,7 @@ import {
   User,
   Store,
   LogOut,
+  MessageSquare
 } from "lucide-react";
 import { useCart } from "../context/CartContext";
 
@@ -46,16 +45,16 @@ const Sidebar = () => {
             <Package className="w-5 h-5" />
             <span className="ml-3">Productos</span>
           </Link>
-          <Link to="/admin" className={navBtnClass}>
-            <LayoutGrid className="w-5 h-5" />
-            <span className="ml-3">Categorías</span>
-          </Link>
           {user?.admin && (
             <Link to="/admin/users" className={navBtnClass}>
               <Users className="w-5 h-5" />
               <span className="ml-3">Usuarios</span>
             </Link>
           )}
+          <Link to="/admin/contacts" className={navBtnClass}>
+            <MessageSquare className="w-5 h-5" />
+            <span className="ml-3">Solicitudes</span>
+          </Link>
         </nav>
 
         {/* Navegación Inferior */}

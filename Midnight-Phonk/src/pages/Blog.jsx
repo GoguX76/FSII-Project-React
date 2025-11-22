@@ -1,11 +1,15 @@
 import React, { useState, useEffect } from "react";
 import BlogModal from "../components/BlogModal";
+import CreateBlogModal from "../components/CreateBlogModal";
 import "../css/blog.css";
 import API_BASE_URL from "../config/api";
+import { useCart } from "../context/CartContext";
 
 const Blog = () => {
+  const { user } = useCart();
   const [selectedPost, setSelectedPost] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
   const [posts, setPosts] = useState([]);
   const [loading, setLoading] = useState(true);
 
@@ -71,6 +75,10 @@ const Blog = () => {
     setTimeout(() => setSelectedPost(null), 300);
   };
 
+  const handleBlogCreated = (newBlog) => {
+    setPosts([...posts, newBlog]);
+  };
+
   if (loading) {
     return <div className="blog-container"><p>Cargando blogs...</p></div>;
   }
@@ -78,6 +86,18 @@ const Blog = () => {
   return (
     <>
       <div className="blog-container">
+        {user?.admin && (
+          <div style={{ width: '100%', display: 'flex', justifyContent: 'flex-end', marginBottom: '2rem' }}>
+            <button
+              className="btn-primary"
+              onClick={() => setIsCreateModalOpen(true)}
+              style={{ padding: '0.8rem 1.5rem' }}
+            >
+              + Crear Nuevo Blog
+            </button>
+          </div>
+        )}
+
         {posts.map((post) => (
           <div key={post.idNew} className="blog-card">
             <img
@@ -119,6 +139,12 @@ const Blog = () => {
         isOpen={isModalOpen}
         onClose={handleCloseModal}
         onLike={handleLike}
+      />
+
+      <CreateBlogModal
+        isOpen={isCreateModalOpen}
+        onClose={() => setIsCreateModalOpen(false)}
+        onBlogCreated={handleBlogCreated}
       />
     </>
   );

@@ -1,8 +1,10 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import { useCart } from '../context/CartContext';
 import '../css/cart.css';
 
-const Cart = ({ onNavigate }) => {
+const Cart = () => {
+  const navigate = useNavigate();
   const { cartItems, removeFromCart, updateQuantity, clearCart, total } = useCart();
 
   return (
@@ -33,7 +35,7 @@ const Cart = ({ onNavigate }) => {
           <div className="cart-summary">
             <h3>Total: ${total.toFixed(2)}</h3>
             <button className="clear-btn" onClick={clearCart}>Limpiar carrito</button>
-            <button className="checkout-btn" onClick={() => onNavigate('checkout')}>Seleccionar dirección de envío</button>
+            <button className="checkout-btn" onClick={() => navigate('/checkout')}>Seleccionar dirección de envío</button>
           </div>
         </>
       )}

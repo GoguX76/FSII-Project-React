@@ -21,14 +21,35 @@ const Contact = () => {
     const [message, setMessage] = useState("");
 
     // 3. Define la lógica que se ejecutará si la validación es exitosa
-    const handleSuccessfulSubmit = () => {
-        setMessage("¡Mensaje enviado con éxito! Nos pondremos en contacto pronto.");
-        
-        // Usamos la función del hook para resetear el formulario
-        setValues(INITIAL_STATE); 
+    const handleSuccessfulSubmit = async () => {
+        try {
+            // Mapear los valores del formulario (español) a la entidad del backend (inglés)
+            const payload = {
+                name: values.nombre,
+                email: values.email,
+                subject: values.asunto,
+                message: values.mensaje
+            };
 
-        // Opcional: Ocultar el mensaje de éxito después de unos segundos
-        setTimeout(() => setMessage(""), 5000);
+            const response = await fetch('http://localhost:8080/api/contacts', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(payload),
+            });
+
+            if (response.ok) {
+                setMessage("¡Mensaje enviado con éxito! Nos pondremos en contacto pronto.");
+                setValues(INITIAL_STATE);
+                setTimeout(() => setMessage(""), 5000);
+            } else {
+                setMessage("Error al enviar el mensaje. Inténtalo de nuevo.");
+            }
+        } catch (error) {
+            console.error("Error sending contact form:", error);
+            setMessage("Error de conexión. Inténtalo de nuevo más tarde.");
+        }
     };
 
     // 4. Llama al hook para obtener toda la lógica
@@ -45,8 +66,8 @@ const Contact = () => {
             <div className="form-page contact-page">
                 <div className="container">
                     <section className="form-card contact-section">
-                        <div className="card-content" style={{textAlign: 'left'}}>
-                            <h2 className="title" style={{textAlign: 'center', marginBottom: '1rem'}}>Contáctanos</h2>
+                        <div className="card-content" style={{ textAlign: 'left' }}>
+                            <h2 className="title" style={{ textAlign: 'center', marginBottom: '1rem' }}>Contáctanos</h2>
                             <p className="subtitle">
                                 Por favor, completa el siguiente formulario y nos pondremos en
                                 contacto contigo lo antes posible.
@@ -83,7 +104,7 @@ const Contact = () => {
                                         {errors.email && <p className="error-message">{errors.email}</p>}
                                     </div>
                                 </div>
-                                
+
                                 <select
                                     name="asunto"
                                     value={values.asunto}
@@ -96,7 +117,7 @@ const Contact = () => {
                                     <option value="articulo">Artículo Inapropiado</option>
                                 </select>
                                 {errors.asunto && <p className="error-message">{errors.asunto}</p>}
-                                
+
                                 <textarea
                                     name="mensaje"
                                     placeholder="Describe tu problema o consulta"

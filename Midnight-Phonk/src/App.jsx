@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { Routes, Route, Navigate } from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route, Navigate, useNavigate } from "react-router-dom";
 import { useCart } from "./context/CartContext";
 
 // Components
@@ -22,14 +22,31 @@ import Dashboard from "./pages/Dashboard";
 import Users from "./pages/Users";
 import Products from "./pages/Products";
 import Orders from "./pages/Orders";
+import ContactRequests from "./pages/ContactRequests";
 
 // Styles
 import "./css/cards.css";
 import "./css/forms.css";
 import "./css/cart.css";
 
+// Componente para proteger rutas de administrador
+const AdminRoute = ({ children }) => {
+  const { user } = useCart();
+
+  if (!user || !user.admin) {
+    return <Navigate to="/" replace />;
+  }
+
+  return children;
+};
+
 function App() {
   const { user } = useCart();
+  const navigate = useNavigate();
+
+  const handleNavigate = (path) => {
+    navigate(`/${path}`);
+  };
 
   useEffect(() => {
     // Configuración de Tailwind CSS (para el entorno Canvas)
@@ -52,8 +69,8 @@ function App() {
           <Route path="/blog" element={<Blog />} />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
-          <Route path="/brazilianphonk" element={<BrazilianPhonk />} />
-          <Route path="/japanesephonk" element={<JapanesePhonk />} />
+          <Route path="/brazilianphonk" element={<BrazilianPhonk onNavigate={handleNavigate} />} />
+          <Route path="/japanesephonk" element={<JapanesePhonk onNavigate={handleNavigate} />} />
           <Route path="/cart" element={<Cart />} />
           <Route path="/checkout" element={<Checkout />} />
 
@@ -68,6 +85,7 @@ function App() {
                     <Route path="users" element={<Users />} />
                     <Route path="products" element={<Products />} />
                     <Route path="orders" element={<Orders />} />
+                    <Route path="contacts" element={<ContactRequests />} />
                   </Routes>
                 </div>
               </div>

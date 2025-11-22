@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import '../css/dashboard.css';
 import {
   ShoppingCart, Users, Package, ServerCrash, LayoutDashboard,
-  LayoutGrid, BarChart2, User, Store
+  LayoutGrid, BarChart2, User, Store, MessageSquare
 } from 'lucide-react';
 import API_BASE_URL from '../config/api';
 
@@ -22,7 +23,8 @@ const StatCard = ({ title, value, subtext, icon, variant = 'blue' }) => {
   );
 };
 
-const Dashboard = ({ onNavigate = () => {} }) => {
+const Dashboard = () => {
+  const navigate = useNavigate();
   const [users, setUsers] = useState([]);
   const [purchases, setPurchases] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -30,9 +32,10 @@ const Dashboard = ({ onNavigate = () => {} }) => {
 
   // Datos para el action grid
   const actionItems = [
-    { title: 'Órdenes', desc: 'Gestión de órdenes', icon: <ShoppingCart />, path: 'admin/orders' },
-    { title: 'Productos', desc: 'Administrar inventario', icon: <Package />, path: 'admin/products' },
-    { title: 'Usuarios', desc: 'Gestión de usuarios', icon: <Users />, path: 'admin/users' },
+    { title: 'Órdenes', desc: 'Gestión de órdenes', icon: <ShoppingCart />, path: '/admin/orders' },
+    { title: 'Productos', desc: 'Administrar inventario', icon: <Package />, path: '/admin/products' },
+    { title: 'Usuarios', desc: 'Gestión de usuarios', icon: <Users />, path: '/admin/users' },
+    { title: 'Solicitudes', desc: 'Mensajes de contacto', icon: <MessageSquare />, path: '/admin/contacts' },
   ];
 
   useEffect(() => {
@@ -70,10 +73,10 @@ const Dashboard = ({ onNavigate = () => {} }) => {
     return (
       <div className="dashboard-page">
         <div className="inner-container error-container">
-            <ServerCrash size={48} />
-            <h2>Error de Conexión</h2>
-            <p>{error}</p>
-            <p>Asegúrate de haber iniciado el servidor con: <strong>npm run server</strong></p>
+          <ServerCrash size={48} />
+          <h2>Error de Conexión</h2>
+          <p>{error}</p>
+          <p>Asegúrate de haber iniciado el servidor con: <strong>npm run server</strong></p>
         </div>
       </div>
     );
@@ -97,7 +100,7 @@ const Dashboard = ({ onNavigate = () => {} }) => {
 
         <div className="action-grid mt-8">
           {actionItems.map(item => (
-            <div key={item.title} className="action-card" onClick={() => onNavigate(item.path)}>
+            <div key={item.title} className="action-card" onClick={() => navigate(item.path)}>
               <div className="icon-wrap">{React.cloneElement(item.icon, { className: 'w-6 h-6' })}</div>
               <h3 className="action-title">{item.title}</h3>
               <p className="action-desc">{item.desc}</p>

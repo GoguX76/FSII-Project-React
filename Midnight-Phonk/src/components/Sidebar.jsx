@@ -1,6 +1,7 @@
 // src/components/Sidebar.jsx
 
 import React from "react";
+import { Link, useNavigate } from "react-router-dom";
 import {
   LayoutDashboard,
   ShoppingCart,
@@ -14,15 +15,17 @@ import {
 } from "lucide-react";
 import { useCart } from "../context/CartContext";
 
-const Sidebar = ({ onNavigate = () => {} }) => {
+const Sidebar = () => {
   const { user, logout } = useCart();
+  const navigate = useNavigate();
+
   // Clase base para los botones/enlaces del sidebar
   const navBtnClass =
-    "flex items-center px-4 py-3 text-sm font-medium rounded-lg transition-colors duration-200 text-indigo-200 hover:bg-[rgba(255,255,255,0.04)]";
+    "flex items-center px-4 py-3 text-sm font-medium rounded-lg transition-colors duration-200 text-indigo-200 hover:bg-[rgba(255,255,255,0.04)] w-full text-left";
 
   const handleLogout = () => {
     logout();
-    onNavigate("home");
+    navigate("/");
   };
 
   return (
@@ -31,53 +34,44 @@ const Sidebar = ({ onNavigate = () => {} }) => {
       <div className="flex flex-col justify-between flex-1">
         {/* Navegación Principal */}
         <nav className="flex-1 space-y-2">
-          <button onClick={() => onNavigate("admin")} className={navBtnClass}>
+          <Link to="/admin" className={navBtnClass}>
             <LayoutDashboard className="w-5 h-5" />
             <span className="ml-3">Dashboard</span>
-          </button>
-          <button
-            onClick={() => onNavigate("admin/orders")}
-            className={navBtnClass}
-          >
+          </Link>
+          <Link to="/admin/orders" className={navBtnClass}>
             <ShoppingCart className="w-5 h-5" />
             <span className="ml-3">Órdenes</span>
-          </button>
-          <button
-            onClick={() => onNavigate("admin/products")}
-            className={navBtnClass}
-          >
+          </Link>
+          <Link to="/admin/products" className={navBtnClass}>
             <Package className="w-5 h-5" />
             <span className="ml-3">Productos</span>
-          </button>
-          <button onClick={() => onNavigate("admin")} className={navBtnClass}>
+          </Link>
+          <Link to="/admin" className={navBtnClass}>
             <LayoutGrid className="w-5 h-5" />
             <span className="ml-3">Categorías</span>
-          </button>
+          </Link>
           {user?.admin && (
-            <button
-              onClick={() => onNavigate("admin/users")}
-              className={navBtnClass}
-            >
+            <Link to="/admin/users" className={navBtnClass}>
               <Users className="w-5 h-5" />
               <span className="ml-3">Usuarios</span>
-            </button>
+            </Link>
           )}
         </nav>
 
         {/* Navegación Inferior */}
         <div className="space-y-2">
-          <button onClick={() => onNavigate("admin")} className={navBtnClass}>
+          <button onClick={() => navigate("/admin")} className={navBtnClass}>
             <User className="w-5 h-5" />
             <span className="ml-3">Perfil</span>
           </button>
-          {/* Estos son botones, puedes cambiarlos por NavLink si van a otras rutas */}
-          <button
-            onClick={() => onNavigate("home")}
+
+          <Link
+            to="/"
             className="flex items-center w-full px-4 py-3 text-sm font-medium text-white bg-gray-800 rounded-lg hover:bg-gray-700"
           >
             <Store className="w-5 h-5" />
             <span className="ml-3">Tienda</span>
-          </button>
+          </Link>
           <button
             onClick={handleLogout}
             className="flex items-center w-full px-4 py-3 text-sm font-medium text-white bg-red-600 rounded-lg hover:bg-red-500"

@@ -1,12 +1,11 @@
 import React, { useState } from 'react';
-// 1. Importa el hook y las reglas de validación
+import { useNavigate, Link } from 'react-router-dom';
 import useForm from '../hooks/useForm';
 import { validateForm, isAdminEmail } from '../utils/Validations';
 import logo from '../assets/images/midnight-phonk.png';
 import '../css/forms.css';
 import API_BASE_URL from '../config/api';
 
-// 2. Define el estado inicial del formulario
 const INITIAL_STATE = {
   nombre: '',
   email: '',
@@ -15,30 +14,27 @@ const INITIAL_STATE = {
   confirmPassword: '',
 };
 
-const Register = ({ onNavigate, onAuthSuccess }) => {
-  // El estado para los mensajes de éxito/error se mantiene aquí
+const Register = () => {
   const [message, setMessage] = useState('');
+  const navigate = useNavigate();
 
-  // 3. Define la lógica que se ejecutará si el formulario es válido
   const handleSuccessfulRegistration = async () => {
     setMessage('Validación exitosa. Registrando usuario...');
     console.log('Intentando registrar:', values);
 
     try {
-      // Verificar si el usuario ya existe
-  const response = await fetch(`${API_BASE_URL}/users?email=${values.email}`);
-  const existingUsers = await response.json();
+      const response = await fetch(`${API_BASE_URL}/users?email=${values.email}`);
+      const existingUsers = await response.json();
 
       if (existingUsers.length > 0) {
         setMessage('El correo electrónico ya está registrado. Por favor, intenta con otro.');
         return;
       }
 
-      // Si no existe, proceder con el registro
       const newUser = {
         nombre: values.nombre,
         email: values.email,
-        password: values.password, // En una app real, esto debería estar hasheado
+        password: values.password,
       };
 
       const postResponse = await fetch(`${API_BASE_URL}/users`, {
@@ -54,16 +50,10 @@ const Register = ({ onNavigate, onAuthSuccess }) => {
       }
 
       setMessage(`¡Registro exitoso para ${values.nombre}! Redirigiendo...`);
-      const userObj = { email: values.email, name: values.nombre };
       const admin = isAdminEmail(values.email);
 
-      // Simular una pequeña espera y luego navegar
       setTimeout(() => {
-        if (onAuthSuccess) {
-          onAuthSuccess({ user: userObj, admin });
-        } else {
-          onNavigate(admin ? 'admin' : 'login');
-        }
+        navigate(admin ? '/admin' : '/login');
       }, 1500);
 
     } catch (error) {
@@ -72,7 +62,6 @@ const Register = ({ onNavigate, onAuthSuccess }) => {
     }
   };
 
-  // 4. Usa el hook para obtener todo lo que necesitas
   const {
     values,
     errors,
@@ -91,17 +80,13 @@ const Register = ({ onNavigate, onAuthSuccess }) => {
             <div className="title">Registro MP</div>
             <p className="subtitle">Por favor, ingresa tus datos</p>
 
-            {/* Muestra el mensaje de éxito o de proceso */}
             {message && (
               <div className={`message ${message.includes('exitoso') ? 'success' : 'info'}`}>
                 {message}
               </div>
             )}
 
-            {/* 5. El 'handleSubmit' del formulario ahora viene del hook */}
             <form onSubmit={handleSubmit} noValidate>
-              
-              {/* CAMBIO: Se añade el atributo 'name' y se muestra el error */}
               <input type="text" id="nombre" name="nombre" placeholder="Nombre completo" value={values.nombre} onChange={handleChange} className="form-input" />
               {errors.nombre && <p className="error-message">{errors.nombre}</p>}
 
@@ -113,7 +98,7 @@ const Register = ({ onNavigate, onAuthSuccess }) => {
 
               <input type="password" id="password" name="password" placeholder="Contraseña" value={values.password} onChange={handleChange} className="form-input" />
               {errors.password && <p className="error-message">{errors.password}</p>}
-              
+
               <input type="password" id="confirmPassword" name="confirmPassword" placeholder="Confirmar contraseña" value={values.confirmPassword} onChange={handleChange} className="form-input" />
               {errors.confirmPassword && <p className="error-message">{errors.confirmPassword}</p>}
 
@@ -121,7 +106,7 @@ const Register = ({ onNavigate, onAuthSuccess }) => {
             </form>
 
             <div className="card-footer">
-              <p className="small">¿Ya tienes cuenta? <a href="#" onClick={(e) => { e.preventDefault(); onNavigate('login'); }} className="link-small">Inicia sesión</a></p>
+              <p className="small">¿Ya tienes cuenta? <Link to="/login" className="link-small">Inicia sesión</Link></p>
             </div>
           </div>
         </div>

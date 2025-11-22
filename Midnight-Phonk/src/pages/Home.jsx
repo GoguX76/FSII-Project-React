@@ -1,7 +1,7 @@
 import React from "react";
 import "../css/home.css";
 import logo from "../assets/images/midnight-phonk.png";
-import SwiperCarousel from "../components/swiperCarousel";
+import SwiperCarousel from "../components/SwiperCarousel";
 
 function Home() {
   return (

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import PageWrapper from "../components/PageWrapper";
-import ProductCard from "../components/productCard";
+import ProductCard from "../components/ProductCard";
 import ProductModal from "../components/ProductModal";
 import brazilVocalsImg from "../assets/images/brazil-vocals.png";
 import brazilSamplesImg from "../assets/images/brazilian-samples.png";
@@ -43,12 +43,15 @@ const BrazilianPhonk = ({ onNavigate }) => {
       setLoading(true);
       setError(null);
       try {
-  const res = await fetch(`${API_BASE_URL}/products`);
+        const res = await fetch(`${API_BASE_URL}/products`);
         if (!res.ok) throw new Error(`HTTP ${res.status}`);
         const data = await res.json();
         if (cancelled) return;
+        // Filter for Brazilian Phonk products (or legacy products without category)
+        const filtered = data.filter(p => !p.category || p.category === 'brazilian');
+
         // Map image filename to imported module so components get usable src
-        const mapped = data.map((p) => ({
+        const mapped = filtered.map((p) => ({
           ...p,
           // keep compatibility: some components expect `title` key and `image`
           title: p.title || p.name || p.title,

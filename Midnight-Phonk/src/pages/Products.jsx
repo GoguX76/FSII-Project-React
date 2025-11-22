@@ -12,6 +12,7 @@ const emptyProduct = {
   fullDesc: '',
   price: '',
   stock: '',
+  category: '',
 };
 
 const Products = () => {
@@ -60,6 +61,7 @@ const Products = () => {
       fullDesc: p.fullDesc || '',
       price: p.price != null ? String(p.price) : '',
       stock: p.stock != null ? String(p.stock) : '0',
+      category: p.category || 'brazilian',
     });
     setIsModalOpen(true);
   };
@@ -107,6 +109,7 @@ const Products = () => {
         fullDesc: form.fullDesc,
         price: Number(form.price) || 0,
         stock: Number(form.stock) || 0,
+        category: form.category,
       };
 
       let res;
@@ -177,7 +180,7 @@ const Products = () => {
     <div className="dashboard-page">
       <div className="inner-container">
         <div className="dashboard-card">
-          <div style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center'}}>
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
             <div>
               <h1 className="dashboard-title">Gestión de Productos</h1>
               <p className="dashboard-subtitle">Lista de productos disponibles</p>
@@ -196,6 +199,7 @@ const Products = () => {
                   <th>Nombre</th>
                   <th>Precio</th>
                   <th>Stock</th>
+                  <th>Categoría</th>
                   <th>Acciones</th>
                 </tr>
               </thead>
@@ -207,17 +211,18 @@ const Products = () => {
                       <img
                         src={product.image ? (product.image.startsWith('data:') ? product.image : product.image.startsWith('/') ? product.image : `/src/assets/images/${product.image}`) : '/src/assets/images/placeholder-image.jpg'}
                         alt={product.title || 'Imagen'}
-                        style={{width:60, height:60, objectFit:'cover', borderRadius:6}}
+                        style={{ width: 60, height: 60, objectFit: 'cover', borderRadius: 6 }}
                         onError={(e) => { e.target.src = '/src/assets/images/placeholder-image.jpg'; e.target.alt = 'Imagen no disponible'; }}
                       />
                     </td>
                     <td>{product.title || product.name || '—'}</td>
                     <td>${(typeof product.price === 'number') ? product.price.toFixed(2) : product.price}</td>
                     <td>{product.stock || 0}</td>
+                    <td>{product.category === 'japanese' ? 'Japonés' : 'Brasileño'}</td>
                     <td>
                       <button className="btn-secondary" onClick={() => setViewProduct(product)}>Ver</button>
-                      <button className="btn-secondary" style={{marginLeft:8}} onClick={() => openEdit(product)}>Editar</button>
-                      <button className="btn-danger" style={{marginLeft:8}} onClick={() => handleDelete(product)}>Eliminar</button>
+                      <button className="btn-secondary" style={{ marginLeft: 8 }} onClick={() => openEdit(product)}>Editar</button>
+                      <button className="btn-danger" style={{ marginLeft: 8 }} onClick={() => handleDelete(product)}>Eliminar</button>
                     </td>
                   </tr>
                 ))}
@@ -233,11 +238,11 @@ const Products = () => {
               <button className="modal-close-btn" onClick={closeModal}>✕</button>
               <div className="modal-header">
                 <div className="modal-image-container">
-                  <img 
+                  <img
                     id="image-preview"
-                    src={form.image ? (form.image.startsWith('data:') ? form.image : form.image.startsWith('/') ? form.image : `/src/assets/images/${form.image}`) : '/src/assets/images/placeholder-image.jpg'} 
-                    alt={form.title || 'Imagen'} 
-                    className="modal-product-image" 
+                    src={form.image ? (form.image.startsWith('data:') ? form.image : form.image.startsWith('/') ? form.image : `/src/assets/images/${form.image}`) : '/src/assets/images/placeholder-image.jpg'}
+                    alt={form.title || 'Imagen'}
+                    className="modal-product-image"
                     onError={(e) => {
                       e.target.src = '/src/assets/images/placeholder-image.jpg';
                       e.target.alt = 'Imagen no disponible';
@@ -257,11 +262,11 @@ const Products = () => {
                     <label>Imagen (sube un archivo)</label>
                     <input name="imageFile" type="file" accept="image/*" onChange={handleFileChange} />
                     {form.image && (
-                      <div style={{marginTop:8}}>
-                        <img 
-                          src={form.image.startsWith('data:') ? form.image : form.image.startsWith('/') ? form.image : `/src/assets/images/${form.image}`} 
-                          alt="preview" 
-                          style={{height:80, objectFit:'contain', borderRadius:6}}
+                      <div style={{ marginTop: 8 }}>
+                        <img
+                          src={form.image.startsWith('data:') ? form.image : form.image.startsWith('/') ? form.image : `/src/assets/images/${form.image}`}
+                          alt="preview"
+                          style={{ height: 80, objectFit: 'contain', borderRadius: 6 }}
                           onError={(e) => {
                             e.target.src = '/src/assets/images/placeholder-image.jpg';
                             e.target.alt = 'Vista previa no disponible';
@@ -276,7 +281,7 @@ const Products = () => {
                   </div>
                   <div className="form-group">
                     <label>Descripción completa</label>
-                    <textarea name="fullDesc" value={form.fullDesc} onChange={handleChange} style={{height:36}} />
+                    <textarea name="fullDesc" value={form.fullDesc} onChange={handleChange} style={{ height: 36 }} />
                   </div>
                   <div className="form-group">
                     <label>Precio</label>
@@ -286,8 +291,15 @@ const Products = () => {
                     <label>Stock</label>
                     <input name="stock" value={form.stock} onChange={handleChange} type="number" min="0" required />
                   </div>
+                  <div className="form-group">
+                    <label>Categoría</label>
+                    <select name="category" value={form.category} onChange={handleChange} className="form-input">
+                      <option value="brazilian">Phonk Brasileño</option>
+                      <option value="japanese">Phonk Japonés</option>
+                    </select>
+                  </div>
 
-                  <div className="modal-actions" style={{marginTop:12}}>
+                  <div className="modal-actions" style={{ marginTop: 12 }}>
                     <button type="submit" className="btn-primary" disabled={saving}>{saving ? 'Guardando...' : 'Guardar'}</button>
                     <button type="button" className="btn-secondary" onClick={closeModal}>Cancelar</button>
                   </div>

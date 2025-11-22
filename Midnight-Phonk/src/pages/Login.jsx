@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useNavigate, Link } from 'react-router-dom';
 import useForm from '../hooks/useForm';
 import { validateForm, isAdminEmail } from '../utils/Validations';
 import logo from '../assets/images/midnight-phonk.png';
@@ -11,16 +12,17 @@ const INITIAL_STATE = {
   password: '',
 };
 
-const Login = ({ onNavigate }) => {
+const Login = () => {
   const [message, setMessage] = useState('');
   const { login } = useCart();
+  const navigate = useNavigate();
 
   const handleSuccessfulLogin = async () => {
     setMessage('Validación correcta. Verificando credenciales...');
     console.log('Intentando iniciar sesión:', values);
 
     try {
-  const response = await fetch(`${API_BASE_URL}/users?email=${values.email}&password=${values.password}`);
+      const response = await fetch(`${API_BASE_URL}/users?email=${values.email}&password=${values.password}`);
       const foundUsers = await response.json();
 
       if (foundUsers.length > 0) {
@@ -32,7 +34,7 @@ const Login = ({ onNavigate }) => {
 
         login({ user: userObj, admin });
 
-        setTimeout(() => onNavigate(admin ? 'admin' : 'home'), 700);
+        setTimeout(() => navigate(admin ? '/admin' : '/'), 700);
       } else {
         setMessage('Credenciales inválidas. Por favor, verifica tu correo y contraseña.');
       }
@@ -100,7 +102,7 @@ const Login = ({ onNavigate }) => {
 
             <div className="card-footer">
               <p className="small">
-                ¿No tienes cuenta? <a href="#" onClick={(e) => { e.preventDefault(); onNavigate('register'); }} className="link-small">Regístrate</a>
+                ¿No tienes cuenta? <Link to="/register" className="link-small">Regístrate</Link>
               </p>
             </div>
           </div>

@@ -7,7 +7,10 @@ export const useCart = () => {
 };
 
 export const CartProvider = ({ children }) => {
-  const [cartItems, setCartItems] = useState([]);
+  const [cartItems, setCartItems] = useState(() => {
+    const storedCart = localStorage.getItem('cartItems');
+    return storedCart ? JSON.parse(storedCart) : [];
+  });
   const [user, setUser] = useState(null);
 
   useEffect(() => {
@@ -16,6 +19,10 @@ export const CartProvider = ({ children }) => {
       setUser(JSON.parse(storedUser));
     }
   }, []);
+
+  useEffect(() => {
+    localStorage.setItem('cartItems', JSON.stringify(cartItems));
+  }, [cartItems]);
 
   const login = (userData) => {
     localStorage.setItem('loggedInUser', JSON.stringify(userData));
@@ -63,7 +70,7 @@ export const CartProvider = ({ children }) => {
     setCartItems([]);
   };
 
-  const total = useMemo(() => 
+  const total = useMemo(() =>
     cartItems.reduce((acc, item) => acc + item.price * item.quantity, 0),
     [cartItems]
   );

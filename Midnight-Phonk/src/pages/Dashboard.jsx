@@ -82,7 +82,7 @@ const Dashboard = () => {
     );
   }
 
-  const totalRevenue = purchases.reduce((acc, p) => acc + p.totalAmount, 0);
+  const totalRevenue = purchases.reduce((acc, p) => acc + p.totalPrice, 0);
 
   return (
     <div className="dashboard-page">

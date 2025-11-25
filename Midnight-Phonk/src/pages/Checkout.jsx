@@ -65,8 +65,8 @@ const Checkout = () => {
     const purchase = {
       userId: user.email,
       userName: user.name,
-      shippingDetails: JSON.stringify(values),
-      items: JSON.stringify(cartItems),
+      shippingDetails: values,
+      items: cartItems,
       totalAmount: total,
       purchaseDate: new Date().toISOString(),
     };
@@ -103,7 +103,7 @@ const Checkout = () => {
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ stock: upd.prevStock }),
               });
-            } catch (ignored) {}
+            } catch (ignored) { }
           }
           throw new Error(`No se pudo actualizar el stock de ${cartItem.title}.`);
         }
@@ -127,7 +127,7 @@ const Checkout = () => {
               headers: { 'Content-Type': 'application/json' },
               body: JSON.stringify({ stock: upd.prevStock }),
             });
-          } catch (ignored) {}
+          } catch (ignored) { }
         }
         throw new Error('No se pudo registrar el pedido. Se revirtieron los cambios de stock.');
       }
@@ -151,7 +151,7 @@ const Checkout = () => {
     const loggedInUserData = localStorage.getItem("loggedInUser");
     if (loggedInUserData) {
       const { user } = JSON.parse(loggedInUserData);
-      setValues((prev) => ({ ...prev, name: user.name, email: user.email }));
+      setValues((prev) => ({ ...prev, name: user.name || "", email: user.email || "" }));
     }
   }, [setValues]);
 
@@ -215,6 +215,17 @@ const Checkout = () => {
               onChange={handleChange}
             />
             {errors.email && <p className="error-text">{errors.email}</p>}
+          </div>
+          <div className="form-group">
+            <label htmlFor="address">Dirección</label>
+            <input
+              type="text"
+              id="address"
+              name="address"
+              value={values.address}
+              onChange={handleChange}
+            />
+            {errors.address && <p className="error-text">{errors.address}</p>}
           </div>
           <div className="form-group">
             <label htmlFor="city">Ciudad</label>

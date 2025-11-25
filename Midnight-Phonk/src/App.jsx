@@ -51,6 +51,17 @@ function App() {
   useEffect(() => {
     // Configuración de Tailwind CSS (para el entorno Canvas)
     if (typeof window !== "undefined") {
+      // Configurar Tailwind para usar modo 'class'
+      const configScript = document.createElement("script");
+      configScript.innerHTML = `
+        tailwind = {
+          config: {
+            darkMode: 'class'
+          }
+        }
+      `;
+      document.head.appendChild(configScript);
+
       const script = document.createElement("script");
       script.src = "https://cdn.tailwindcss.com";
       document.head.appendChild(script);

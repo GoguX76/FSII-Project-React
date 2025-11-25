@@ -11,7 +11,7 @@ const Users = () => {
   const [actionMessage, setActionMessage] = useState(null);
   const [pendingDelete, setPendingDelete] = useState(null);
   const [editingUser, setEditingUser] = useState(null);
-  const [editForm, setEditForm] = useState({ nombre: '', email: '', password: '' });
+  const [editForm, setEditForm] = useState({ name: '', email: '', password: '' });
 
   const fetchUsers = async () => {
     try {
@@ -56,7 +56,7 @@ const Users = () => {
 
   const handleEdit = (user) => {
     setEditingUser(user);
-    setEditForm({ nombre: user.nombre, email: user.email, password: '' });
+    setEditForm({ name: user.name, email: user.email, password: '' });
   };
 
   const handleSaveEdit = async () => {
@@ -66,7 +66,7 @@ const Users = () => {
       // Only include password if it was changed
       const updateData = {
         ...editingUser,
-        nombre: editForm.nombre,
+        name: editForm.name,
         email: editForm.email
       };
 
@@ -143,7 +143,7 @@ const Users = () => {
                 {users.map(user => (
                   <tr key={user.id}>
                     <td>{user.id}</td>
-                    <td>{user.nombre}</td>
+                    <td>{user.name}</td>
                     <td>{user.email}</td>
                     <td>{user.email.endsWith('@adminduoc.cl') ? 'Admin' : 'User'}</td>
                     <td>
@@ -180,8 +180,8 @@ const Users = () => {
                   <label style={{ color: '#ccc', display: 'block', marginBottom: '0.5rem' }}>Nombre</label>
                   <input
                     type="text"
-                    value={editForm.nombre}
-                    onChange={(e) => setEditForm({ ...editForm, nombre: e.target.value })}
+                    value={editForm.name}
+                    onChange={(e) => setEditForm({ ...editForm, name: e.target.value })}
                     className="form-input"
                   />
                 </div>
@@ -216,7 +216,7 @@ const Users = () => {
         {/* Delete Confirmation */}
         <ConfirmModal
           isOpen={!!pendingDelete}
-          title={pendingDelete ? `Eliminar "${pendingDelete.nombre}"` : 'Eliminar usuario'}
+          title={pendingDelete ? `Eliminar "${pendingDelete.name}"` : 'Eliminar usuario'}
           message={pendingDelete ? '¿Estás seguro de que deseas eliminar este usuario? Esta acción no se puede deshacer.' : ''}
           onConfirm={handleDelete}
           onCancel={() => setPendingDelete(null)}

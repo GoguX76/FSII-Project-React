@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import '../css/dashboard.css';
 import { ServerCrash } from 'lucide-react';
-import ConfirmModal from '../components/ConfirmModal';
 import API_BASE_URL from '../config/api';
 
 const Orders = () => {
@@ -10,7 +9,6 @@ const Orders = () => {
   const [error, setError] = useState(null);
   const [actionMessage, setActionMessage] = useState(null);
 
-
   const fetchOrders = async () => {
     try {
       const response = await fetch(`${API_BASE_URL}/purchases`);
@@ -18,12 +16,21 @@ const Orders = () => {
         throw new Error('Error al conectar con la base de datos simulada.');
       }
       const data = await response.json();
-      // Parsear los strings JSON a objetos
-      const parsedOrders = data.map(order => ({
-        ...order,
-        items: typeof order.items === 'string' ? JSON.parse(order.items) : order.items,
-        shippingDetails: typeof order.shippingDetails === 'string' ? JSON.parse(order.shippingDetails) : order.shippingDetails
-      }));
+
+      const parsedOrders = data.map(order => {
+        let parsedShipping = {};
+        try {
+          parsedShipping = typeof order.shippingDetails === 'string'
+            ? JSON.parse(order.shippingDetails)
+            : order.shippingDetails || {};
+        } catch (e) {
+          console.error("Error parsing shipping details", e);
+        }
+        return {
+          ...order,
+          shippingDetails: parsedShipping
+        };
+      });
       setOrders(parsedOrders);
     } catch (err) {
       setError(err.message);
@@ -36,12 +43,21 @@ const Orders = () => {
     fetchOrders();
   }, []);
 
-
   if (loading) {
     return <div className="dashboard-page"><div className="inner-container"><p>Cargando órdenes...</p></div></div>;
   }
 
-
+  if (error) {
+    return (
+      <div className="dashboard-page">
+        <div className="inner-container error-container">
+          <ServerCrash size={48} />
+          <h2>Error de Conexión</h2>
+          <p>{error}</p>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="dashboard-page">
@@ -65,11 +81,11 @@ const Orders = () => {
             <table className="data-table">
               <thead>
                 <tr>
-                  <th>ID de Orden</th>
-                  <th>Email del Cliente</th>
-                  <th>Productos</th>
+                  <th>ID</th>
+                  <th>Cliente</th>
+                  <th>Producto</th>
                   <th>Dirección de Envío</th>
-                  <th>Monto Total</th>
+                  <th>Total</th>
                   <th>Fecha</th>
                 </tr>
               </thead>
@@ -77,20 +93,19 @@ const Orders = () => {
                 {orders.map(order => (
                   <tr key={order.id}>
                     <td>{order.id}</td>
-                    <td>{order.userId}</td>
+                    <td>{order.user?.email || 'N/A'}</td>
                     <td>
-                      <ul>
-                        {order.items.map(item => (
-                          <li key={item.id}>{item.title} (x{item.quantity})</li>
-                        ))}
-                      </ul>
+                      {order.product?.title} (x{order.quantity})
                     </td>
                     <td>
-                      {order.shippingDetails.address}, {order.shippingDetails.city}, {order.shippingDetails['postal-code']}
+                      {order.shippingDetails?.address ? (
+                        <>
+                          {order.shippingDetails.address}, {order.shippingDetails.city}
+                        </>
+                      ) : 'N/A'}
                     </td>
-                    <td>${order.totalAmount.toFixed(2)}</td>
-                    <td>{new Date(order.purchaseDate).toLocaleDateString()}</td>
-                
+                    <td>${order.totalPrice?.toFixed(2)}</td>
+                    <td>{order.purchaseDate ? new Date(order.purchaseDate).toLocaleDateString() : '-'}</td>
                   </tr>
                 ))}
               </tbody>

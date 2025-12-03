@@ -3,6 +3,7 @@ import { useCart } from "../context/CartContext";
 import useForm from "../hooks/useForm";
 import { validateForm } from "../utils/Validations";
 import "../css/checkout.css";
+import FeedbackScreen from "../components/FeedbackScreen";
 import API_BASE_URL from "../config/api";
 
 const INITIAL_STATE = {
@@ -41,7 +42,8 @@ const Checkout = () => {
           return;
         }
       }
-    } catch (err) {
+    } catch (error) {
+      console.error("Error al verificar el stock:", error);
       setMessage("Error al verificar el stock disponible.");
       setSubmissionStatus("error");
       return;
@@ -103,7 +105,9 @@ const Checkout = () => {
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ stock: upd.prevStock }),
               });
-            } catch (ignored) { }
+            } catch (rollbackError) {
+              console.error("Error en rollback:", rollbackError);
+            }
           }
           throw new Error(`No se pudo actualizar el stock de ${cartItem.title}.`);
         }
@@ -127,7 +131,9 @@ const Checkout = () => {
               headers: { 'Content-Type': 'application/json' },
               body: JSON.stringify({ stock: upd.prevStock }),
             });
-          } catch (ignored) { }
+          } catch (rollbackError) {
+            console.error("Error en rollback:", rollbackError);
+          }
         }
         throw new Error('No se pudo registrar el pedido. Se revirtieron los cambios de stock.');
       }
@@ -157,12 +163,10 @@ const Checkout = () => {
 
   if (submissionStatus === "success" || submissionStatus === "error") {
     return (
-      <div className="checkout-container submission-feedback">
-        <h2>{message}</h2>
-        {submissionStatus === "success" && (
-          <p>Recibirás una confirmación por correo electrónico en breve.</p>
-        )}
-      </div>
+      <FeedbackScreen
+        status={submissionStatus}
+        message={message}
+      />
     );
   }
 

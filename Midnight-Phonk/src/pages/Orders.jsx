@@ -116,7 +116,7 @@ const Orders = () => {
                           className="btn btn-sm btn-outline-primary"
                           title="Descargar Boleta"
                         >
-                          📥 PDF
+                          Descargar PDF
                         </a>
                       ) : (
                         <span className="text-muted">-</span>

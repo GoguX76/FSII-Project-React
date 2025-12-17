@@ -17,6 +17,7 @@ const emptyProduct = {
 
 const Products = () => {
   const [products, setProducts] = useState([]);
+  const [categories, setCategories] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
@@ -42,8 +43,21 @@ const Products = () => {
     }
   };
 
+  const fetchCategories = async () => {
+    try {
+      const res = await fetch(`${API_BASE_URL}/categories`);
+      if (res.ok) {
+        const data = await res.json();
+        setCategories(data);
+      }
+    } catch (e) {
+      console.error("Error fetching categories", e);
+    }
+  };
+
   useEffect(() => {
     fetchProducts();
+    fetchCategories();
   }, []);
 
   const openAdd = () => {
@@ -140,6 +154,8 @@ const Products = () => {
     }
   };
 
+
+
   const handleDelete = async (p) => {
     // open confirmation modal
     setPendingDelete(p);
@@ -185,7 +201,7 @@ const Products = () => {
               <h1 className="dashboard-title">Gestión de Productos</h1>
               <p className="dashboard-subtitle">Lista de productos disponibles</p>
             </div>
-            <div>
+            <div style={{ display: 'flex', gap: '10px' }}>
               <button className="btn-primary" onClick={openAdd}>Agregar producto</button>
             </div>
           </div>
@@ -218,7 +234,10 @@ const Products = () => {
                     <td>{product.title || product.name || '—'}</td>
                     <td>${(typeof product.price === 'number') ? product.price.toFixed(2) : product.price}</td>
                     <td>{product.stock || 0}</td>
-                    <td>{product.category === 'japanese' ? 'Japonés' : 'Brasileño'}</td>
+                    <td>
+                      {(!product.category || product.category === 'brazilian') ? 'Phonk Brasileño' :
+                        (product.category === 'japanese' ? 'Phonk Japonés' : product.category)}
+                    </td>
                     <td>
                       <button className="btn-secondary" onClick={() => setViewProduct(product)}>Ver</button>
                       <button className="btn-secondary" style={{ marginLeft: 8 }} onClick={() => openEdit(product)}>Editar</button>
@@ -294,8 +313,12 @@ const Products = () => {
                   <div className="form-group">
                     <label>Categoría</label>
                     <select name="category" value={form.category} onChange={handleChange} className="form-input">
+                      <option value="">Seleccione...</option>
                       <option value="brazilian">Phonk Brasileño</option>
                       <option value="japanese">Phonk Japonés</option>
+                      {categories.map(cat => (
+                        <option key={cat.id} value={cat.name}>{cat.name}</option>
+                      ))}
                     </select>
                   </div>
 

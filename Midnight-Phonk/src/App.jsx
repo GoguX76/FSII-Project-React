@@ -23,6 +23,8 @@ import Users from "./pages/Users";
 import Products from "./pages/Products";
 import Orders from "./pages/Orders";
 import ContactRequests from "./pages/ContactRequests";
+import CategoryPage from "./pages/CategoryPage";
+import Categories from "./pages/Categories";
 
 // Styles
 import "./css/cards.css";
@@ -84,6 +86,7 @@ function App() {
           <Route path="/japanesephonk" element={<JapanesePhonk onNavigate={handleNavigate} />} />
           <Route path="/cart" element={<Cart />} />
           <Route path="/checkout" element={<Checkout />} />
+          <Route path="/category/:categoryName" element={<CategoryPage onNavigate={handleNavigate} />} />
 
           {/* Admin Routes */}
           <Route path="/admin/*" element={
@@ -95,6 +98,7 @@ function App() {
                     <Route index element={<Dashboard />} />
                     <Route path="users" element={<Users />} />
                     <Route path="products" element={<Products />} />
+                    <Route path="categories" element={<Categories />} />
                     <Route path="orders" element={<Orders />} />
                     <Route path="contacts" element={<ContactRequests />} />
                   </Routes>

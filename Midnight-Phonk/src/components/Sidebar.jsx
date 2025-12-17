@@ -18,7 +18,7 @@ const Sidebar = () => {
   const { user, logout } = useCart();
   const navigate = useNavigate();
 
-  // Clase base para los botones/enlaces del sidebar
+
   const navBtnClass =
     "flex items-center px-4 py-3 text-sm font-medium rounded-lg transition-colors duration-200 text-indigo-200 hover:bg-[rgba(255,255,255,0.04)] w-full text-left";
 
@@ -29,9 +29,9 @@ const Sidebar = () => {
 
   return (
     <aside className="flex flex-col w-64 h-full px-4 py-6 bg-[var(--card-bg)] border-r border-gray-200">
-      {/* Contenedor flexible para empujar los botones al fondo */}
+
       <div className="flex flex-col justify-between flex-1">
-        {/* Navegación Principal */}
+
         <nav className="flex-1 space-y-2">
           <Link to="/admin" className={navBtnClass}>
             <LayoutDashboard className="w-5 h-5" />
@@ -45,6 +45,10 @@ const Sidebar = () => {
             <Package className="w-5 h-5" />
             <span className="ml-3">Productos</span>
           </Link>
+          <Link to="/admin/categories" className={navBtnClass}>
+            <LayoutGrid className="w-5 h-5" />
+            <span className="ml-3">Categorías</span>
+          </Link>
           {user?.admin && (
             <Link to="/admin/users" className={navBtnClass}>
               <Users className="w-5 h-5" />
@@ -57,7 +61,7 @@ const Sidebar = () => {
           </Link>
         </nav>
 
-        {/* Navegación Inferior */}
+
         <div className="space-y-2">
           <button onClick={() => navigate("/admin")} className={navBtnClass}>
             <User className="w-5 h-5" />

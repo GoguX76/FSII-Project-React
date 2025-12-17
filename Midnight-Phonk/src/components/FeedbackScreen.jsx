@@ -1,9 +1,9 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { CheckCircle, XCircle } from 'lucide-react';
+import { CheckCircle, XCircle, Download } from 'lucide-react';
 import '../css/feedbackScreen.css';
 
-const FeedbackScreen = ({ status, message }) => {
+const FeedbackScreen = ({ status, message, purchaseData }) => {
   const isSuccess = status === 'success';
 
   return (
@@ -16,6 +16,18 @@ const FeedbackScreen = ({ status, message }) => {
         )}
         <h2>{isSuccess ? '¡Éxito!' : 'Ocurrió un Error'}</h2>
         <p>{message}</p>
+        {isSuccess && purchaseData && purchaseData.orderCode && (
+          <a
+            href={`http://localhost:8080/api/purchases/receipt/${purchaseData.orderCode}`}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="feedback-button download-btn"
+            style={{ marginBottom: '1rem', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px', textDecoration: 'none' }}
+          >
+            <Download size={20} />
+            Descargar Boleta
+          </a>
+        )}
         {isSuccess ? (
           <Link to="/" className="feedback-button">
             Volver al Inicio

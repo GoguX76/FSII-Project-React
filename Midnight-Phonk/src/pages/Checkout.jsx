@@ -5,6 +5,7 @@ import { validateForm } from "../utils/Validations";
 import "../css/checkout.css";
 import FeedbackScreen from "../components/FeedbackScreen";
 import API_BASE_URL from "../config/api";
+import { generateReceipt } from "../utils/receiptGenerator";
 
 const INITIAL_STATE = {
   card: "",
@@ -19,6 +20,7 @@ const Checkout = () => {
   const { cartItems, total, clearCart } = useCart();
   const [submissionStatus, setSubmissionStatus] = useState(null); // null, 'loading', 'success', or 'error'
   const [message, setMessage] = useState("");
+  const [purchaseData, setPurchaseData] = useState(null);
 
   const submit = async () => {
 
@@ -62,22 +64,41 @@ const Checkout = () => {
       return;
     }
 
+    setMessage("Procesando pedido...");
+    setSubmissionStatus("loading");
+
     const { user } = JSON.parse(loggedInUserData);
 
-    const purchase = {
+    // Safer UUID gen
+    const orderCode = 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
+      var r = Math.random() * 16 | 0, v = c == 'x' ? r : (r & 0x3 | 0x8);
+      return v.toString(16);
+    });
+
+    const tempPurchaseData = {
       userId: user.email,
       userName: user.name,
       shippingDetails: values,
       items: cartItems,
       totalAmount: total,
       purchaseDate: new Date().toISOString(),
+      orderCode: orderCode
     };
 
-    setMessage("Procesando pedido...");
-    setSubmissionStatus("loading");
+    let receiptBase64 = null;
+    try {
+      receiptBase64 = generateReceipt(tempPurchaseData, { returnBase64: true });
+    } catch (e) {
+      console.error("Error generating PDF", e);
+    }
+
+    const purchase = {
+      ...tempPurchaseData,
+      receiptPdfBase64: receiptBase64,
+    };
 
     try {
-      // Primero decrementar stock en el servidor para cada producto
+
       const productsResponse = await fetch(`${API_BASE_URL}/products`);
       if (!productsResponse.ok) throw new Error('Error al obtener productos para actualizar stock.');
       const products = await productsResponse.json();
@@ -86,8 +107,21 @@ const Checkout = () => {
       for (const cartItem of cartItems) {
         const prod = products.find(p => String(p.id) === String(cartItem.id));
         if (!prod) throw new Error(`Producto ${cartItem.title} no encontrado al actualizar stock.`);
+
+        if (prod.stock < cartItem.quantity) {
+          for (const upd of updated) {
+            try {
+              await fetch(`${API_BASE_URL}/products/${upd.id}`, {
+                method: 'PATCH',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ stock: upd.prevStock }),
+              });
+            } catch (e) { console.error(e); }
+          }
+          throw new Error(`Stock insuficiente para ${cartItem.title} (disponible: ${prod.stock})`);
+        }
+
         const newStock = (Number(prod.stock) || 0) - Number(cartItem.quantity);
-        // Asegurar no bajar a negativo (aunque ya verificamos)
         const finalStock = newStock >= 0 ? newStock : 0;
 
         const patchRes = await fetch(`${API_BASE_URL}/products/${prod.id}`, {
@@ -97,7 +131,7 @@ const Checkout = () => {
         });
 
         if (!patchRes.ok) {
-          // rollback previo
+
           for (const upd of updated) {
             try {
               await fetch(`${API_BASE_URL}/products/${upd.id}`, {
@@ -105,9 +139,7 @@ const Checkout = () => {
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ stock: upd.prevStock }),
               });
-            } catch (rollbackError) {
-              console.error("Error en rollback:", rollbackError);
-            }
+            } catch (e) { console.error(e); }
           }
           throw new Error(`No se pudo actualizar el stock de ${cartItem.title}.`);
         }
@@ -115,7 +147,7 @@ const Checkout = () => {
         updated.push({ id: prod.id, prevStock: prod.stock, newStock: finalStock });
       }
 
-      // Si todos los PATCH fueron ok, registrar la purchase
+
       const response = await fetch(`${API_BASE_URL}/purchases`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -123,7 +155,7 @@ const Checkout = () => {
       });
 
       if (!response.ok) {
-        // intentar rollback si falla el POST
+
         for (const upd of updated) {
           try {
             await fetch(`${API_BASE_URL}/products/${upd.id}`, {
@@ -131,13 +163,12 @@ const Checkout = () => {
               headers: { 'Content-Type': 'application/json' },
               body: JSON.stringify({ stock: upd.prevStock }),
             });
-          } catch (rollbackError) {
-            console.error("Error en rollback:", rollbackError);
-          }
+          } catch (e) { console.error(e); }
         }
         throw new Error('No se pudo registrar el pedido. Se revirtieron los cambios de stock.');
       }
 
+      setPurchaseData(purchase);
       setMessage('¡Pedido realizado con éxito! Gracias por tu compra.');
       setSubmissionStatus('success');
       clearCart();
@@ -166,6 +197,7 @@ const Checkout = () => {
       <FeedbackScreen
         status={submissionStatus}
         message={message}
+        purchaseData={purchaseData}
       />
     );
   }
@@ -182,7 +214,7 @@ const Checkout = () => {
   return (
     <div className="checkout-container">
       <div className="checkout-form">
-        <h2>Datos de Envío</h2>
+        <h2>Datos de Facturación</h2>
         <form onSubmit={handleSubmit} noValidate>
           <div className="form-group">
             <label htmlFor="card">Número de tarjeta</label>

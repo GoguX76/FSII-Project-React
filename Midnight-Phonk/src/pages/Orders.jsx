@@ -84,9 +84,10 @@ const Orders = () => {
                   <th>ID</th>
                   <th>Cliente</th>
                   <th>Producto</th>
-                  <th>Dirección de Envío</th>
+                  <th>Dirección de Facturación</th>
                   <th>Total</th>
                   <th>Fecha</th>
+                  <th>Comprobante</th>
                 </tr>
               </thead>
               <tbody>
@@ -106,6 +107,21 @@ const Orders = () => {
                     </td>
                     <td>${order.totalPrice?.toFixed(2)}</td>
                     <td>{order.purchaseDate ? new Date(order.purchaseDate).toLocaleDateString() : '-'}</td>
+                    <td>
+                      {order.orderCode ? (
+                        <a
+                          href={`${API_BASE_URL}/purchases/receipt/${order.orderCode}`}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="btn btn-sm btn-outline-primary"
+                          title="Descargar Boleta"
+                        >
+                          📥 PDF
+                        </a>
+                      ) : (
+                        <span className="text-muted">-</span>
+                      )}
+                    </td>
                   </tr>
                 ))}
               </tbody>

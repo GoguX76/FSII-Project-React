@@ -82,6 +82,9 @@ Una vista general del estado de tu negocio:
 *   Revisa los mensajes enviados por los usuarios a través del formulario de contacto.
 *   Mantén un registro de las consultas de tus clientes.
 
+## Backend
+Link: [https://github.com/GoguX76/Midnight-Phonk-Backend.git]
+
 ---
 
 ## Soporte
